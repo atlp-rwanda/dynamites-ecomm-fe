@@ -1,4 +1,9 @@
-# Dynamites UI
+# Dynamites ecommerce Frontend
+
+[![CI for ecomm-project for Dynamite](https://github.com/atlp-rwanda/dynamites-ecomm-fe/actions/workflows/application.yml/badge.svg)](https://github.com/atlp-rwanda/dynamites-ecomm-fe/actions/workflows/application.yml)
+
+[![codecov](https://codecov.io/gh/atlp-rwanda/dynamites-ecomm-fe/graph/badge.svg?token=32TGKWZBBV)](https://codecov.io/gh/atlp-rwanda/dynamites-ecomm-fe)
+
 
 ## Overview
 
