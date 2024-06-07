@@ -6,10 +6,10 @@
     "module": "ESNext",
     "skipLibCheck": true,
 
-     /*Configure TypeScript Paths*/
-      "paths": {
-        "@/*": ["./src/*"],
-      },
+    /*Configure TypeScript Paths*/
+    "paths": {
+      "@/*": ["./src/*"]
+    },
 
     /* Bundler mode */
     "moduleResolution": "bundler",
