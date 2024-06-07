@@ -3,8 +3,9 @@
 
 import { defineConfig } from 'vite';
 import react from '@vitejs/plugin-react';
+import path from 'path';
 
-// https://vitejs.dev/config/
+// vite.config.ts
 export default defineConfig({
   plugins: [react()],
   server: {
@@ -16,5 +17,15 @@ export default defineConfig({
     globals: true,
     environment: 'jsdom',
     setupFiles: ['./src/__test__/setupTests.ts'],
+  },
+  resolve: {
+    alias: {
+      '@': path.resolve(__dirname, './src'),
+    },
+  },
+  build: {
+    rollupOptions: {
+      external: ['src/App.tsx'],
+    },
   },
 });
