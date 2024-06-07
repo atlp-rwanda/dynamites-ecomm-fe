@@ -4,11 +4,9 @@
 
 [![codecov](https://codecov.io/gh/atlp-rwanda/dynamites-ecomm-fe/graph/badge.svg?token=32TGKWZBBV)](https://codecov.io/gh/atlp-rwanda/dynamites-ecomm-fe)
 
-
 ## Overview
 
 Welcome to Dynamites frontend application! This project provides an appealing user interface for the dynamites e-commerce application. It allows users to browse products, place orders, manage their account, and perform other e-commerce-related activities.
-
 
 ## Installation
 
@@ -58,7 +56,6 @@ Before you run that commands you must have docker installed in your PC
    docker run -p 8080:8080 <image_name>
    ```
 
-
 ## Authors
 
 - [Manzi Karenzi](https://github.com/jkarenzi)
@@ -70,4 +67,3 @@ Before you run that commands you must have docker installed in your PC
 - [Bernard Niyomugabo](https://github.com/niyobern)
 - [Bertrand Shema](https://github.com/bertrandshema)
 - [Pray Eddy Shimwa](https://github.com/EddyShimwa)
-
