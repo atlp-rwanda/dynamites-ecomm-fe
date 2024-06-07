@@ -4,14 +4,16 @@
 import { defineConfig } from 'vite';
 import react from '@vitejs/plugin-react';
 import path from 'path';
+import dotenv from 'dotenv';
 
+dotenv.config();
 // vite.config.ts
 export default defineConfig({
   plugins: [react()],
   server: {
     host: true,
     strictPort: true,
-    port: 8080,
+    port: process.env.APP_PORT ? parseInt(process.env.APP_PORT, 10) : undefined,
   },
   test: {
     globals: true,
