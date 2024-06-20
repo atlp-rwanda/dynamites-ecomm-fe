@@ -22,7 +22,7 @@ export default {
       },
       fontFamily: {
         Lexend: ['Lexend'],
-      }
+      },
     },
   },
   plugins: [],
