@@ -10,10 +10,9 @@ function AppRoutes() {
       <Routes>
         <Route element={<HomeLayout />}>
           <Route index path="/" element={<Home />} />
-          <Route path="/signup" element={<SignUp />} />
         </Route>
         <Route path="*" element={<ErrorPage />} />
-        {/* Add many routes as you want */}
+        <Route path="/signup" element={<SignUp />} />
       </Routes>
     </Router>
   );

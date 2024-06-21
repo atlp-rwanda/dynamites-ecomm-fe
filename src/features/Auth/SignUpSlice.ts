@@ -24,7 +24,10 @@ const initialState: SignUpState = {
 export const registerUser = createAsyncThunk(
   'signUp/registerUser',
   async (userData: Omit<SignUpState, 'loading' | 'error'>) => {
-    const response = await axios.post('https://dynamites-ecomm-be.onrender.com/api/v1/user/register', userData);
+    const response = await axios.post(
+      'https://dynamites-ecomm-be.onrender.com/api/v1/user/register',
+      userData
+    );
     return response.data;
   }
 );
@@ -65,7 +68,7 @@ const signUpSlice = createSlice({
   },
 });
 
-export const { setFirstName, setLastName, setEmail, setPassword, setUserType } = signUpSlice.actions;
+export const { setFirstName, setLastName, setEmail, setPassword, setUserType } =
+  signUpSlice.actions;
 
 export default signUpSlice.reducer;
-

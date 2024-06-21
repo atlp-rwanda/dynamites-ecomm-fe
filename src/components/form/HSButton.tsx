@@ -4,8 +4,11 @@ import { Link } from 'react-router-dom';
 interface MyButtonProps {
   path?: string;
   title: string;
+  role?: string;
   styles?: string;
-  onClick?: (e: React.MouseEvent<HTMLAnchorElement | HTMLButtonElement>) => void;
+  onClick?: (
+    e: React.MouseEvent<HTMLAnchorElement | HTMLButtonElement>
+  ) => void;
   icon?: JSX.Element;
   target?: '_blank' | '_self' | '_parent' | '_top';
   onChange?: React.ChangeEventHandler<HTMLAnchorElement>;
