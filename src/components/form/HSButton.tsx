@@ -1,37 +1,49 @@
+import React from 'react';
 import { Link } from 'react-router-dom';
 
 interface MyButtonProps {
   path?: string;
   title: string;
   styles?: string;
-  click?: () => void;
+  onClick?: (e: React.MouseEvent<HTMLAnchorElement | HTMLButtonElement>) => void;
   icon?: JSX.Element;
   target?: '_blank' | '_self' | '_parent' | '_top';
   onChange?: React.ChangeEventHandler<HTMLAnchorElement>;
 }
 
-function HSButton({
+const HSButton: React.FC<MyButtonProps> = ({
   path,
-  click,
   title,
   icon,
   styles,
   target,
   onChange,
-}: MyButtonProps) {
+  onClick,
+}) => {
+  if (path) {
+    return (
+      <Link
+        target={target}
+        onChange={onChange}
+        rel="noopener noreferrer"
+        to={path}
+        onClick={onClick}
+        className={`${styles} bg-primary text-white px-6 py-3 rounded-md flex justify-center items-center gap-2 text-sm hover:text-gray-200 hover:shadow-lg hover:scale-105 transition-all duration-300 ease-in-out`}
+      >
+        {title} {icon}
+      </Link>
+    );
+  }
+
   return (
-    <Link
-      target={target}
-      type="submit"
-      onChange={onChange}
-      rel="noopener noreferrer"
-      to={path!}
-      onClick={click}
+    <button
+      type="button"
+      onClick={onClick}
       className={`${styles} bg-primary text-white px-6 py-3 rounded-md flex justify-center items-center gap-2 text-sm hover:text-gray-200 hover:shadow-lg hover:scale-105 transition-all duration-300 ease-in-out`}
     >
       {title} {icon}
-    </Link>
+    </button>
   );
-}
+};
 
 export default HSButton;
