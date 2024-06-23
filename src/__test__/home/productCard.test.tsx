@@ -15,6 +15,7 @@ const mockProduct: Product = {
   salesPrice: 80,
   averageRating: 2.5,
   isAvailable: true,
+  isFeatured: false,
   gallery: ['/path/to/sample-product.jpg', '/path/to/sample-product.jpg'],
   longDesc: 'This is a sample product long description',
   category: {

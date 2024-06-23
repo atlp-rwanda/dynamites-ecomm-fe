@@ -5,6 +5,7 @@ import productsReducer from '@/features/Products/ProductSlice';
 import categoriesReducer from '@/features/Products/categorySlice';
 import bannerReducer from '@/app/bannerAds/BannerSlice';
 import availableProductsSlice from '@/features/Popular/availableProductSlice';
+import bestSellingProductSlice from '@/features/Popular/bestSellingProductSlice';
 import subscribeReducer from '@/app/Footer/Subscribe';
 import {
   passwordRequestReducer,
@@ -19,6 +20,7 @@ export const store = configureStore({
     signIn: signInReducer,
     banners: bannerReducer,
     availableProducts: availableProductsSlice,
+    bestSellingProducts: bestSellingProductSlice,
     footer: subscribeReducer,
     passwordRequest: passwordRequestReducer,
     passwordReset: passwordResetReducer,

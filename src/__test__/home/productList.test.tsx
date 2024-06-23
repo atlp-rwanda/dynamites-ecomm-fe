@@ -20,6 +20,7 @@ const mockProducts: Product[] = [
     salesPrice: 80,
     averageRating: 4.5,
     isAvailable: true,
+    isFeatured: false,
     gallery: ['/path/to/sample-product.jpg', '/path/to/sample-product.jpg'],
     longDesc: 'This is a sample product long description',
     category: {
@@ -47,6 +48,7 @@ const mockProducts: Product[] = [
     salesPrice: 160,
     averageRating: 4.5,
     isAvailable: true,
+    isFeatured: false,
     gallery: ['/path/to/sample-product.jpg', '/path/to/sample-product.jpg'],
     longDesc: 'This is a sample product long description',
     category: {

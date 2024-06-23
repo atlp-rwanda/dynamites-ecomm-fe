@@ -32,4 +32,5 @@ export interface Product {
   averageRating: number;
   reviews: Review[];
   vendor: User;
+  isFeatured: boolean;
 }
