@@ -5,7 +5,7 @@ export default {
       xs: '320px',
       sm: '640px',
       md: '768px',
-      lg: '1440px',
+      lg: '1024px',
     },
     extend: {
       colors: {
@@ -18,7 +18,9 @@ export default {
         grayDark: '#CCD0D8',
         grayLight: '#F3F4F6',
         redBg: '#DC2627',
-        black: '#171A1F',
+        textBlack: '#171A1F',
+        lightGrey: '#DEE1E6',
+        grey: '#565D6D',
       },
       fontFamily: {
         Lexend: ['Lexend'],
