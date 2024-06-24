@@ -12,6 +12,7 @@ dist
 dist-ssr
 *.local
 coverage
+src/__test__/home/__snapshots__/
 
 # Editor directories and files
 .vscode/*

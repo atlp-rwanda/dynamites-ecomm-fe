@@ -1,3 +1,4 @@
+import CategoriesSection from '@/components/home/categories';
 import HelloSection from '../components/HelloSection/HelloSection';
 
 function Home() {
@@ -6,7 +7,9 @@ function Home() {
       <div>
         <HelloSection />
       </div>
-      {/* Add more componets as you wish!!! */}
+      <div>
+        <CategoriesSection />
+      </div>
     </main>
   );
 }
