@@ -1,5 +1,5 @@
-import Product from "./Product";
-import User from "./user";
+import Product from './Product';
+import User from './user';
 
 export default interface Review {
   id: number;

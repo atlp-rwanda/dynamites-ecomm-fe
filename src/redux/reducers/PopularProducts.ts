@@ -1,7 +1,6 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import Review from '@/Interfaces/reviews';
 
-
 // import { RootState } from '../store/store';
 
 interface ProductsState {
@@ -17,7 +16,9 @@ const initialState: ProductsState = {
 export const fetchProducts = createAsyncThunk<Review[]>(
   'products/fetchProducts',
   async () => {
-    const response = await fetch('https://dynamites-ecomm-be.onrender.com/api/v1/review');
+    const response = await fetch(
+      'https://dynamites-ecomm-be.onrender.com/api/v1/review'
+    );
     const data = await response.json();
     return data.reviews;
   }

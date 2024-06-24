@@ -1,12 +1,11 @@
 import { configureStore } from '@reduxjs/toolkit';
 import productsReducer from '../redux/reducers/RecentProductsSlice';
-import reviewsReducer from '../redux/reducers/PopularProducts'
-
+import reviewsReducer from '../redux/reducers/PopularProducts';
 
 export const store = configureStore({
   reducer: {
     Popularproducts: productsReducer,
-    Reviews:reviewsReducer,
+    Reviews: reviewsReducer,
   },
 });
 
