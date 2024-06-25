@@ -2,61 +2,35 @@
 import React, { useEffect, useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { RootState, AppDispatch } from '../../app/store';
-import { fetchProducts } from '../../redux/reducers/RecentProductsSlice';
+// import { fetchProducts } from '../../redux/reducers/RecentProductsSlice';
+import { fetchReviews } from '../../redux/reducers/PopularProducts';
+import {filterPopular } from '../../utils/filterMostPopular'
 import leftIcon from '../../assets/icon/Left-Arrow.svg';
 import righttIcon from '../../assets/icon/Right-Arrow.svg';
 import SingleItem from './item';
-import Review from '@/Interfaces/reviews';
+import { skip } from 'node:test';
+
 
 const MostPopular: React.FC = () => {
   const dispatch: AppDispatch = useDispatch();
-  const { items, status } = useSelector(
+  const {reviews, status} = useSelector(
+    (state: RootState) => state.Reviews
+  );
+  
+  const { items } = useSelector(
     (state: RootState) => state.Popularproducts
   );
-  const { reviews } = useSelector((state: RootState) => state.Reviews);
-  // ---------------------------------------------------
-
-  function calculateAverageRating(
-    reviews: Review[],
-    productName: string
-  ): number {
-    const filteredReviews = reviews.filter(
-      (review) => review.product.name === productName
-    );
-    if (filteredReviews.length === 0) {
-      return 0;
-    }
-
-    const totalRating = filteredReviews.reduce(
-      (sum, review) => sum + review.rating,
-      0
-    );
-    return totalRating / filteredReviews.length;
-  }
-
-  // ----------------------------------------------------
-
-  const SortedProductNames = async () => {
-    const uniqueProductNames = Array.from(
-      new Set([...reviews].map((review) => review.product.name))
-    );
-
-    const sortedProductNames = uniqueProductNames.sort((a, b) => {
-      const avgRatingA = calculateAverageRating(reviews, a);
-      const avgRatingB = calculateAverageRating(reviews, b);
-      return avgRatingB - avgRatingA;
-    });
-    console.log(sortedProductNames);
-    return sortedProductNames;
-  };
-
-  SortedProductNames;
-  // ---------------------------------------------------
 
   useEffect(() => {
-    dispatch(fetchProducts());
+    dispatch(fetchReviews());
   }, [dispatch]);
+// -----------------------------------------
+const CopyOfreview= [...reviews]
 
+const {mostPopularProducts} = filterPopular(CopyOfreview, [...items])
+
+
+// -----------------------------------------
   const [start, setStart] = useState(0);
   const [end, setEnd] = useState(3);
 
@@ -71,13 +45,13 @@ const MostPopular: React.FC = () => {
   };
 
   const handleRightallowclick = async () => {
-    if (end <= items.length) {
+    if (end <= mostPopularProducts.length) {
       setEnd(end + 3);
       setStart(start + 3);
     }
   };
 
-  const popularProducts = items.slice(start, end);
+  const mostPopularProduct = mostPopularProducts.slice(start, end);
 
   if (status === 'loading') {
     return <div>Loading...</div>;
@@ -109,8 +83,8 @@ const MostPopular: React.FC = () => {
       </div>
 
       <div className=" bg-white grid gap-y-2">
-        {popularProducts.map((product) => (
-          <SingleItem key={product.id} product={product} />
+        {mostPopularProduct.map((product) => (
+          <SingleItem key={product?.id} product={product?product:items[0]} />
         ))}
       </div>
     </div>
