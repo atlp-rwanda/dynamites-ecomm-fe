@@ -4,33 +4,27 @@ import { useSelector, useDispatch } from 'react-redux';
 import { RootState, AppDispatch } from '../../app/store';
 // import { fetchProducts } from '../../redux/reducers/RecentProductsSlice';
 import { fetchReviews } from '../../redux/reducers/PopularProducts';
-import {filterPopular } from '../../utils/filterMostPopular'
+import { filterPopular } from '../../utils/filterMostPopular';
 import leftIcon from '../../assets/icon/Left-Arrow.svg';
 import righttIcon from '../../assets/icon/Right-Arrow.svg';
 import SingleItem from './item';
 import { skip } from 'node:test';
 
-
 const MostPopular: React.FC = () => {
   const dispatch: AppDispatch = useDispatch();
-  const {reviews, status} = useSelector(
-    (state: RootState) => state.Reviews
-  );
-  
-  const { items } = useSelector(
-    (state: RootState) => state.Popularproducts
-  );
+  const { reviews, status } = useSelector((state: RootState) => state.Reviews);
+
+  const { items } = useSelector((state: RootState) => state.Popularproducts);
 
   useEffect(() => {
     dispatch(fetchReviews());
   }, [dispatch]);
-// -----------------------------------------
-const CopyOfreview= [...reviews]
+  // -----------------------------------------
+  const CopyOfreview = [...reviews];
 
-const {mostPopularProducts} = filterPopular(CopyOfreview, [...items])
+  const { mostPopularProducts } = filterPopular(CopyOfreview, [...items]);
 
-
-// -----------------------------------------
+  // -----------------------------------------
   const [start, setStart] = useState(0);
   const [end, setEnd] = useState(3);
 
@@ -84,7 +78,10 @@ const {mostPopularProducts} = filterPopular(CopyOfreview, [...items])
 
       <div className=" bg-white grid gap-y-2">
         {mostPopularProduct.map((product) => (
-          <SingleItem key={product?.id} product={product?product:items[0]} />
+          <SingleItem
+            key={product?.id}
+            product={product ? product : items[0]}
+          />
         ))}
       </div>
     </div>
