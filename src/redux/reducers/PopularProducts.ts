@@ -13,16 +13,11 @@ const initialState: ReviewState = {
   status: 'idle',
 };
 
-export const fetchReviews = createAsyncThunk<Review[]>(
-  'review/',
-  async () => {
-    const response = await fetch(
-      'http://localhost:3000/api/v1/review'
-    );
-    const data = await response.json();
-    return data.reviews;
-  }
-);
+export const fetchReviews = createAsyncThunk<Review[]>('review/', async () => {
+  const response = await fetch('http://localhost:3000/api/v1/review');
+  const data = await response.json();
+  return data.reviews;
+});
 
 const reviewSlice = createSlice({
   name: 'rewiew',
