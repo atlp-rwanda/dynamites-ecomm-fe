@@ -1,8 +1,10 @@
+/* eslint-disable jsx-a11y/control-has-associated-label */
 import { useState, useEffect } from 'react';
 import { FaRegTrashAlt } from 'react-icons/fa';
 import { MdOutlineEdit } from 'react-icons/md';
 import { useSelector, useDispatch } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
+import { useAppSelector } from '@/app/hooks';
 import ConfirmationCard from './ConfirmationCard';
 import CircularPagination from './NavigateonPage';
 import { AppDispatch, RootState } from '../../app/store';
@@ -39,6 +41,8 @@ function Table() {
   const { DashboardProduct, status } = useSelector(
     (state: RootState) => state.DeshboardProducts
   );
+
+  const user = useAppSelector((state) => state.signIn.user);
   // -----------------------------------------------------------
   const [isConfirmationModalVisible, setModalVisible] = useState(false);
   const [itemSelected, setItemToselected] = useState<number | null>(null);
@@ -49,8 +53,22 @@ function Table() {
   const [isPopupVisible, setIsPopupVisible] = useState(false);
   const [color, setcolor] = useState<string | null>(null);
   // ---------------------------------------------------
-  const data = [...DashboardProduct];
 
+  const isData = [...DashboardProduct].filter((product) => {
+    const vendorFirstName = product.vendor?.firstName?.toLowerCase() || '';
+    const vendorLastName = product.vendor?.lastName?.toLowerCase() || '';
+    const userFirstName = user?.firstName?.toLowerCase() || '';
+    const userLastName = user?.lastName?.toLowerCase() || '';
+    return (
+      vendorFirstName.includes(userFirstName) ||
+      vendorLastName.includes(userLastName) ||
+      vendorLastName.includes(userFirstName) ||
+      vendorFirstName.includes(userLastName)
+    );
+  });
+  const data =
+    // eslint-disable-next-line eqeqeq
+    user && user.userType.name == 'Admin' ? [...DashboardProduct] : isData;
   useEffect(() => {
     dispatch(fetchDashboardProduct());
   }, [dispatch]);
@@ -116,7 +134,7 @@ function Table() {
 
   const confirmUpdate = () => {
     if (itemSelected !== null) {
-      navigate(`/adminDashboard/products/${itemSelected}`);
+      navigate(`/dashboard/product/${itemSelected}`);
     }
     setModalVisible(false);
   };
