@@ -1,4 +1,6 @@
 import HelloSection from '../components/HelloSection/HelloSection';
+import PopularSection from '../components/Popular-section/Popular_section'
+
 
 function Home() {
   return (
@@ -6,7 +8,7 @@ function Home() {
       <div>
         <HelloSection />
       </div>
-      {/* Add more componets as you wish!!! */}
+      <PopularSection></PopularSection>
     </main>
   );
 }

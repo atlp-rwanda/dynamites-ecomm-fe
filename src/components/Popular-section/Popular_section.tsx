@@ -7,7 +7,7 @@ import ADImage from '../../assets/image/Rectangle 901.svg';
 
 const PopularSection: React.FC = () => {
   return (
-    <section className=" h-auto md:px-[60px] md:pt-5 md:pb-8 px-[30px] pt-5 pb-8">
+    <section className=" h-auto md:px-[30px] md:pb-8 px-[20px] pb-8">
       <div className=" bg-thinorenge flex flex-row justify-between rounded-xl items-center border-thickorenge border ">
         <div className=" flex flex-col ml-5 mb-3">
           <div className="">
@@ -22,11 +22,11 @@ const PopularSection: React.FC = () => {
             </p>
           </div>
         </div>
-        <div className=" h-full flex items-center">
+        <div className=" h-full">
           <img
             src={ADImage}
             alt="AD image"
-            className=" h-full w-auto object-cover"
+            className=" h-full bg-cover"
           />
         </div>
       </div>

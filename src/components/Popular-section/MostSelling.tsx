@@ -2,7 +2,7 @@
 import React, { useEffect, useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { RootState, AppDispatch } from '../../app/store';
-import { fetchProducts } from '../../redux/reducers/RecentProductsSlice';
+import { fetchProducts } from '../../redux/actions/landingpageProduct';
 import leftIcon from '../../assets/icon/Left-Arrow.svg';
 import righttIcon from '../../assets/icon/Right-Arrow.svg';
 import SingleItem from './item';
@@ -37,7 +37,7 @@ const MostSelling: React.FC = () => {
     }
   };
 
-  const popularProducts = items.slice(start, end); // Assuming top 5 products
+  const popularProducts = items.slice(start, end); // Assuming top 3 products
 
   if (status === 'loading') {
     return <div>Loading...</div>;
