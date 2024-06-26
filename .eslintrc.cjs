@@ -23,6 +23,11 @@ module.exports = {
     'react/react-in-jsx-scope': 0,
     'import/no-extraneous-dependencies': 0,
     'import/extensions': 0,
+    'react/require-default-props': 0,
+    'no-param-reassign': [
+      'error',
+      { props: true, ignorePropertyModificationsFor: ['state'] },
+    ],
   },
   ignorePatterns: ['dist/**/*', 'postcss.config.js', 'tailwind.config.js'],
 };
