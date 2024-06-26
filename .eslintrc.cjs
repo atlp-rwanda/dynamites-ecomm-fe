@@ -25,6 +25,15 @@ module.exports = {
     'import/extensions': 0,
     'react/require-default-props': 0,
     'react/self-closing-comp': 0,
+    'no-param-reassign': [
+      'error',
+      { props: true, ignorePropertyModificationsFor: ['state'] },
+    ],
   },
-  ignorePatterns: ['dist/**/*', 'postcss.config.js', 'tailwind.config.js'],
+  ignorePatterns: [
+    'dist/**/*',
+    'postcss.config.js',
+    'tailwind.config.js',
+    'vite.config.ts',
+  ],
 };

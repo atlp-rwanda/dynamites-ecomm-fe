@@ -1,3 +1,5 @@
+// tailwind.config.js
+
 export default {
   content: ['./index.html', './src/**/*.{js,ts,jsx,tsx}'],
   theme: {
@@ -5,7 +7,7 @@ export default {
       xs: '320px',
       sm: '640px',
       md: '768px',
-      lg: '1440px',
+      lg: '1024px',
     },
     extend: {
       colors: {
@@ -18,10 +20,21 @@ export default {
         grayDark: '#CCD0D8',
         grayLight: '#F3F4F6',
         redBg: '#DC2627',
-        black: '#171A1F',
+        textBlack: '#171A1F',
+        lightGrey: '#DEE1E6',
+        grey: '#565D6D',
       },
       fontFamily: {
         Lexend: ['Lexend'],
+      },
+      animation: {
+        'slide-up': 'slideUp 0.5s ease-out',
+      },
+      keyframes: {
+        slideUp: {
+          '0%': { transform: 'translateY(20px)', opacity: '0' },
+          '100%': { transform: 'translateY(0)', opacity: '1' },
+        },
       },
     },
   },

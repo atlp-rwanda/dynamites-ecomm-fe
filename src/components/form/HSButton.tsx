@@ -4,7 +4,6 @@ import { Link } from 'react-router-dom';
 interface MyButtonProps {
   path?: string;
   title: string;
-  role?: string;
   styles?: string;
   onClick?: (
     e: React.MouseEvent<HTMLAnchorElement | HTMLButtonElement>
@@ -14,7 +13,7 @@ interface MyButtonProps {
   onChange?: React.ChangeEventHandler<HTMLAnchorElement>;
 }
 
-const HSButton: React.FC<MyButtonProps> = ({
+function HSButton({
   path,
   title,
   icon,
@@ -22,7 +21,7 @@ const HSButton: React.FC<MyButtonProps> = ({
   target,
   onChange,
   onClick,
-}) => {
+}: MyButtonProps) {
   if (path) {
     return (
       <Link
@@ -47,6 +46,6 @@ const HSButton: React.FC<MyButtonProps> = ({
       {title} {icon}
     </button>
   );
-};
+}
 
 export default HSButton;

@@ -1,15 +1,12 @@
-import React from 'react';
+import { Link, useNavigate } from 'react-router-dom';
+import * as Yup from 'yup';
 import { useDispatch, useSelector } from 'react-redux';
+import { FcGoogle } from 'react-icons/fc';
+import { FaFacebook } from 'react-icons/fa';
+import { Formik, Field, ErrorMessage, Form, FormikHelpers } from 'formik';
 import { RootState, AppDispatch } from '@/app/store';
 import { registerUser } from '@/features/Auth/SignUpSlice';
 import HSButton from '@/components/form/HSButton';
-import { MdOutlineEmail, MdPerson } from 'react-icons/md';
-import { PiLockKeyBold } from 'react-icons/pi';
-import { FcGoogle } from 'react-icons/fc';
-import { FaFacebook } from 'react-icons/fa';
-import { Formik, Field, ErrorMessage, Form } from 'formik';
-import * as Yup from 'yup';
-import { Link, useNavigate } from 'react-router-dom';
 
 interface FormValues {
   firstName: string;
@@ -20,29 +17,77 @@ interface FormValues {
   userType: 'vendor' | 'buyer';
 }
 
-const SignUp: React.FC = () => {
+function SignUp() {
   const dispatch: AppDispatch = useDispatch();
   const signUpState = useSelector((state: RootState) => state.signUp);
   const navigate = useNavigate();
-
-  const handleSubmit = (values: FormValues, actions: any) => {
-    console.log('Form Values:', values);
+  const handleSubmit = (
+    values: FormValues,
+    actions: FormikHelpers<FormValues>
+  ) => {
     dispatch(registerUser(values))
-      .then((result) => {
-        console.log('Register User Result:', result);
+      .then(() => {
         actions.setSubmitting(false);
         navigate('/login');
       })
-      .catch((error) => {
-        console.error('Register User Error:', error); // Debugging
+      .catch(() => {
         actions.setSubmitting(false);
       });
+  };
+
+  const renderField = (
+    id: string,
+    name: string,
+    label: string,
+    type: string = 'text'
+  ) => {
+    if (type === 'radio') {
+      return (
+        <label htmlFor={id} key={id}>
+          <input
+            id={id}
+            type="radio"
+            name={name}
+            value={name}
+            className="mr-2 border border-gray-200"
+          />
+          {label}
+        </label>
+      );
+    }
+    if (type === 'checkbox') {
+      return (
+        <label htmlFor={id} key={id} className="flex items-center">
+          <input
+            id={id}
+            type="checkbox"
+            name={name}
+            className="mr-2 border border-gray-200"
+          />
+          {label}
+        </label>
+      );
+    }
+    return (
+      <label htmlFor={id} key={id} className="flex flex-col">
+        {label}
+        <Field
+          id={id}
+          type={type}
+          name={name}
+          className="mr-2 border border-gray-200 p-3 rounded-md"
+        />
+      </label>
+    );
   };
 
   const validationSchema = Yup.object().shape({
     firstName: Yup.string().required('First Name is required'),
     lastName: Yup.string().required('Last Name is required'),
-    email: Yup.string().email('Invalid email').required('Email is required'),
+    email: Yup.string()
+      .email('Invalid email')
+      .required('Email is required')
+      .notOneOf(['test@test.com'], 'That email is not allowed'),
     password: Yup.string()
       .min(8, 'Password must be at least 8 characters')
       .required('Password is required'),
@@ -72,11 +117,7 @@ const SignUp: React.FC = () => {
             <Form className="flex flex-col gap-5" role="form">
               <div className="flex gap-3">
                 <div className="flex flex-col w-1/2">
-                  <Field
-                    name="firstName"
-                    placeholder="First name"
-                    className="input-field border border-gray-300 p-2  rounded-md focus:border-blue-500 focus:outline-none "
-                  />
+                  {renderField('firstName', 'firstName', 'First name')}
                   <ErrorMessage
                     name="firstName"
                     component="div"
@@ -84,11 +125,7 @@ const SignUp: React.FC = () => {
                   />
                 </div>
                 <div className="flex flex-col w-1/2">
-                  <Field
-                    name="lastName"
-                    placeholder="Last Name"
-                    className="input-field border border-gray-300 p-2 rounded-md focus:border-blue-500 focus:outline-none"
-                  />
+                  {renderField('lastName', 'lastName', 'Last name')}
                   <ErrorMessage
                     name="lastName"
                     component="div"
@@ -97,11 +134,7 @@ const SignUp: React.FC = () => {
                 </div>
               </div>
               <div className="flex flex-col">
-                <Field
-                  name="email"
-                  placeholder="Enter your email"
-                  className="input-field border border-gray-300 p-2 rounded-md focus:border-blue-500 focus:outline-none"
-                />
+                {renderField('email', 'email', 'Enter your email')}
                 <ErrorMessage
                   name="email"
                   component="div"
@@ -109,12 +142,12 @@ const SignUp: React.FC = () => {
                 />
               </div>
               <div className="flex flex-col">
-                <Field
-                  name="password"
-                  type="password"
-                  placeholder="Enter your password"
-                  className="input-field rounded-md border  border-gray-300 p-2 focus:border-blue-500 focus:outline-none"
-                />
+                {renderField(
+                  'password',
+                  'password',
+                  'Enter your password',
+                  'password'
+                )}
                 <ErrorMessage
                   name="password"
                   component="div"
@@ -122,12 +155,12 @@ const SignUp: React.FC = () => {
                 />
               </div>
               <div className="flex flex-col">
-                <Field
-                  name="confirmPassword"
-                  type="password"
-                  placeholder="Confirm your password"
-                  className="input-field rounded-md border border-gray-300 p-2 focus:border-blue-500 focus:outline-none"
-                />
+                {renderField(
+                  'confirmPassword',
+                  'confirmPassword',
+                  'Confirm your password',
+                  'password'
+                )}
                 <ErrorMessage
                   name="confirmPassword"
                   component="div"
@@ -135,24 +168,8 @@ const SignUp: React.FC = () => {
                 />
               </div>
               <div className="flex flex-col items-left justify-between text-gray-600 text-sm md:text-md">
-                <label>
-                  <Field
-                    type="radio"
-                    name="userType"
-                    value="buyer"
-                    className="mr-2"
-                  />
-                  I am a customer
-                </label>
-                <label>
-                  <Field
-                    type="radio"
-                    name="userType"
-                    value="vendor"
-                    className="mr-2"
-                  />
-                  I am a vendor
-                </label>
+                {renderField('buyer', 'userType', 'I am a customer', 'radio')}
+                {renderField('vendor', 'userType', 'I am a vendor', 'radio')}
                 <ErrorMessage
                   name="userType"
                   component="div"
@@ -160,32 +177,21 @@ const SignUp: React.FC = () => {
                 />
               </div>
               <div className="text-xs sm:text-sm text-gray-600">
-                <input id="agreeCheckbox" type="checkbox" className="mr-2" />
-                <label htmlFor="agreeCheckbox">
-                  By signing up, I agree with the&nbsp;
-                  <Link
-                    to=""
-                    className="underline text-primary hover:text-blue-700"
-                  >
-                    Terms of Use&nbsp;
-                  </Link>
-                  &amp;&nbsp;
-                  <Link
-                    to=""
-                    className="underline text-primary hover:text-blue-700"
-                  >
-                    Privacy Policy
-                  </Link>
-                  .
-                </label>
+                {renderField(
+                  'agreeCheckbox',
+                  'agreeCheckbox',
+                  'By signing up, I agree with the Terms of Use & Privacy Policy.',
+                  'checkbox'
+                )}
               </div>
-              {signUpState.loading && <p>Loading...</p>}
+              {signUpState.loading}
               {signUpState.error && (
                 <p className="text-red-500">{signUpState.error}</p>
               )}
               <button
                 type="submit"
                 disabled={isSubmitting || signUpState.loading}
+                aria-label="Submit Form"
               >
                 <HSButton
                   title="Sign Up"
@@ -195,7 +201,7 @@ const SignUp: React.FC = () => {
               <div>
                 <p className="text-center text-gray-600 text-xs sm:text-sm md:text-sm">
                   Already have an account?{' '}
-                  <Link to="" className="text-primary">
+                  <Link to="/login" className="text-primary">
                     Login
                   </Link>
                 </p>
@@ -219,6 +225,6 @@ const SignUp: React.FC = () => {
       </div>
     </div>
   );
-};
+}
 
 export default SignUp;
