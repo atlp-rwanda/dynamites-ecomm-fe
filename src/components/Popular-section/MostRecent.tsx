@@ -2,11 +2,10 @@
 import React, { useEffect, useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { RootState, AppDispatch } from '../../app/store';
-import { fetchProducts } from '../../redux/actions/landingpageProduct'
+import { fetchProducts } from '../../redux/actions/landingpageProduct';
 import leftIcon from '../../assets/icon/Left-Arrow.svg';
 import righttIcon from '../../assets/icon/Right-Arrow.svg';
 import SingleItem from './item';
-
 
 const MostRecent: React.FC = () => {
   const dispatch: AppDispatch = useDispatch();
@@ -17,7 +16,6 @@ const MostRecent: React.FC = () => {
   useEffect(() => {
     dispatch(fetchProducts());
   }, [dispatch]);
-
 
   const [start, setStart] = useState(0);
   const [end, setEnd] = useState(3);

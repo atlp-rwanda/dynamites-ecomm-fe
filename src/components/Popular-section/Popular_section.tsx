@@ -23,11 +23,7 @@ const PopularSection: React.FC = () => {
           </div>
         </div>
         <div className=" h-full">
-          <img
-            src={ADImage}
-            alt="AD image"
-            className=" h-full bg-cover"
-          />
+          <img src={ADImage} alt="AD image" className=" h-full bg-cover" />
         </div>
       </div>
       <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-3 gap-4">

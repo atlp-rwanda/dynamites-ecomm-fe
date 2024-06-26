@@ -1,8 +1,8 @@
-import productsReducer, { initialState } from '../redux/reducers/RecentProductsSlice'; 
-import { fetchProducts } from '../redux/actions/landingpageProduct'; 
+import productsReducer, {
+  initialState,
+} from '../redux/reducers/RecentProductsSlice';
+import { fetchProducts } from '../redux/actions/landingpageProduct';
 import { describe, it, expect } from 'vitest';
-
-
 
 describe('products reducer', () => {
   it('should return the initial state', () => {

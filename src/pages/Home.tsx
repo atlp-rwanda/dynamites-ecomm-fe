@@ -1,6 +1,5 @@
 import HelloSection from '../components/HelloSection/HelloSection';
-import PopularSection from '../components/Popular-section/Popular_section'
-
+import PopularSection from '../components/Popular-section/Popular_section';
 
 function Home() {
   return (

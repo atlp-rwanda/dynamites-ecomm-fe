@@ -1,18 +1,16 @@
 import { createSlice } from '@reduxjs/toolkit';
 import Product from '@/Interfaces/Product';
-import {fetchProducts} from '../actions/landingpageProduct' 
+import { fetchProducts } from '../actions/landingpageProduct';
 
 interface ProductsState {
   items: Product[];
   status: 'idle' | 'loading' | 'succeeded' | 'failed';
 }
 
-
 export const initialState: ProductsState = {
   items: [],
   status: 'idle',
 };
-
 
 const productsSlice = createSlice({
   name: 'products',

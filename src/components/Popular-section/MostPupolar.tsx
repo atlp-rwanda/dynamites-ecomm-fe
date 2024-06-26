@@ -2,11 +2,10 @@
 import React, { useEffect, useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { RootState, AppDispatch } from '../../app/store';
-import { fetchProducts } from '../../redux/actions/landingpageProduct'
+import { fetchProducts } from '../../redux/actions/landingpageProduct';
 import leftIcon from '../../assets/icon/Left-Arrow.svg';
 import righttIcon from '../../assets/icon/Right-Arrow.svg';
 import SingleItem from './item';
-
 
 const MostPopular: React.FC = () => {
   const dispatch: AppDispatch = useDispatch();
@@ -39,9 +38,7 @@ const MostPopular: React.FC = () => {
   };
 
   const mostRecentProducts = [...items]
-    .sort(
-      (a, b) => b.averageRating - a.averageRating
-    )
+    .sort((a, b) => b.averageRating - a.averageRating)
     .slice(start, end);
 
   if (status === 'loading') {
