@@ -3,8 +3,7 @@ import React from 'react';
 import MostPopular from './MostPupolar';
 import MostRecent from './MostRecent';
 import MostSelling from './MostSelling';
-import BannerAD from './BannerAD'
-
+import BannerAD from './BannerAD';
 
 const PopularSection: React.FC = () => {
   return (

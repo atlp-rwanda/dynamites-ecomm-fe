@@ -3,7 +3,7 @@ import React, { useEffect, useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { RootState, AppDispatch } from '../../app/store';
 import { fetchProducts } from '../../redux/actions/landingpageProduct';
-import PopilarTitle from './PopilarTitle'
+import PopilarTitle from './PopilarTitle';
 import SingleItem from './item';
 
 const MostPopular: React.FC = () => {
@@ -40,7 +40,6 @@ const MostPopular: React.FC = () => {
     .sort((a, b) => b.averageRating - a.averageRating)
     .slice(start, end);
 
- 
   return (
     <div className=" flex flex-col mb-6">
       <PopilarTitle
@@ -55,15 +54,21 @@ const MostPopular: React.FC = () => {
       />
 
       <div className=" grid gap-y-2">
-        { (status == 'failed' || status == 'loading') && Array(3).fill(null).map((_, index) => (
-           <div key={index} className="border-2 px-[2px] shadow-lg animate-pulse bg-violet-50 flex flex-row justify-between items-center">
-               <div className=' h-[50px] w-[50px] rounded border shadow-lg animate-pulse'></div>
-               <div className="flex flex-col justify-between py-2 pl-1 w-full">
-                   <div className=" border-[1.5px] shadow-md animate-pulse h-[25px] w-full"></div>
-                   <div className=" border-[1.5px] shadow-md  animate-pulse h-[20px] w-[50%]"></div>
-               </div>
-           </div>
-        ))}
+        {(status == 'failed' || status == 'loading') &&
+          Array(3)
+            .fill(null)
+            .map((_, index) => (
+              <div
+                key={index}
+                className="border-2 px-[2px] shadow-lg animate-pulse bg-violet-50 flex flex-row justify-between items-center"
+              >
+                <div className=" h-[50px] w-[50px] rounded border shadow-lg animate-pulse"></div>
+                <div className="flex flex-col justify-between py-2 pl-1 w-full">
+                  <div className=" border-[1.5px] shadow-md animate-pulse h-[25px] w-full"></div>
+                  <div className=" border-[1.5px] shadow-md  animate-pulse h-[20px] w-[50%]"></div>
+                </div>
+              </div>
+            ))}
 
         {mostRecentProducts.map((product) => (
           <SingleItem key={product.id} product={product} />
