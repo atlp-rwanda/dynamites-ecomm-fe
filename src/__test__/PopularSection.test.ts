@@ -1,4 +1,6 @@
-import productsReducer, {initialState} from '../features/Popular/RecentProductsSlice';
+import productsReducer, {
+  initialState,
+} from '../features/Popular/RecentProductsSlice';
 import { fetchProducts } from '../features/Popular/RecentProductsSlice';
 import { describe, it, expect } from 'vitest';
 

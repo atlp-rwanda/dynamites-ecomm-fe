@@ -8,7 +8,6 @@ interface ProductsState {
   status: 'idle' | 'loading' | 'succeeded' | 'failed';
 }
 
-
 const URL = 'https://dynamites-ecomm-be.onrender.com/api/v1';
 
 export const fetchProducts = createAsyncThunk<Product[]>(
@@ -24,7 +23,6 @@ export const fetchProducts = createAsyncThunk<Product[]>(
     }
   }
 );
-
 
 export const initialState: ProductsState = {
   items: [],
