@@ -36,8 +36,15 @@ describe('signInSlice', () => {
   vi.mock('jwt-decode', () => ({
     jwtDecode: () => ({
       user: {
+        email: 'test@gmail.com',
+        firstName: 'Test',
+        id: 1,
+        lastName: 'Test',
+        picture: 'http://fakeimage.png',
         userType: {
+          id: 1,
           name: 'Admin',
+          permissions: ['crud'],
         },
       },
     }),
@@ -47,6 +54,7 @@ describe('signInSlice', () => {
     const { signIn } = store.getState();
     expect(signIn).toEqual({
       token: null,
+      user: null,
       loading: false,
       error: null,
       message: null,
@@ -61,6 +69,7 @@ describe('signInSlice', () => {
     const state = signInReducer(undefined, action);
     expect(state).toEqual({
       token: null,
+      user: null,
       loading: true,
       error: null,
       message: null,
@@ -78,6 +87,18 @@ describe('signInSlice', () => {
     const state = signInReducer(undefined, action);
     expect(state).toEqual({
       token: 'testToken',
+      user: {
+        email: 'test@gmail.com',
+        firstName: 'Test',
+        id: 1,
+        lastName: 'Test',
+        picture: 'http://fakeimage.png',
+        userType: {
+          id: 1,
+          name: 'Admin',
+          permissions: ['crud'],
+        },
+      },
       loading: false,
       error: null,
       message: 'Login successful',
@@ -95,6 +116,7 @@ describe('signInSlice', () => {
     const state = signInReducer(undefined, action);
     expect(state).toEqual({
       token: null,
+      user: null,
       loading: false,
       error: 'Login failed',
       message: null,
@@ -107,6 +129,18 @@ describe('signInSlice', () => {
   it('should handle logout', () => {
     const initialState = {
       token: 'testToken',
+      user: {
+        email: 'test@gmail.com',
+        firstName: 'Test',
+        id: 1,
+        lastName: 'Test',
+        picture: 'http://fakeimage.png',
+        userType: {
+          id: 1,
+          name: 'Admin',
+          permissions: ['crud'],
+        },
+      },
       loading: false,
       error: null,
       message: 'Logout Successfully',
@@ -118,6 +152,7 @@ describe('signInSlice', () => {
     const state = signInReducer(initialState, action);
     expect(state).toEqual({
       token: null,
+      user: null,
       loading: false,
       error: null,
       message: 'Logout Successfully',
