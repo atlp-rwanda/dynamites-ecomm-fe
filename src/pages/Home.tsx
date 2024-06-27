@@ -1,4 +1,6 @@
 import HelloSection from '../components/HelloSection/HelloSection';
+import HomeFeaturedSection from '../components/FeaturedSection';
+import BestSellerSection from '../components/BestSellerSection';
 
 function Home() {
   return (
@@ -7,6 +9,8 @@ function Home() {
         <HelloSection />
       </div>
       {/* Add more componets as you wish!!! */}
+      <HomeFeaturedSection />
+      <BestSellerSection />
     </main>
   );
 }
