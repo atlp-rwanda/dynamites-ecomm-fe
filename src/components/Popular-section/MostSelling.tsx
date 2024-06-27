@@ -1,11 +1,8 @@
-// src/components/MostPopular/MostPopular.tsx
 import React, { useEffect, useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { RootState, AppDispatch } from '../../app/store';
-import { fetchProducts } from '../../redux/actions/landingpageProduct';
+import { fetchProducts } from '../../features/Popular/RecentProductsSlice';
 import PopilarTitle from './PopilarTitle';
-import leftIcon from '../../assets/icon/Left-Arrow.svg';
-import righttIcon from '../../assets/icon/Right-Arrow.svg';
 import SingleItem from './item';
 
 const MostSelling: React.FC = () => {

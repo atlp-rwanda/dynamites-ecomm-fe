@@ -1,7 +1,5 @@
-import productsReducer, {
-  initialState,
-} from '../redux/reducers/RecentProductsSlice';
-import { fetchProducts } from '../redux/actions/landingpageProduct';
+import productsReducer, {initialState} from '../features/Popular/RecentProductsSlice';
+import { fetchProducts } from '../features/Popular/RecentProductsSlice';
 import { describe, it, expect } from 'vitest';
 
 describe('products reducer', () => {
