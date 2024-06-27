@@ -29,7 +29,7 @@ function SignUp() {
     dispatch(registerUser(values))
       .then(() => {
         actions.setSubmitting(false);
-        navigate('/login');
+        navigate('/signIn');
       })
       .catch(() => {
         actions.setSubmitting(false);
@@ -101,7 +101,7 @@ function SignUp() {
   return (
     <div className="flex justify-center items-center h-[90vh] sm:h-screen bg-white m-2">
       <div className="w-[80%] md:w-[60%] lg:w-[40%] p-5 shadow-lg border-[1px] border-gray-300 rounded-md ">
-        <h1 className="text-center font-bold text-3xl mb-4 text-xl">Sign Up</h1>
+        <h1 className="text-center font-bold text-3xl mb-4 ">Sign Up</h1>
         <Formik
           initialValues={{
             firstName: '',
@@ -208,7 +208,7 @@ function SignUp() {
               <div>
                 <p className="text-center text-gray-600 text-xs sm:text-sm md:text-sm">
                   Already have an account?{' '}
-                  <Link to="/login" className="text-primary">
+                  <Link to="/signIn" className="text-primary">
                     Login
                   </Link>
                 </p>
