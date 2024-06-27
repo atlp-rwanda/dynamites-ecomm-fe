@@ -3,30 +3,14 @@ import React from 'react';
 import MostPopular from './MostPupolar';
 import MostRecent from './MostRecent';
 import MostSelling from './MostSelling';
-import ADImage from '../../assets/image/Rectangle 901.svg';
+import BannerAD from './BannerAD'
+
 
 const PopularSection: React.FC = () => {
   return (
-    <section className=" h-auto md:px-[30px] md:pb-8 px-[20px] pb-8">
-      <div className=" bg-thinorenge flex flex-row justify-between rounded-xl items-center border-thickorenge border ">
-        <div className=" flex flex-col ml-5 mb-3">
-          <div className="">
-            <p className=" text-thickorenge text-sm font-bold">
-              In store or online your health & safety is our priority
-            </p>
-          </div>
-          <div className="">
-            <p className=" text-black text-xs">
-              The only E-commerce that makes your life easier, makes you enjoy
-              life and makes it bette
-            </p>
-          </div>
-        </div>
-        <div className=" h-full">
-          <img src={ADImage} alt="AD image" className=" h-full bg-cover" />
-        </div>
-      </div>
-      <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-3 gap-4">
+    <section className=" bg-violeteBg h-auto md:pl-[30px] md:pr-[20px] md:pb-8 px-[20px] pb-8">
+      <BannerAD></BannerAD>
+      <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-3 gap-4 pt-2">
         <MostPopular />
         <MostRecent />
         <MostSelling />

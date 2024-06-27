@@ -2,7 +2,8 @@ import axios from 'axios';
 import { createAsyncThunk } from '@reduxjs/toolkit';
 import Product from '@/Interfaces/Product';
 
-const URL = 'http://localhost:3000/api/v1';
+// const URL = 'http://localhost:3000/api/v1';
+const URL = 'https://dynamites-ecomm-be.onrender.com/api/v1'
 
 export const fetchProducts = createAsyncThunk<Product[]>(
   'products/fetchProducts',
