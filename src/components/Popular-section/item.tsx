@@ -1,7 +1,6 @@
 // src/components/MostPopular/MostPopularItem.tsx
 import React from 'react';
-import {Product} from '@/types/product';
-
+import { Product } from '@/types/product';
 
 interface MostPopularItemProps {
   product: Product;

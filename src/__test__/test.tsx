@@ -30,7 +30,7 @@ const mockProduct: Product = {
     firstName: 'Vendor',
     lastName: 'Name',
     email: 'niyobern@google.com',
-  }
+  },
 };
 
 describe('SingleItem Component', () => {

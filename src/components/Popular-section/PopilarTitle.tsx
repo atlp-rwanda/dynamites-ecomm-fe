@@ -2,11 +2,10 @@ import React from 'react';
 import leftIcon from '../../assets/icon/Left-Arrow.svg';
 import rightIcon from '../../assets/icon/Right-Arrow.svg';
 
-
 interface PopularTitleProps {
   section: string;
-  onLeftArrowClick: () => void; 
-  onRightArrowClick: () => void; 
+  onLeftArrowClick: () => void;
+  onRightArrowClick: () => void;
 }
 
 const PopularTitle: React.FC<PopularTitleProps> = ({

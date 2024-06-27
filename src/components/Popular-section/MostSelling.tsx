@@ -35,7 +35,7 @@ const MostSelling: React.FC = () => {
     }
   };
 
-  const popularProducts = items.slice(start, end); 
+  const popularProducts = items.slice(start, end);
 
   return (
     <div className=" flex flex-col mb-6">

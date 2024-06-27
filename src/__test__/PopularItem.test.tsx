@@ -4,12 +4,12 @@ import SingleItem from '@/components/Popular-section/item'; // Adjust the import
 import { Product } from '@/types/product'; // Adjust the import path as per your actual setup
 import User from '@/types/user';
 
-const Role ={
+const Role = {
   id: 1,
   name: 'test',
-  permissions: ['yes']
-}
-const  vendor : User= {
+  permissions: ['yes'],
+};
+const vendor: User = {
   id: 1,
   firstName: 'John',
   lastName: 'Doe',
@@ -23,7 +23,7 @@ const  vendor : User= {
   provider: 'email',
   isVerified: true,
   status: 'active',
-}
+};
 const mockProduct: Product = {
   id: 1,
   name: 'Sample Product',
@@ -44,7 +44,7 @@ const mockProduct: Product = {
   tags: ['tag1', 'tag2'],
   type: 'Simple',
   reviews: [],
-  vendor: vendor
+  vendor: vendor,
 };
 
 describe('SingleItem Component', () => {
