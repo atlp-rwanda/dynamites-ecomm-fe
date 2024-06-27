@@ -35,17 +35,12 @@ const MostSelling: React.FC = () => {
     }
   };
 
-  const popularProducts = items.slice(start, end); // Assuming top 3 products
+  const popularProducts = items.slice(start, end); 
 
   return (
     <div className=" flex flex-col mb-6">
       <PopilarTitle
-        // items={mostRecentProducts}
-        section={'Recent Products'}
-        // start={start}
-        // end={end}
-        // setStart={setStart}
-        // setEnd={setEnd}
+        section={'Most Selling'}
         onLeftArrowClick={handleLeftallowclick}
         onRightArrowClick={handleRightallowclick}
       />

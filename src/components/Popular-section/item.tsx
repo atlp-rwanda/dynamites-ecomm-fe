@@ -1,7 +1,7 @@
 // src/components/MostPopular/MostPopularItem.tsx
 import React from 'react';
-import Product from '@/Interfaces/Product';
-import iphone12 from '../../assets/Screenshot 2024-06-21 143451.png';
+import {Product} from '@/types/product';
+
 
 interface MostPopularItemProps {
   product: Product;
@@ -9,9 +9,9 @@ interface MostPopularItemProps {
 
 const SingleItem: React.FC<MostPopularItemProps> = ({ product }) => {
   return (
-    <div className=" bg-violeteBg flex flex-row hover:scale-105  hover:translate-y-0.5 hover:translate-x-0.5">
+    <div className=" flex flex-row hover:scale-105  hover:translate-y-0.5 hover:translate-x-0.5">
       <div className=" max-h-20 max-w-20 ">
-        <img src={iphone12} alt={product.name} className=" rounded" />
+        <img src={product.image} alt={product.name} className=" rounded" />
       </div>
       <div className=" flex flex-col justify-between py-2 pl-1">
         <div>

@@ -43,12 +43,7 @@ const MostPopular: React.FC = () => {
   return (
     <div className=" flex flex-col mb-6">
       <PopilarTitle
-        // items={mostRecentProducts}
-        section={'Recent Products'}
-        // start={start}
-        // end={end}
-        // setStart={setStart}
-        // setEnd={setEnd}
+        section={'Most Popular'}
         onLeftArrowClick={handleLeftallowclick}
         onRightArrowClick={handleRightallowclick}
       />

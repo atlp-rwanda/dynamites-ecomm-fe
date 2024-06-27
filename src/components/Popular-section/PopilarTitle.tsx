@@ -1,26 +1,16 @@
 import React from 'react';
 import leftIcon from '../../assets/icon/Left-Arrow.svg';
 import rightIcon from '../../assets/icon/Right-Arrow.svg';
-// import Product from '@/Interfaces/Product';
+
 
 interface PopularTitleProps {
   section: string;
-  // items: Product[];
-  // start: number; // Define start as a prop
-  // end: number; // Define end as a prop
-  // setStart: (value: number) => void; // Define setStart as a prop
-  // setEnd: (value: number) => void; // Define setEnd as a prop
-  onLeftArrowClick: () => void; // Define onLeftArrowClick as a prop
-  onRightArrowClick: () => void; // Define onRightArrowClick as a prop
+  onLeftArrowClick: () => void; 
+  onRightArrowClick: () => void; 
 }
 
 const PopularTitle: React.FC<PopularTitleProps> = ({
   section,
-  // items,
-  // start,
-  // end,
-  // setStart,
-  // setEnd,
   onLeftArrowClick,
   onRightArrowClick,
 }) => {

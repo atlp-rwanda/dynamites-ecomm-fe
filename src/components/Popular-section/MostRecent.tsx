@@ -23,7 +23,6 @@ const MostRecent: React.FC = () => {
     if (start > 0) {
       setEnd(end - 3);
       setStart(start - 3);
-      alert('am left');
     } else {
       setEnd(3);
       setStart(0);
@@ -47,12 +46,7 @@ const MostRecent: React.FC = () => {
   return (
     <div className=" flex flex-col mb-6">
       <PopilarTitle
-        // items={mostRecentProducts}
         section={'Recent Products'}
-        // start={start}
-        // end={end}
-        // setStart={setStart}
-        // setEnd={setEnd}
         onLeftArrowClick={handleLeftallowclick}
         onRightArrowClick={handleRightallowclick}
       />
