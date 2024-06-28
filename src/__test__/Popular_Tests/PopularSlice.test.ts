@@ -1,7 +1,7 @@
 import productsReducer, {
   initialState,
-} from '../features/Popular/RecentProductsSlice';
-import { fetchProducts } from '../features/Popular/RecentProductsSlice';
+} from '../../features/Popular/RecentProductsSlice';
+import { fetchProducts } from '../../features/Popular/RecentProductsSlice';
 import { describe, it, expect } from 'vitest';
 
 describe('products reducer', () => {
