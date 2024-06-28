@@ -33,7 +33,7 @@ module.exports = {
     ],
   },
   ignorePatterns: [
-    'dist/*/',
+    'dist/**/*',
     'postcss.config.js',
     'tailwind.config.js',
     'vite.config.ts',
