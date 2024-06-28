@@ -7,7 +7,7 @@ export const store = configureStore({
   reducer: {
     signUp: signUpReducer,
     signIn: signInReducer,
-  
+
     Popularproducts: productsSlice,
   },
 });

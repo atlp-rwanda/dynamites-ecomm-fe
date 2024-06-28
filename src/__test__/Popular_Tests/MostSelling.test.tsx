@@ -74,7 +74,7 @@ describe('MostSelling Component', () => {
     store = mockStore({
       Popularproducts: {
         items: mockProducts,
-        status: 'idle', 
+        status: 'idle',
       },
     });
   });
@@ -86,7 +86,6 @@ describe('MostSelling Component', () => {
       </Provider>
     );
 
-    
     const loadingElements = await screen.findAllByTestId('loading-element');
     expect(loadingElements.length).toBe(3);
   });
@@ -130,11 +129,10 @@ describe('MostSelling Component', () => {
     );
 
     // Wait for async actions to complete
-    await screen.findByText('Sample Product 1'); 
+    await screen.findByText('Sample Product 1');
 
     const leftArrow = screen.getByTestId('left-arrow');
     fireEvent.click(leftArrow);
-
   });
 
   it('handles right arrow click for pagination', async () => {
@@ -144,10 +142,9 @@ describe('MostSelling Component', () => {
       </Provider>
     );
 
-    await screen.findByText('Sample Product 1'); 
+    await screen.findByText('Sample Product 1');
 
     const rightArrow = screen.getByTestId('right-arrow');
     fireEvent.click(rightArrow);
-
   });
 });
