@@ -11,6 +11,7 @@ import Button from '@/components/form/Button';
 import HSInput from '@/components/form/HSInput';
 import { useAppDispatch, useAppSelector } from '@/app/hooks';
 import { loginUser, socialLogin } from '@/features/Auth/SignInSlice';
+import { showSuccessToast } from '@/utils/ToastConfig';
 
 interface MyFormValues {
   email: string;
@@ -45,16 +46,8 @@ function SignIn() {
     }
   }, [searchParams, dispatch]);
 
-  const {
-    loading,
-    error,
-    message,
-    token,
-    user,
-    role,
-    needsVerification,
-    needs2FA,
-  } = useAppSelector((state) => state.signIn);
+  const { loading, token, role, needsVerification, needs2FA, vendor } =
+    useAppSelector((state) => state.signIn);
 
   const formik = useFormik<MyFormValues>({
     initialValues,
@@ -66,15 +59,17 @@ function SignIn() {
 
   useEffect(() => {
     if (needs2FA) {
-      // navigate('/verify-2fa');
+      const { id, email } = vendor;
+      navigate(`/verify-2fa/${id}/${email}`);
     } else if (token) {
       if (role === 'Admin') {
         // navigate('/admin-dashboard');
       } else {
+        showSuccessToast('Buyer Logged in Successfully');
         navigate('/');
       }
     }
-  }, [role, needsVerification, needs2FA, token, user, navigate]);
+  }, [role, needsVerification, needs2FA, vendor, token, navigate]);
 
   return (
     <div className="flex justify-center items-center min-h-screen bg-white p-4">
@@ -82,8 +77,6 @@ function SignIn() {
         <h1 data-testid="title" className="text-center font-bold text-3xl mb-5">
           Sign in
         </h1>
-        {error && <p className="text-center text-red-500">{error}</p>}
-        {message && <p className="text-center text-green-500">{message}</p>}
         <form className="flex flex-col gap-5" data-testid="form">
           <div>
             <HSInput

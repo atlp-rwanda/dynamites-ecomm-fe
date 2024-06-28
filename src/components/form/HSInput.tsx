@@ -12,6 +12,7 @@ interface MyInputProps {
   type?: string;
   text?: string;
   icon?: JSX.Element;
+  maxLength?: number;
 }
 
 function HSInput({
@@ -28,6 +29,7 @@ function HSInput({
   type,
   text,
   icon,
+  maxLength,
 }: MyInputProps) {
   return (
     <div className="flex flex-col gap-2 w-full group">
@@ -48,6 +50,7 @@ function HSInput({
             onChange={onChange}
             placeholder={placeholder}
             className="w-full h-full bg-transparent py-3 outline-none"
+            maxLength={maxLength}
           />
         </div>
       ) : (

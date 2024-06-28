@@ -51,7 +51,6 @@ function ProductCard({ product }: ProductCardProps) {
             {Array.from({ length: Math.floor(product.averageRating) }).map(
               (_, index) => {
                 return (
-                  // eslint-disable-next-line react/no-array-index-key
                   <div data-testid="ratingStar" key={index}>
                     <svg
                       xmlns="http://www.w3.org/2000/svg"
@@ -102,7 +101,6 @@ function ProductCard({ product }: ProductCardProps) {
           {Array.from({ length: Math.floor(4 - product.averageRating) }).map(
             (_, index) => {
               return (
-                // eslint-disable-next-line react/no-array-index-key
                 <div data-testid="emptyStar" key={index}>
                   <svg
                     xmlns="http://www.w3.org/2000/svg"
