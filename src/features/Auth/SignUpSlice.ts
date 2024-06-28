@@ -9,6 +9,7 @@ interface SignUpState {
   userType: 'vendor' | 'buyer';
   loading: boolean;
   error: string | null;
+  facebookAccessToken: string | null; 
 }
 
 const initialState: SignUpState = {
@@ -19,13 +20,23 @@ const initialState: SignUpState = {
   userType: 'buyer',
   loading: false,
   error: null,
+  facebookAccessToken: null, 
 };
+
 const apiUrl = `${import.meta.env.VITE_BASE_URL}/user/register`;
 
 export const registerUser = createAsyncThunk(
   'signUp/registerUser',
-  async (userData: Omit<SignUpState, 'loading' | 'error'>) => {
+  async (userData: Omit<SignUpState, 'loading' | 'error' | 'facebookAccessToken'>) => { 
     const response = await axios.post(apiUrl, userData);
+    return response.data;
+  }
+);
+
+export const registerUserWithFacebook = createAsyncThunk(
+  'signUp/registerUserWithFacebook',
+  async (accessToken: string) => {
+    const response = await axios.post(`${apiUrl}/facebook`, { accessToken });
     return response.data;
   }
 );
@@ -49,6 +60,9 @@ const signUpSlice = createSlice({
     setUserType: (state, action: PayloadAction<'vendor' | 'buyer'>) => {
       state.userType = action.payload;
     },
+    setFacebookAccessToken: (state, action: PayloadAction<string | null>) => { // Add this reducer
+      state.facebookAccessToken = action.payload;
+    },
   },
   extraReducers: (builder) => {
     builder
@@ -62,11 +76,22 @@ const signUpSlice = createSlice({
       .addCase(registerUser.rejected, (state, action) => {
         state.loading = false;
         state.error = action.error.message || 'Something went wrong';
+      })
+      .addCase(registerUserWithFacebook.pending, (state) => { 
+        state.loading = true;
+        state.error = null;
+      })
+      .addCase(registerUserWithFacebook.fulfilled, (state) => {
+        state.loading = false;
+      })
+      .addCase(registerUserWithFacebook.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.error.message || 'Something went wrong';
       });
   },
 });
 
-export const { setFirstName, setLastName, setEmail, setPassword, setUserType } =
+export const { setFirstName, setLastName, setEmail, setPassword, setUserType, setFacebookAccessToken } =
   signUpSlice.actions;
 
 export default signUpSlice.reducer;
