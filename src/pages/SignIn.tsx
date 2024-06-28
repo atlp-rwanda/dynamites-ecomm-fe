@@ -50,7 +50,6 @@ function SignIn() {
 
   useEffect(() => {
     if (needs2FA) {
-      console.log('user Email');
       // navigate(`/verify-2fa/`);
     } else if (token) {
       if (role === 'Admin') {
