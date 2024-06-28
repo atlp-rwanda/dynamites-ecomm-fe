@@ -61,6 +61,7 @@ function CategoriesSection() {
                 </svg>
                 <input
                   onChange={(e) => dispatch(search(e.target.value))}
+                  id="searchInput"
                   placeholder="Search"
                   type="text"
                   className="w-full outline-none bg-gray-100 placeholder:text-gray-400 font-light"
@@ -68,7 +69,17 @@ function CategoriesSection() {
               </div>
               <HSButton
                 title="Search"
-                onClick={(e) => dispatch(search(e.target.value))}
+                onClick={() =>
+                  dispatch(
+                    search(
+                      (
+                        document.getElementById(
+                          'searchInput'
+                        ) as HTMLInputElement
+                      ).value
+                    )
+                  )
+                }
               />
             </div>
             <div className="flex md:hidden w-full">

@@ -81,7 +81,7 @@ describe('ProductsList Component', () => {
   it('renders the ProductsList component with products', () => {
     render(
       <Provider store={store}>
-        <ProductsList focused={-1} />
+        <ProductsList focused="all" />
       </Provider>
     );
 
