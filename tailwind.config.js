@@ -23,6 +23,8 @@ export default {
         textBlack: '#171A1F',
         lightGrey: '#DEE1E6',
         grey: '#565D6D',
+        black: '#171A1F',
+        bannerBg: '#F4F1EB',
       },
       fontFamily: {
         Lexend: ['Lexend'],
