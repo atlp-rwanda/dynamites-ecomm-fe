@@ -50,7 +50,7 @@ function SignIn() {
 
   useEffect(() => {
     if (needs2FA) {
-      // navigate('/verify-2fa');
+      // navigate(`/verify-2fa/`);
     } else if (token) {
       if (role === 'Admin') {
         // navigate('/admin-dashboard');
@@ -155,13 +155,13 @@ function SignIn() {
           </div>
           <div className="flex items-center justify-center gap-4">
             <Link
-              to="https://dynamites-ecomm-be.onrender.com/login"
+              to="https://dynamites-ecomm-be.onrender.com/auth/google/"
               className="bg-white w-12 h-12 rounded-full border-2 flex items-center justify-center cursor-pointer transition-transform transform active:scale-95 hover:scale-105"
             >
               <FcGoogle />
             </Link>
             <Link
-              to="https://dynamites-ecomm-be.onrender.com/login/auth/facebook"
+              to="https://dynamites-ecomm-be.onrender.com/auth/facebook"
               className="bg-blue-600 w-12 h-12 rounded-full flex items-center justify-center cursor-pointer transition-transform transform active:scale-95 hover:scale-105"
             >
               <FaFacebook color="white" size={16} />
