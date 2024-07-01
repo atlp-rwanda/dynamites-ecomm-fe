@@ -6,39 +6,38 @@ import Category from '@/Interfaces/category';
 import Vendor from '@/Interfaces/Vendor';
 
 const mockCategory: Category = {
-    id: 1,
-    name: 'Electronics',
-    description: 'Category for electronic products',
-    createdAt: '2024-01-01T00:00:00.000Z',
-    updatedAt: '2024-01-01T00:00:00.000Z',
-  };
-  
-  const mockVendor:Vendor= {
-    firstName: 'Sample',
-    lastName: 'Vendor',
-    picture: '/path/to/vendor-picture.jpg',
-  };
-  
-  const mockProduct: Product = {
-    id: 1,
-    name: 'Sample Product',
-    image: '/src/assets/iphone.png',
-    gallery: ['/path/to/sample-product.jpg', '/path/to/sample-product.jpg'],
-    shortDesc: 'This is a sample product description',
-    longDesc: 'This is a sample product long description',
-    quantity: 10,
-    regularPrice: 100,
-    salesPrice: 80,
-    tags: ['tag1', 'tag2'],
-    type: 'Simple',
-    isAvailable: true,
-    averageRating: 2.5,
-    createdAt: '2024-01-01T00:00:00.000Z',
-    updatedAt: '2024-01-01T00:00:00.000Z',
-    category: mockCategory,
-    vendor: mockVendor,
-  };
-  
+  id: 1,
+  name: 'Electronics',
+  description: 'Category for electronic products',
+  createdAt: '2024-01-01T00:00:00.000Z',
+  updatedAt: '2024-01-01T00:00:00.000Z',
+};
+
+const mockVendor: Vendor = {
+  firstName: 'Sample',
+  lastName: 'Vendor',
+  picture: '/path/to/vendor-picture.jpg',
+};
+
+const mockProduct: Product = {
+  id: 1,
+  name: 'Sample Product',
+  image: '/src/assets/iphone.png',
+  gallery: ['/path/to/sample-product.jpg', '/path/to/sample-product.jpg'],
+  shortDesc: 'This is a sample product description',
+  longDesc: 'This is a sample product long description',
+  quantity: 10,
+  regularPrice: 100,
+  salesPrice: 80,
+  tags: ['tag1', 'tag2'],
+  type: 'Simple',
+  isAvailable: true,
+  averageRating: 2.5,
+  createdAt: '2024-01-01T00:00:00.000Z',
+  updatedAt: '2024-01-01T00:00:00.000Z',
+  category: mockCategory,
+  vendor: mockVendor,
+};
 
 describe('SingleItem Component', () => {
   it('renders product information correctly', () => {

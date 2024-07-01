@@ -1,7 +1,7 @@
 // src/components/MostPopular/MostPopular.tsx
 import React, { useEffect, useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-import {useAppSelector, useAppDispatch} from '@/app/hooks'
+import { useAppSelector, useAppDispatch } from '@/app/hooks';
 import { RootState, AppDispatch } from '../../app/store';
 import { fetchProducts } from '@/features/availableProductSlice';
 import PopilarTitle from './PopilarTitle';
