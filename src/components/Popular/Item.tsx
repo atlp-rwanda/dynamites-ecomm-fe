@@ -1,11 +1,10 @@
-
 import Product from '../../Interfaces/product';
 
 interface MostPopularItemProps {
   product: Product;
 }
 
-const SingleItem = ({ product }:MostPopularItemProps) => {
+const SingleItem = ({ product }: MostPopularItemProps) => {
   return (
     <div className=" flex flex-row hover:scale-105  hover:translate-y-0.5 hover:translate-x-0.5">
       <div className=" max-h-20 max-w-20 ">

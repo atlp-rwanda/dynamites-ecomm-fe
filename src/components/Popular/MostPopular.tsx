@@ -2,7 +2,7 @@
 import React, { useEffect, useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { RootState, AppDispatch } from '../../app/store';
-import {useAppSelector, useAppDispatch} from '@/app/hooks'
+import { useAppSelector, useAppDispatch } from '@/app/hooks';
 import { fetchProducts } from '@/features/availableProductSlice';
 import PopilarTitle from './PopilarTitle';
 import SingleItem from './Item';
