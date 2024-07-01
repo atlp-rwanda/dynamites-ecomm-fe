@@ -1,5 +1,5 @@
-import Vendor from '@/interfaces/Vendor';
-import Category from '@/interfaces/category';
+import Vendor from '@/Interfaces/Vendor';
+import Category from '@/Interfaces/category';
 
 export default interface Product {
   id: number;
