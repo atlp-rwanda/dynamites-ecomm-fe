@@ -10,6 +10,10 @@ interface SignInState {
   role: string | null;
   needsVerification: boolean;
   needs2FA: boolean;
+  vendor: {
+    id: number | null;
+    email: string | null;
+  };
 }
 
 interface DecodedToken {
@@ -23,6 +27,10 @@ interface DecodedToken {
 interface LoginResponse {
   token: string;
   message: string;
+  user: {
+    id: number;
+    email: string;
+  };
 }
 
 interface Credentials {
@@ -38,6 +46,10 @@ export const initialState: SignInState = {
   role: null,
   needsVerification: false,
   needs2FA: false,
+  vendor: {
+    id: null,
+    email: null,
+  },
 };
 
 const apiUrl = `${import.meta.env.VITE_BASE_URL}/user/login`;
@@ -85,6 +97,10 @@ const signInSlice = createSlice({
           ? null
           : action.payload.token;
 
+        const isVendor = action.payload.message.includes('2FA')
+          ? { id: action.payload.user.id, email: action.payload.user.email }
+          : { id: null, email: null };
+
         localStorage.setItem('token', newToken!);
 
         return {
@@ -98,6 +114,7 @@ const signInSlice = createSlice({
           needsVerification:
             action.payload.message.includes('verify your email'),
           needs2FA: action.payload.message.includes('2FA'),
+          vendor: isVendor,
         };
       }
     );

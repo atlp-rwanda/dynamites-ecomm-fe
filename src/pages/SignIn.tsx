@@ -37,8 +37,16 @@ function SignIn() {
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
 
-  const { loading, error, message, token, role, needsVerification, needs2FA } =
-    useAppSelector((state) => state.signIn);
+  const {
+    loading,
+    error,
+    message,
+    token,
+    role,
+    needsVerification,
+    needs2FA,
+    vendor,
+  } = useAppSelector((state) => state.signIn);
 
   const formik = useFormik<MyFormValues>({
     initialValues,
@@ -50,7 +58,8 @@ function SignIn() {
 
   useEffect(() => {
     if (needs2FA) {
-      // navigate(`/verify-2fa/`);
+      const { id, email } = vendor;
+      navigate(`/verify-2fa/${id}/${email}`);
     } else if (token) {
       if (role === 'Admin') {
         // navigate('/admin-dashboard');
@@ -58,7 +67,7 @@ function SignIn() {
         navigate('/');
       }
     }
-  }, [role, needsVerification, needs2FA, token, navigate]);
+  }, [role, needsVerification, needs2FA, vendor, token, navigate]);
 
   return (
     <div className="flex justify-center items-center min-h-screen bg-white p-4">
@@ -155,13 +164,13 @@ function SignIn() {
           </div>
           <div className="flex items-center justify-center gap-4">
             <Link
-              to="https://dynamites-ecomm-be.onrender.com/auth/google/"
+              to="http://localhost:3000/auth/google"
               className="bg-white w-12 h-12 rounded-full border-2 flex items-center justify-center cursor-pointer transition-transform transform active:scale-95 hover:scale-105"
             >
               <FcGoogle />
             </Link>
             <Link
-              to="https://dynamites-ecomm-be.onrender.com/auth/facebook"
+              to="http://localhost:3000/auth/facebook"
               className="bg-blue-600 w-12 h-12 rounded-full flex items-center justify-center cursor-pointer transition-transform transform active:scale-95 hover:scale-105"
             >
               <FaFacebook color="white" size={16} />
