@@ -13,7 +13,7 @@ export const fetchProducts = createAsyncThunk(
   'products/fetchProducts',
   async () => {
     const response = await axios.get<Payload>(
-      `${import.meta.env.VITE_API_URL}/product`
+      `${import.meta.env.VITE_BASE_URL}/product`
     );
     return response.data.data;
   }
