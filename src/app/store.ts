@@ -4,6 +4,10 @@ import signInReducer from '../features/Auth/SignInSlice';
 import productsReducer from '@/app/slices/ProductSlice';
 import categoriesReducer from '@/app/slices/categorySlice';
 import bannerReducer from '@/app/bannerAds/BannerSlice';
+import {
+  passwordRequestReducer,
+  passwordResetReducer,
+} from '@/app/slices/authSlices';
 
 export const store = configureStore({
   reducer: {
@@ -12,6 +16,8 @@ export const store = configureStore({
     signUp: signUpReducer,
     signIn: signInReducer,
     banners: bannerReducer,
+    passwordRequest: passwordRequestReducer,
+    passwordReset: passwordResetReducer,
   },
 });
 
