@@ -1,4 +1,4 @@
-import Product from '../../Interfaces/product';
+import Product from '../../interfaces/product';
 
 interface MostPopularItemProps {
   product: Product;

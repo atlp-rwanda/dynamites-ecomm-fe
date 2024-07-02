@@ -4,9 +4,9 @@ import { describe, it, expect, beforeEach } from 'vitest';
 import { Provider } from 'react-redux';
 import configureStore from 'redux-mock-store';
 import MostPopular from '@/components/Popular/MostPopular';
-import Product from '../../Interfaces/product';
-import Category from '../../Interfaces/category';
-import Vendor from '../../Interfaces/Vendor';
+import Product from '../../interfaces/product';
+import Category from '../../interfaces/category';
+import Vendor from '../../interfaces/Vendor';
 
 const mockCategory: Category = {
   id: 1,
