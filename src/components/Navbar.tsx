@@ -1,14 +1,21 @@
-import { Link, useLocation } from 'react-router-dom';
+import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { useState } from 'react';
 import { LuShoppingCart } from 'react-icons/lu';
 import { FiHeart } from 'react-icons/fi';
 import { FaAngleDown } from 'react-icons/fa6';
 import { RxHamburgerMenu } from 'react-icons/rx';
+import HSButton from './form/HSButton';
+import { logout } from '@/features/Auth/SignInSlice';
+import { useAppDispatch, useAppSelector } from '@/app/hooks';
 
 function Navbar() {
+  const dispatch = useAppDispatch();
+  const navigate = useNavigate();
   const location = useLocation();
   const [toggleMenu, setToggleMenu] = useState(false);
   const [toggleProfileMenu, setToggleProfileMenu] = useState(false);
+  const user = useAppSelector((state) => state.signIn.user);
+
   return (
     <div className="relative flex items-center justify-between w-full h-16 shadow-sm">
       <RxHamburgerMenu
@@ -63,22 +70,26 @@ function Navbar() {
           </div>
           <FiHeart color="#424856" size="20" title="wishlist" />
         </div>
-        <div className="xs:hidden lg:flex items-center gap-2">
-          <div className="w-8 h-8 rounded-full overflow-hidden">
-            <img
-              src="/avatar.jpg"
-              className="w-full h-full object-cover"
-              alt="profile"
+        {user ? (
+          <div className="xs:hidden lg:flex items-center gap-2">
+            <div className="w-8 h-8 rounded-full overflow-hidden">
+              <img
+                src={user.picture}
+                className="w-full h-full object-cover"
+                alt="profile"
+              />
+            </div>
+            <h2 className="text-textBlack">{`${user.firstName} ${user.lastName}`}</h2>
+            <FaAngleDown
+              size="15"
+              color="#424856"
+              title="toggleProfile"
+              onClick={() => setToggleProfileMenu(!toggleProfileMenu)}
             />
           </div>
-          <h2 className="text-textBlack">Amanda Green</h2>
-          <FaAngleDown
-            size="15"
-            color="#424856"
-            title="toggleProfile"
-            onClick={() => setToggleProfileMenu(!toggleProfileMenu)}
-          />
-        </div>
+        ) : (
+          <HSButton path="/signIn" title="Login" styles="xs:hidden lg:flex" />
+        )}
       </div>
       {toggleMenu && (
         <div className="bg-white absolute z-20 top-16 flex flex-col items-start p-4 w-full gap-4 text-grey shadow-md border-b border-lightGrey">
@@ -109,10 +120,21 @@ function Navbar() {
             <img src="/help.png" width="20" height="20" alt="help" />
             <h2>Help center</h2>
           </div>
-          <div className="flex gap-2 w-full items-center border-t-[1.5px] border-lightGrey pt-1 mt-8">
+          <button
+            type="button"
+            className="border-none outline-none bg-transparent flex gap-2 w-full items-center border-t-[1.5px] border-lightGrey pt-1 mt-8 cursor-pointer"
+            onClick={() => {
+              setToggleMenu(false);
+              if (user) {
+                dispatch(logout());
+              } else {
+                navigate('/signIn');
+              }
+            }}
+          >
             <img src="/signout.png" width="20" height="20" alt="signout" />
-            <h2>Sign out</h2>
-          </div>
+            <h2>{user ? 'Sign out' : 'Sign in'}</h2>
+          </button>
         </div>
       )}
       {toggleProfileMenu && (
@@ -140,10 +162,17 @@ function Navbar() {
             <img src="/help.png" width="20" height="20" alt="help" />
             <h2>Help center</h2>
           </div>
-          <div className="flex gap-2 w-full items-center px-2 border-t-[1.5px] border-lightGrey pt-1 mt-8">
+          <button
+            type="button"
+            className="border-none outline-none bg-transparent flex gap-2 w-full items-center px-2 border-t-[1.5px] border-lightGrey pt-1 mt-8 cursor-pointer"
+            onClick={() => {
+              setToggleProfileMenu(false);
+              dispatch(logout());
+            }}
+          >
             <img src="/signout.png" width="20" height="20" alt="signout" />
             <h2>Sign out</h2>
-          </div>
+          </button>
         </div>
       )}
     </div>
