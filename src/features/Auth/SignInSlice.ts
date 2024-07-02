@@ -2,8 +2,22 @@ import { createSlice, createAsyncThunk, PayloadAction } from '@reduxjs/toolkit';
 import axios from 'axios';
 import { jwtDecode } from 'jwt-decode';
 
+interface User {
+  id: number;
+  firstName: string;
+  lastName: string;
+  email: string;
+  picture: string;
+  userType: {
+    id: number;
+    name: string;
+    permissions: string[];
+  };
+}
+
 interface SignInState {
   token: string | null;
+  user: User | null;
   loading: boolean;
   error: string | null;
   message: string | null;
@@ -13,11 +27,7 @@ interface SignInState {
 }
 
 interface DecodedToken {
-  user: {
-    userType: {
-      name: string;
-    };
-  };
+  user: User;
 }
 
 interface LoginResponse {
@@ -30,8 +40,29 @@ interface Credentials {
   password: string;
 }
 
+const tokenFromStorage = localStorage.getItem('token');
+
+let userFromToken: User | null = null;
+
+if (tokenFromStorage) {
+  try {
+    const decodedToken = jwtDecode<DecodedToken>(tokenFromStorage);
+    userFromToken = {
+      id: decodedToken.user.id,
+      firstName: decodedToken.user.firstName,
+      lastName: decodedToken.user.lastName,
+      email: decodedToken.user.email,
+      picture: decodedToken.user.picture,
+      userType: decodedToken.user.userType,
+    };
+  } catch (error) {
+    localStorage.removeItem('token');
+  }
+}
+
 export const initialState: SignInState = {
-  token: null,
+  token: tokenFromStorage,
+  user: userFromToken,
   loading: false,
   error: null,
   message: null,
@@ -60,6 +91,7 @@ const signInSlice = createSlice({
       return {
         ...state,
         token: null,
+        user: null,
         role: null,
         message: 'Logout Successfully',
         needsVerification: false,
@@ -86,12 +118,22 @@ const signInSlice = createSlice({
           : action.payload.token;
 
         localStorage.setItem('token', newToken!);
+        const decodedData = jwtDecode<DecodedToken>(action.payload.token);
+        const decodedUser = {
+          id: decodedData.user.id,
+          firstName: decodedData.user.firstName,
+          lastName: decodedData.user.lastName,
+          email: decodedData.user.email,
+          picture: decodedData.user.picture,
+          userType: decodedData.user.userType,
+        };
 
         return {
           ...state,
           loading: false,
           message: action.payload.message,
           token: newToken,
+          user: decodedUser,
           role: action.payload.message.includes('2FA')
             ? null
             : jwtDecode<DecodedToken>(action.payload.token).user.userType.name,
