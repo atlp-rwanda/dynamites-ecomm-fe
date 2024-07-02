@@ -5,7 +5,7 @@ import {
   waitFor,
   act,
 } from '@testing-library/react';
-import { describe, it, expect } from 'vitest';
+import { describe, it, expect } from 'vitest'; // Assuming vitest is similar to Jest or Mocha
 import { MemoryRouter } from 'react-router-dom';
 import HelloSection from '@/components/HelloSection/HelloSection';
 
@@ -71,24 +71,26 @@ describe('HelloSection Component', () => {
     });
   });
 
-  it('updates the active slide indicator', async () => {
+  it('updates the active slide indicator on dot click', async () => {
     render(
       <MemoryRouter>
         <HelloSection />
       </MemoryRouter>
     );
 
-    await waitFor(() => {
+    await waitFor(async () => {
       expect(screen.getByTestId('active-indicator-0')).toHaveClass(
         'bg-[#6D31ED]'
       );
 
-      const nextButton = screen.getByRole('button', { name: /next slide/i });
-      fireEvent.click(nextButton);
+      const thirdDot = screen.getByTestId('active-indicator-2');
+      fireEvent.click(thirdDot);
 
-      expect(screen.getByTestId('active-indicator-1')).toHaveClass(
-        'bg-[#6D31ED]'
-      );
+      await waitFor(() => {
+        expect(screen.getByTestId('active-indicator-2')).toHaveClass(
+          'bg-[#6D31ED]'
+        );
+      });
     });
   });
 
