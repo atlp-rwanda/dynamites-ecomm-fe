@@ -6,9 +6,9 @@ import configureStore from 'redux-mock-store';
 import MostRecent from '@/components/Popular/MostRecent';
 
 // Mock Product Data
-import Product from '@/Interfaces/product';
-import Category from '@/Interfaces/category';
-import Vendor from '@/Interfaces/Vendor';
+import Product from '../../Interfaces/product';
+import Category from '../../Interfaces/category';
+import Vendor from '../../Interfaces/Vendor';
 
 const mockCategory: Category = {
   id: 1,

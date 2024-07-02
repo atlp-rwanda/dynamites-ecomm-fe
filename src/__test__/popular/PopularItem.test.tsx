@@ -1,9 +1,9 @@
 // MostPopularItem.test.tsx
 import { render, screen } from '@testing-library/react';
 import SingleItem from '@/components/Popular/Item'; // Adjust the import path as per your actual setup
-import Product from '@/Interfaces/product'; // Adjust the import path as per your actual setup
-import Category from '@/Interfaces/category';
-import Vendor from '@/Interfaces/Vendor';
+import Product from '../../Interfaces/product';
+import Category from '../../Interfaces/category';
+import Vendor from '../../Interfaces/Vendor';
 
 const mockCategory: Category = {
   id: 1,
