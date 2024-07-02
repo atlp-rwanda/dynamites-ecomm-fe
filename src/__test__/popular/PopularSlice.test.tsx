@@ -1,8 +1,8 @@
+import { describe, it, expect } from 'vitest';
 import productsReducer, {
   initialState,
-} from '@/features/availableProductSlice';
-import { fetchProducts } from '@/features/availableProductSlice';
-import { describe, it, expect } from 'vitest';
+  fetchProducts,
+} from '@/features/Popular/availableProductSlice';
 
 describe('products reducer', () => {
   it('should return the initial state', () => {

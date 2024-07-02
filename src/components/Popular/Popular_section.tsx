@@ -1,14 +1,14 @@
 // src/pages/LandingPage.tsx
+import { useEffect } from 'react';
+import { useDispatch } from 'react-redux';
 import MostPopular from './MostPopular';
 import MostRecent from './MostRecent';
 import MostSelling from './MostSelling';
 import BannerAD from './BannerAD';
-import React, { useEffect } from 'react';
-import { useDispatch } from 'react-redux';
-import { fetchProducts } from '@/features/availableProductSlice';
+import { fetchProducts } from '@/features/Popular/availableProductSlice';
 import { AppDispatch } from '../../app/store';
 
-const PopularSection: React.FC = () => {
+function PopularSection() {
   const dispatch: AppDispatch = useDispatch();
 
   useEffect(() => {
@@ -25,6 +25,6 @@ const PopularSection: React.FC = () => {
       </div>
     </section>
   );
-};
+}
 
 export default PopularSection;

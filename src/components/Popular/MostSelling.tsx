@@ -1,10 +1,10 @@
-import React, { useState } from 'react';
-import { RootState } from '../../app/store';
+import { useState } from 'react';
 import { useSelector } from 'react-redux';
+import { RootState } from '../../app/store';
 import PopilarTitle from './PopilarTitle';
 import SingleItem from './Item';
 
-const MostSelling: React.FC = () => {
+function MostSelling() {
   const { availableProduct, status } = useSelector(
     (state: RootState) => state.availableProducts
   );
@@ -23,7 +23,7 @@ const MostSelling: React.FC = () => {
   };
 
   const handleRightallowclick = async () => {
-    if (end <= availableProduct.length) {
+    if (end < availableProduct.length) {
       setEnd(end + 3);
       setStart(start + 3);
     }
@@ -34,7 +34,7 @@ const MostSelling: React.FC = () => {
   return (
     <div className=" flex flex-col mb-6">
       <PopilarTitle
-        section={'Most Selling'}
+        section="Most Selling"
         onLeftArrowClick={handleLeftallowclick}
         onRightArrowClick={handleRightallowclick}
       />
@@ -43,9 +43,9 @@ const MostSelling: React.FC = () => {
         {(status === 'failed' || status === 'loading') &&
           Array(3)
             .fill(null)
-            .map((_, index) => (
+            .map(() => (
               <div
-                key={index}
+                key={1}
                 className="border-2 px-[2px] shadow-lg animate-pulse bg-violet-50 flex flex-row justify-between items-center"
               >
                 <div className=" h-[50px] w-[50px] rounded border shadow-lg animate-pulse"></div>
@@ -62,5 +62,5 @@ const MostSelling: React.FC = () => {
       </div>
     </div>
   );
-};
+}
 export default MostSelling;

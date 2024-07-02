@@ -1,24 +1,22 @@
-import { createSlice } from '@reduxjs/toolkit';
+import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import axios from 'axios';
-import { createAsyncThunk } from '@reduxjs/toolkit';
-import Product from '@/Interfaces/product';
+import Product from '../../Interfaces/product';
 
 interface ProductsState {
   availableProduct: Product[];
   status: 'idle' | 'loading' | 'succeeded' | 'failed';
 }
 
-const URL = 'https://dynamites-ecomm-be.onrender.com/api/v1';
+const URL = import.meta.env.VITE_BASE_URL;
 
 export const fetchProducts = createAsyncThunk<Product[]>(
   'products/fetchProducts',
   async (_, thunkAPI) => {
     try {
       const response = await axios.get(`${URL}/product/getAvailableProducts`);
-      const data = response.data;
+      const { data } = response;
       return data.availableProducts;
     } catch (error) {
-      console.log(error);
       return thunkAPI.rejectWithValue(error);
     }
   }

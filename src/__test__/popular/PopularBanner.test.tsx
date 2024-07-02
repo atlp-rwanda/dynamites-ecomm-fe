@@ -17,7 +17,7 @@ describe('BannerAD Component', () => {
     );
     expect(description).toBeInTheDocument();
 
-    const adImage = screen.getByAltText('AD image');
+    const adImage = screen.getByAltText('AD');
     expect(adImage).toBeInTheDocument();
     expect(adImage.getAttribute('src')).toBe(ADImage); // Ensure correct image source
   });
