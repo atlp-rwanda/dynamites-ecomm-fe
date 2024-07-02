@@ -5,6 +5,8 @@ interface MyButtonProps {
   path?: string;
   title: React.ReactNode;
   styles?: string;
+  disabled?: boolean;
+  ariaLabel?: string;
   onClick?: (
     e: React.MouseEvent<HTMLAnchorElement | HTMLButtonElement>
   ) => void;

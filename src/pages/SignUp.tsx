@@ -45,11 +45,11 @@ function SignUp() {
     if (type === 'radio') {
       return (
         <label htmlFor={id} key={id}>
-          <input
+          <Field
             id={id}
             type="radio"
             name={name}
-            value={name}
+            value={id}
             className="mr-2 border border-gray-200"
           />
           {label}
@@ -59,7 +59,7 @@ function SignUp() {
     if (type === 'checkbox') {
       return (
         <label htmlFor={id} key={id} className="flex items-center">
-          <input
+          <Field
             id={id}
             type="checkbox"
             name={name}
@@ -193,17 +193,13 @@ function SignUp() {
                 type="submit"
                 disabled={isSubmitting || signUpState.loading}
                 aria-label="Submit Form"
+                className="w-full flex mx-auto py-2 sm:py-3 bg-primary text-white rounded-md flex items-center justify-center"
               >
-                <HSButton
-                  title={
-                    isSubmitting || signUpState.loading ? (
-                      <BeatLoader color="#ffffff" size={8} />
-                    ) : (
-                      'Sign Up'
-                    )
-                  }
-                  styles="w-full flex mx-auto py-2 sm:py-4"
-                />
+                {isSubmitting || signUpState.loading ? (
+                  <BeatLoader color="#ffffff" size={8} />
+                ) : (
+                  'Sign Up'
+                )}
               </button>
               <div>
                 <p className="text-center text-gray-600 text-xs sm:text-sm md:text-sm">
