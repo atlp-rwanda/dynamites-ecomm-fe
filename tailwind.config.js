@@ -25,6 +25,8 @@ export default {
         grey: '#565D6D',
         black: '#171A1F',
         bannerBg: '#F4F1EB',
+        thickorenge: '#EA580C',
+        thinorenge: '#FFEDD5',
       },
       fontFamily: {
         Lexend: ['Lexend'],

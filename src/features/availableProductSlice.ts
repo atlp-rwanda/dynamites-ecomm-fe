@@ -4,7 +4,7 @@ import { createAsyncThunk } from '@reduxjs/toolkit';
 import Product from '@/Interfaces/product';
 
 interface ProductsState {
-  items: Product[];
+  availableProduct: Product[];
   status: 'idle' | 'loading' | 'succeeded' | 'failed';
 }
 
@@ -25,7 +25,7 @@ export const fetchProducts = createAsyncThunk<Product[]>(
 );
 
 export const initialState: ProductsState = {
-  items: [],
+  availableProduct: [],
   status: 'idle',
 };
 
@@ -40,7 +40,7 @@ const productsSlice = createSlice({
       })
       .addCase(fetchProducts.fulfilled, (state, action) => {
         state.status = 'succeeded';
-        state.items = action.payload;
+        state.availableProduct = action.payload;
       })
       .addCase(fetchProducts.rejected, (state) => {
         state.status = 'failed';

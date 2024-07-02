@@ -36,7 +36,7 @@ describe('products reducer', () => {
     ).toEqual({
       ...initialState,
       status: 'succeeded',
-      items: mockProducts,
+      availableProduct: mockProducts,
     });
   });
 
