@@ -1,11 +1,11 @@
 // src/components/MostPopular/MostPopular.tsx
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { useSelector } from 'react-redux';
 import { RootState } from '../../app/store';
 import PopilarTitle from './PopilarTitle';
 import SingleItem from './Item';
 
-const MostRecent: React.FC = () => {
+function MostRecent() {
   const { availableProduct, status } = useSelector(
     (state: RootState) => state.availableProducts
   );
@@ -24,7 +24,7 @@ const MostRecent: React.FC = () => {
   };
 
   const handleRightallowclick = async () => {
-    if (end <= availableProduct.length) {
+    if (end < availableProduct.length) {
       setEnd(end + 3);
       setStart(start + 3);
     }
@@ -40,18 +40,18 @@ const MostRecent: React.FC = () => {
   return (
     <div className=" flex flex-col mb-6">
       <PopilarTitle
-        section={'Recent Products'}
+        section="Recent Products"
         onLeftArrowClick={handleLeftallowclick}
         onRightArrowClick={handleRightallowclick}
       />
 
       <div className=" grid gap-y-2">
-        {(status == 'failed' || status == 'loading') &&
+        {(status === 'failed' || status === 'loading') &&
           Array(3)
             .fill(null)
-            .map((_, index) => (
+            .map(() => (
               <div
-                key={index}
+                key={1}
                 className="border-2 px-[2px] shadow-lg animate-pulse bg-violet-50 flex flex-row justify-between items-center"
               >
                 <div className=" h-[50px] w-[50px] rounded border shadow-lg animate-pulse"></div>
@@ -68,6 +68,6 @@ const MostRecent: React.FC = () => {
       </div>
     </div>
   );
-};
+}
 
 export default MostRecent;

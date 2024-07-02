@@ -12,7 +12,7 @@ export const fetchCategories = createAsyncThunk(
   'categories/fetchCategories',
   async () => {
     const response = await axios.get<Payload>(
-      `${import.meta.env.VITE_API_URL}/category`
+      `${import.meta.env.VITE_BASE_URL}/category`
     );
     return response.data.data;
   }

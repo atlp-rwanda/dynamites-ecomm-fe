@@ -1,7 +1,6 @@
-import React from 'react';
 import ADImage from '../../assets/Image/Rectangle 901.svg';
 
-const BannerAD: React.FC = () => {
+function BannerAD() {
   return (
     <div className=" bg-thinorenge flex flex-row justify-between rounded-xl items-center border-thickorenge border ">
       <div className=" flex flex-col ml-5 mb-3">
@@ -18,10 +17,10 @@ const BannerAD: React.FC = () => {
         </div>
       </div>
       <div className=" h-full">
-        <img src={ADImage} alt="AD image" className=" h-full bg-cover" />
+        <img src={ADImage} alt="AD" className=" h-full bg-cover" />
       </div>
     </div>
   );
-};
+}
 
 export default BannerAD;

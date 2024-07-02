@@ -4,7 +4,7 @@ import signInReducer from '../features/Auth/SignInSlice';
 import productsReducer from '@/app/slices/ProductSlice';
 import categoriesReducer from '@/app/slices/categorySlice';
 import bannerReducer from '@/app/bannerAds/BannerSlice';
-import availableProductsSlice from '@/features/availableProductSlice';
+import availableProductsSlice from '@/features/Popular/availableProductSlice';
 
 export const store = configureStore({
   reducer: {

@@ -1,11 +1,11 @@
 // src/components/MostPopular/MostPopular.tsx
-import React, { useState } from 'react';
-import { RootState } from '../../app/store';
+import { useState } from 'react';
 import { useSelector } from 'react-redux';
+import { RootState } from '../../app/store';
 import PopilarTitle from './PopilarTitle';
 import SingleItem from './Item';
 
-const MostPopular: React.FC = () => {
+function MostPopular() {
   const { availableProduct, status } = useSelector(
     (state: RootState) => state.availableProducts
   );
@@ -24,7 +24,7 @@ const MostPopular: React.FC = () => {
   };
 
   const handleRightallowclick = async () => {
-    if (end <= availableProduct.length) {
+    if (end < availableProduct.length) {
       setEnd(end + 3);
       setStart(start + 3);
     }
@@ -37,18 +37,18 @@ const MostPopular: React.FC = () => {
   return (
     <div className=" flex flex-col mb-6">
       <PopilarTitle
-        section={'Most Popular'}
+        section="Most Popular"
         onLeftArrowClick={handleLeftallowclick}
         onRightArrowClick={handleRightallowclick}
       />
 
       <div className=" grid gap-y-2">
-        {(status == 'failed' || status == 'loading') &&
+        {(status === 'failed' || status === 'loading') &&
           Array(3)
             .fill(null)
-            .map((_, index) => (
+            .map(() => (
               <div
-                key={index}
+                key={1}
                 className="border-2 px-[2px] shadow-lg animate-pulse bg-violet-50 flex flex-row justify-between items-center"
               >
                 <div className=" h-[50px] w-[50px] rounded border shadow-lg animate-pulse"></div>
@@ -65,6 +65,6 @@ const MostPopular: React.FC = () => {
       </div>
     </div>
   );
-};
+}
 
 export default MostPopular;
