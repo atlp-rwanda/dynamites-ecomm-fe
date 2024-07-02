@@ -1,48 +1,42 @@
 // src/components/MostPopular/MostPopular.tsx
-import React, { useEffect, useState } from 'react';
-import { useSelector, useDispatch } from 'react-redux';
-import { useAppSelector, useAppDispatch } from '@/app/hooks';
-import { RootState, AppDispatch } from '../../app/store';
-import { fetchProducts } from '@/features/availableProductSlice';
-import PopilarTitle from './PopilarTitle';
-import SingleItem from './Item';
+import React, { useState } from 'react'
+import { useSelector } from 'react-redux';
+import { RootState} from '../../app/store'
+import PopilarTitle from './PopilarTitle'
+import SingleItem from './Item'
 
 const MostRecent: React.FC = () => {
-  const dispatch: AppDispatch = useAppDispatch();
-  const { items, status } = useAppSelector(
+  const { availableProduct, status } = useSelector(
     (state: RootState) => state.availableProducts
-  );
+  )  
 
-  // useEffect(() => {
-  //   dispatch(fetchProducts());
-  // }, [dispatch]);
 
-  const [start, setStart] = useState(0);
-  const [end, setEnd] = useState(3);
+  const [start, setStart] = useState(0)
+  const [end, setEnd] = useState(3)
 
   const handleLeftallowclick = async () => {
     if (start > 0) {
-      setEnd(end - 3);
-      setStart(start - 3);
+      setEnd(end - 3)
+      setStart(start - 3)
     } else {
-      setEnd(3);
-      setStart(0);
+      setEnd(3)
+      setStart(0)
     }
-  };
+  }
 
   const handleRightallowclick = async () => {
-    if (end <= items.length) {
-      setEnd(end + 3);
-      setStart(start + 3);
+    if (end <= availableProduct.length) {
+      setEnd(end + 3)
+      setStart(start + 3)
     }
-  };
+  }
 
-  const mostRecentProducts = [...items]
+  const mostRecentProducts = [...availableProduct]
     .sort(
       (a, b) =>
         new Date(b.updatedAt).getTime() - new Date(a.createdAt).getTime()
     )
-    .slice(start, end);
+    .slice(start, end)
 
   return (
     <div className=" flex flex-col mb-6">
@@ -74,7 +68,7 @@ const MostRecent: React.FC = () => {
         ))}
       </div>
     </div>
-  );
-};
+  )
+}
 
-export default MostRecent;
+export default MostRecent

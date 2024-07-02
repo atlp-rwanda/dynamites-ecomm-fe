@@ -1,42 +1,35 @@
-import React, { useEffect, useState } from 'react';
-import { useSelector, useDispatch } from 'react-redux';
-import { RootState, AppDispatch } from '../../app/store';
-import { fetchProducts } from '@/features/availableProductSlice';
-import { useAppSelector, useAppDispatch } from '@/app/hooks';
-import PopilarTitle from './PopilarTitle';
-import SingleItem from './Item';
+import React, { useState } from 'react'
+import { RootState} from '../../app/store'
+import { useSelector } from 'react-redux';
+import PopilarTitle from './PopilarTitle'
+import SingleItem from './Item'
 
 const MostSelling: React.FC = () => {
-  const dispatch: AppDispatch = useAppDispatch();
-  const { items, status } = useAppSelector(
+  const { availableProduct, status } = useSelector(
     (state: RootState) => state.availableProducts
-  );
+  )
 
-  useEffect(() => {
-    dispatch(fetchProducts());
-  }, [dispatch]);
-
-  const [start, setStart] = useState(0);
-  const [end, setEnd] = useState(3);
+  const [start, setStart] = useState(0)
+  const [end, setEnd] = useState(3)
 
   const handleLeftallowclick = async () => {
     if (start > 0) {
-      setEnd(end - 3);
-      setStart(start - 3);
+      setEnd(end - 3)
+      setStart(start - 3)
     } else {
-      setEnd(3);
-      setStart(0);
+      setEnd(3)
+      setStart(0)
     }
-  };
+  }
 
   const handleRightallowclick = async () => {
-    if (end <= items.length) {
-      setEnd(end + 3);
-      setStart(start + 3);
+    if (end <= availableProduct.length) {
+      setEnd(end + 3)
+      setStart(start + 3)
     }
-  };
+  }
 
-  const popularProducts = items.slice(start, end);
+  const popularProducts = availableProduct.slice(start, end)
 
   return (
     <div className=" flex flex-col mb-6">
@@ -47,7 +40,7 @@ const MostSelling: React.FC = () => {
       />
 
       <div className=" grid gap-y-2">
-        {(status == 'failed' || status == 'loading') &&
+        {(status === 'failed' || status === 'loading') &&
           Array(3)
             .fill(null)
             .map((_, index) => (
@@ -68,6 +61,6 @@ const MostSelling: React.FC = () => {
         ))}
       </div>
     </div>
-  );
-};
-export default MostSelling;
+  )
+}
+export default MostSelling

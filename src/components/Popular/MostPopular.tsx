@@ -1,21 +1,14 @@
 // src/components/MostPopular/MostPopular.tsx
-import React, { useEffect, useState } from 'react';
-import { useSelector, useDispatch } from 'react-redux';
-import { RootState, AppDispatch } from '../../app/store';
-import { useAppSelector, useAppDispatch } from '@/app/hooks';
-import { fetchProducts } from '@/features/availableProductSlice';
+import React, {useState } from 'react'
+import { RootState } from '../../app/store'
+import { useSelector } from 'react-redux';
 import PopilarTitle from './PopilarTitle';
 import SingleItem from './Item';
 
 const MostPopular: React.FC = () => {
-  const dispatch: AppDispatch = useAppDispatch();
-  const { items, status } = useAppSelector(
+  const { availableProduct, status } = useSelector(
     (state: RootState) => state.availableProducts
   );
-
-  // useEffect(() => {
-  //   dispatch(fetchProducts());
-  // }, [dispatch]);
 
   const [start, setStart] = useState(0);
   const [end, setEnd] = useState(3);
@@ -31,13 +24,13 @@ const MostPopular: React.FC = () => {
   };
 
   const handleRightallowclick = async () => {
-    if (end <= items.length) {
+    if (end <= availableProduct.length) {
       setEnd(end + 3);
       setStart(start + 3);
     }
   };
 
-  const mostRecentProducts = [...items]
+  const mostRecentProducts = [...availableProduct]
     .sort((a, b) => b.averageRating - a.averageRating)
     .slice(start, end);
 
