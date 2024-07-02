@@ -111,7 +111,10 @@ describe('MostRecent Component', () => {
     expect(titleElement).toBeInTheDocument();
 
     // Check if products are rendered and sorted correctly by updatedAt
-    const sortedProducts = mockProducts.sort((a, b) => new Date(b.updatedAt).getTime() - new Date(a.updatedAt).getTime());
+    const sortedProducts = mockProducts.sort(
+      (a, b) =>
+        new Date(b.updatedAt).getTime() - new Date(a.updatedAt).getTime()
+    );
     sortedProducts.slice(0, 3).forEach((product) => {
       const productName = screen.getByText(product.name);
       expect(productName).toBeInTheDocument();

@@ -1,35 +1,35 @@
-import React, { useState } from 'react'
-import { RootState} from '../../app/store'
+import React, { useState } from 'react';
+import { RootState } from '../../app/store';
 import { useSelector } from 'react-redux';
-import PopilarTitle from './PopilarTitle'
-import SingleItem from './Item'
+import PopilarTitle from './PopilarTitle';
+import SingleItem from './Item';
 
 const MostSelling: React.FC = () => {
   const { availableProduct, status } = useSelector(
     (state: RootState) => state.availableProducts
-  )
+  );
 
-  const [start, setStart] = useState(0)
-  const [end, setEnd] = useState(3)
+  const [start, setStart] = useState(0);
+  const [end, setEnd] = useState(3);
 
   const handleLeftallowclick = async () => {
     if (start > 0) {
-      setEnd(end - 3)
-      setStart(start - 3)
+      setEnd(end - 3);
+      setStart(start - 3);
     } else {
-      setEnd(3)
-      setStart(0)
+      setEnd(3);
+      setStart(0);
     }
-  }
+  };
 
   const handleRightallowclick = async () => {
     if (end <= availableProduct.length) {
-      setEnd(end + 3)
-      setStart(start + 3)
+      setEnd(end + 3);
+      setStart(start + 3);
     }
-  }
+  };
 
-  const popularProducts = availableProduct.slice(start, end)
+  const popularProducts = availableProduct.slice(start, end);
 
   return (
     <div className=" flex flex-col mb-6">
@@ -61,6 +61,6 @@ const MostSelling: React.FC = () => {
         ))}
       </div>
     </div>
-  )
-}
-export default MostSelling
+  );
+};
+export default MostSelling;
