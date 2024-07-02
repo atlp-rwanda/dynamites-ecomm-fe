@@ -1,6 +1,6 @@
 // src/components/MostPopular/MostPopular.tsx
-import React, {useState } from 'react'
-import { RootState } from '../../app/store'
+import React, { useState } from 'react';
+import { RootState } from '../../app/store';
 import { useSelector } from 'react-redux';
 import PopilarTitle from './PopilarTitle';
 import SingleItem from './Item';

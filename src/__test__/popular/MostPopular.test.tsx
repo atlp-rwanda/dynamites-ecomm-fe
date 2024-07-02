@@ -14,13 +14,13 @@ const mockCategory: Category = {
   description: 'Category for electronic products',
   createdAt: '2024-01-01T00:00:00.000Z',
   updatedAt: '2024-01-01T00:00:00.000Z',
-}
+};
 
 const mockVendor: Vendor = {
   firstName: 'Sample',
   lastName: 'Vendor',
   picture: '/path/to/vendor-picture.jpg',
-}
+};
 
 const mockProduct1: Product = {
   id: 1,
@@ -40,7 +40,7 @@ const mockProduct1: Product = {
   updatedAt: '2024-01-01T00:00:00.000Z',
   category: mockCategory,
   vendor: mockVendor,
-}
+};
 
 const mockProduct2: Product = {
   id: 2,
@@ -60,7 +60,7 @@ const mockProduct2: Product = {
   updatedAt: '2024-01-01T00:00:00.000Z',
   category: mockCategory,
   vendor: mockVendor,
-}
+};
 
 const mockProduct3: Product = {
   id: 3,
@@ -80,14 +80,14 @@ const mockProduct3: Product = {
   updatedAt: '2024-01-01T00:00:00.000Z',
   category: mockCategory,
   vendor: mockVendor,
-}
+};
 
-const mockProducts = [mockProduct1, mockProduct2, mockProduct3]
+const mockProducts = [mockProduct1, mockProduct2, mockProduct3];
 
-const mockStore = configureStore([])
+const mockStore = configureStore([]);
 
 describe('MostPopular Component', () => {
-  let store: ReturnType<typeof mockStore>
+  let store: ReturnType<typeof mockStore>;
 
   beforeEach(() => {
     store = mockStore({
@@ -95,58 +95,58 @@ describe('MostPopular Component', () => {
         availableProduct: mockProducts,
         status: 'idle',
       },
-    })
-  })
+    });
+  });
 
   it('renders the MostPopular component with products', async () => {
     render(
       <Provider store={store}>
         <MostPopular />
       </Provider>
-    )
+    );
 
-    const titleElement = screen.getByText('Most Popular')
-    expect(titleElement).toBeInTheDocument()
+    const titleElement = screen.getByText('Most Popular');
+    expect(titleElement).toBeInTheDocument();
 
     mockProducts.forEach((product) => {
-      const productName = screen.getByText(product.name)
-      expect(productName).toBeInTheDocument()
+      const productName = screen.getByText(product.name);
+      expect(productName).toBeInTheDocument();
 
-      const productImage = screen.getByAltText(product.name)
-      expect(productImage).toBeInTheDocument()
-      expect(productImage).toHaveAttribute('src', product.image)
+      const productImage = screen.getByAltText(product.name);
+      expect(productImage).toBeInTheDocument();
+      expect(productImage).toHaveAttribute('src', product.image);
 
-      const salesPrice = screen.getByText(`$${product.salesPrice}`)
-      expect(salesPrice).toBeInTheDocument()
+      const salesPrice = screen.getByText(`$${product.salesPrice}`);
+      expect(salesPrice).toBeInTheDocument();
 
-      const regularPrice = screen.getByText(`$${product.regularPrice}`)
-      expect(regularPrice).toBeInTheDocument()
-    })
-  })
+      const regularPrice = screen.getByText(`$${product.regularPrice}`);
+      expect(regularPrice).toBeInTheDocument();
+    });
+  });
 
   it('handles left arrow click for pagination', async () => {
     render(
       <Provider store={store}>
         <MostPopular />
       </Provider>
-    )
+    );
 
-    const leftArrow = screen.getByAltText('Left Arrow Icon')
-    fireEvent.click(leftArrow)
+    const leftArrow = screen.getByAltText('Left Arrow Icon');
+    fireEvent.click(leftArrow);
 
     // Add your assertions for updated state after left arrow click
-  })
+  });
 
   it('handles right arrow click for pagination', async () => {
     render(
       <Provider store={store}>
         <MostPopular />
       </Provider>
-    )
+    );
 
-    const rightArrow = screen.getByAltText('Right Arrow Icon')
-    fireEvent.click(rightArrow)
+    const rightArrow = screen.getByAltText('Right Arrow Icon');
+    fireEvent.click(rightArrow);
 
     // Add your assertions for updated state after right arrow click
-  })
-})
+  });
+});

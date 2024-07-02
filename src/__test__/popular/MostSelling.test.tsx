@@ -1,14 +1,14 @@
-import { render, screen , fireEvent } from '@testing-library/react'
+import { render, screen, fireEvent } from '@testing-library/react';
 import '@testing-library/jest-dom';
-import { describe, it, expect, beforeEach } from 'vitest'
-import { Provider } from 'react-redux'
-import configureStore from 'redux-mock-store'
-import MostSelling from '@/components/Popular/MostSelling'
+import { describe, it, expect, beforeEach } from 'vitest';
+import { Provider } from 'react-redux';
+import configureStore from 'redux-mock-store';
+import MostSelling from '@/components/Popular/MostSelling';
 
 // Mock Product Data
-import Product from '@/Interfaces/product'
-import Category from '@/Interfaces/category'
-import Vendor from '@/Interfaces/Vendor'
+import Product from '@/Interfaces/product';
+import Category from '@/Interfaces/category';
+import Vendor from '@/Interfaces/Vendor';
 
 const mockCategory: Category = {
   id: 1,
@@ -16,13 +16,13 @@ const mockCategory: Category = {
   description: 'Category for electronic products',
   createdAt: '2024-01-01T00:00:00.000Z',
   updatedAt: '2024-01-01T00:00:00.000Z',
-}
+};
 
 const mockVendor: Vendor = {
   firstName: 'Sample',
   lastName: 'Vendor',
   picture: '/path/to/vendor-picture.jpg',
-}
+};
 
 const mockProduct1: Product = {
   id: 1,
@@ -42,7 +42,7 @@ const mockProduct1: Product = {
   updatedAt: '2024-01-01T00:00:00.000Z',
   category: mockCategory,
   vendor: mockVendor,
-}
+};
 
 const mockProduct2: Product = {
   id: 2,
@@ -62,7 +62,7 @@ const mockProduct2: Product = {
   updatedAt: '2024-01-01T00:00:00.000Z',
   category: mockCategory,
   vendor: mockVendor,
-}
+};
 
 const mockProduct3: Product = {
   id: 3,
@@ -82,13 +82,12 @@ const mockProduct3: Product = {
   updatedAt: '2024-01-01T00:00:00.000Z',
   category: mockCategory,
   vendor: mockVendor,
-}
+};
 
-const mockProduct =[mockProduct1, mockProduct2, mockProduct3 ]
+const mockProduct = [mockProduct1, mockProduct2, mockProduct3];
 
+const mockStore = configureStore([]);
 
-const mockStore = configureStore([])
-  
 describe('MostSelling Component', () => {
   let store: ReturnType<typeof mockStore>;
 
@@ -98,8 +97,8 @@ describe('MostSelling Component', () => {
         availableProduct: mockProduct,
         status: 'idle',
       },
-    })
-  })
+    });
+  });
 
   it('renders the MostSelling component with products', async () => {
     render(
@@ -108,52 +107,50 @@ describe('MostSelling Component', () => {
       </Provider>
     );
 
-    await screen.findByText('Sample Product 1')
+    await screen.findByText('Sample Product 1');
 
     const titleElement = screen.getByText('Most Selling');
-    expect(titleElement).toBeInTheDocument()
+    expect(titleElement).toBeInTheDocument();
 
     mockProduct.forEach((product) => {
       const productName = screen.getByText(product.name);
-      expect(productName).toBeInTheDocument()
+      expect(productName).toBeInTheDocument();
 
       const productImage = screen.getByAltText(product.name);
-      expect(productImage).toBeInTheDocument()
+      expect(productImage).toBeInTheDocument();
       expect(productImage).toHaveAttribute('src', product.image);
 
       const salesPrice = screen.getByText(`$${product.salesPrice}`);
-      expect(salesPrice).toBeInTheDocument()
+      expect(salesPrice).toBeInTheDocument();
 
-      const regularPrice = screen.getByText(`$${product.regularPrice}`)
-      expect(regularPrice).toBeInTheDocument()
-    })
-  })
+      const regularPrice = screen.getByText(`$${product.regularPrice}`);
+      expect(regularPrice).toBeInTheDocument();
+    });
+  });
 
   it('handles left arrow click for pagination', async () => {
     render(
       <Provider store={store}>
         <MostSelling />
       </Provider>
-    )
+    );
 
-    const leftArrow = screen.getByAltText('Left Arrow Icon')
-    fireEvent.click(leftArrow)
+    const leftArrow = screen.getByAltText('Left Arrow Icon');
+    fireEvent.click(leftArrow);
 
     // Add your assertions for updated state after left arrow click
-  })
+  });
 
   it('handles right arrow click for pagination', async () => {
     render(
       <Provider store={store}>
         <MostSelling />
       </Provider>
-    )
+    );
 
-    const rightArrow = screen.getByAltText('Right Arrow Icon')
-    fireEvent.click(rightArrow)
+    const rightArrow = screen.getByAltText('Right Arrow Icon');
+    fireEvent.click(rightArrow);
 
     // Add your assertions for updated state after right arrow click
-  })
-  
-  
-})
+  });
+});

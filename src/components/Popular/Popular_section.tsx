@@ -3,14 +3,13 @@ import MostPopular from './MostPopular';
 import MostRecent from './MostRecent';
 import MostSelling from './MostSelling';
 import BannerAD from './BannerAD';
-import React, { useEffect} from 'react'
-import { useDispatch} from 'react-redux';
-import { fetchProducts } from '@/features/availableProductSlice'
-import { AppDispatch } from '../../app/store'
+import React, { useEffect } from 'react';
+import { useDispatch } from 'react-redux';
+import { fetchProducts } from '@/features/availableProductSlice';
+import { AppDispatch } from '../../app/store';
 
 const PopularSection: React.FC = () => {
-
-  const dispatch: AppDispatch = useDispatch()
+  const dispatch: AppDispatch = useDispatch();
 
   useEffect(() => {
     dispatch(fetchProducts());
