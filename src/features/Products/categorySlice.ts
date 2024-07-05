@@ -2,7 +2,7 @@
 import { createSlice, createAsyncThunk, PayloadAction } from '@reduxjs/toolkit';
 import axios from 'axios';
 import { Category } from '@/types/Product';
-import { RootState } from '../store';
+import { RootState } from '../../app/store';
 
 interface Payload {
   message: string;

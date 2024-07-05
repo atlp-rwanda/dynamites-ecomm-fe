@@ -1,11 +1,15 @@
 import { configureStore } from '@reduxjs/toolkit';
 import signUpReducer from '../features/Auth/SignUpSlice';
 import signInReducer from '../features/Auth/SignInSlice';
-import productsReducer from '@/app/slices/ProductSlice';
-import categoriesReducer from '@/app/slices/categorySlice';
+import productsReducer from '@/features/Products/ProductSlice';
+import categoriesReducer from '@/features/Products/categorySlice';
 import bannerReducer from '@/app/bannerAds/BannerSlice';
 import availableProductsSlice from '@/features/Popular/availableProductSlice';
 import subscribeReducer from '@/app/Footer/Subscribe';
+import {
+  passwordRequestReducer,
+  passwordResetReducer,
+} from '@/features/Auth/password';
 
 export const store = configureStore({
   reducer: {
@@ -16,6 +20,8 @@ export const store = configureStore({
     banners: bannerReducer,
     availableProducts: availableProductsSlice,
     footer: subscribeReducer,
+    passwordRequest: passwordRequestReducer,
+    passwordReset: passwordResetReducer,
   },
 });
 

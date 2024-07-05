@@ -6,6 +6,8 @@ import SignUp from '@/pages/SignUp';
 import SignIn from '@/pages/SignIn';
 import TwoFactorAuthForm from '@/pages/TwoFactorAuthForm';
 import DashboardLayout from '@/layout/DashbordLayout';
+import PasswordResetRequestForm from '@/components/password/PasswordResetRequestForm';
+import ResetPasswordForm from '@/components/password/PasswordResetForm';
 
 function AppRoutes() {
   return (
@@ -18,6 +20,8 @@ function AppRoutes() {
       <Route path="/verify-2fa/:id/:email" element={<TwoFactorAuthForm />} />
       <Route path="/adminDashboard" element={<DashboardLayout />} />
       <Route path="*" element={<ErrorPage />} />
+      <Route path="/forgot-password" element={<PasswordResetRequestForm />} />
+      <Route path="/reset-password/:token" element={<ResetPasswordForm />} />
     </Routes>
   );
 }

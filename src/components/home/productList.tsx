@@ -2,7 +2,7 @@ import ProductCard from './ProductCard';
 import { RootState } from '@/app/store';
 import { Product } from '@/types/Product';
 import { useAppSelector } from '@/app/hooks';
-import { selectProducts } from '@/app/slices/ProductSlice';
+import { selectProducts } from '@/features/Products/ProductSlice';
 
 interface FocusedProps {
   focused: string;

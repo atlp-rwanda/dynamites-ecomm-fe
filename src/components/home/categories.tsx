@@ -1,6 +1,6 @@
 import { useEffect } from 'react';
 import { useAppDispatch, useAppSelector } from '@/app/hooks';
-import { fetchProducts, search } from '@/app/slices/ProductSlice';
+import { fetchProducts, search } from '@/features/Products/ProductSlice';
 import Categories from './sidebar';
 import Header from './header';
 import ProductsList from './productList';
@@ -10,7 +10,7 @@ import {
   fetchCategories,
   selectCategories,
   getFocused,
-} from '@/app/slices/categorySlice';
+} from '@/features/Products/categorySlice';
 import { RootState } from '@/app/store';
 
 function CategoriesSection() {
