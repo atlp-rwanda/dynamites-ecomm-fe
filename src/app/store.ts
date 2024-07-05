@@ -15,6 +15,7 @@ import buyerSlice from '@/app/Dashboard/buyerSlice';
 import orderSlice from './Dashboard/orderSlice';
 
 import ordersSliceReducer from '@/features/Orders/ordersSlice';
+import DeshboardProductsSlice from '@/features/Dashboard/dashboardProductsSlice';
 
 export const store = configureStore({
   reducer: {
@@ -31,6 +32,7 @@ export const store = configureStore({
     buyer: buyerSlice,
     order: orderSlice,
     orders: ordersSliceReducer,
+    DeshboardProducts: DeshboardProductsSlice,
   },
 });
 

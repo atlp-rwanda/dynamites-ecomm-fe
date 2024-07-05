@@ -10,6 +10,8 @@ import PasswordResetRequestForm from '@/components/password/PasswordResetRequest
 import ResetPasswordForm from '@/components/password/PasswordResetForm';
 import AdminRoutes from '@/pages/AdminRoutes';
 import Admin from '@/pages/Admin';
+import DesplayProductPage from '@/pages/DesplayProductPage';
+import EditProductPage from '@/pages/EditPage';
 import Shop from '@/pages/Shop';
 import Wishlist from '@/pages/Wishlist';
 import { Orders } from '@/components/Orders/Orders';
@@ -38,6 +40,16 @@ function AppRoutes() {
       >
         <Route index element={<Admin />} />
         <Route path="/adminDashboard/orders" element={<Orders />} />
+        <Route
+          index
+          path="/adminDashboard/products"
+          element={<DesplayProductPage />}
+        />
+        <Route
+          index
+          path="/adminDashboard/products/:id"
+          element={<EditProductPage />}
+        />
       </Route>
       <Route path="*" element={<ErrorPage />} />
       <Route path="/forgot-password" element={<PasswordResetRequestForm />} />
