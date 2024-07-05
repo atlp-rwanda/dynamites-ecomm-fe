@@ -61,6 +61,10 @@ describe('signInSlice', () => {
       role: null,
       needsVerification: false,
       needs2FA: false,
+      vendor: {
+        id: null,
+        email: null,
+      },
     });
   });
 
@@ -76,6 +80,10 @@ describe('signInSlice', () => {
       role: null,
       needsVerification: false,
       needs2FA: false,
+      vendor: {
+        id: null,
+        email: null,
+      },
     });
   });
 
@@ -105,6 +113,10 @@ describe('signInSlice', () => {
       role: 'Admin',
       needsVerification: false,
       needs2FA: false,
+      vendor: {
+        id: null,
+        email: null,
+      },
     });
   });
 
@@ -123,6 +135,10 @@ describe('signInSlice', () => {
       role: null,
       needsVerification: false,
       needs2FA: false,
+      vendor: {
+        id: null,
+        email: null,
+      },
     });
   });
 
@@ -147,6 +163,10 @@ describe('signInSlice', () => {
       role: 'Admin',
       needsVerification: false,
       needs2FA: false,
+      vendor: {
+        id: null,
+        email: null,
+      },
     };
     const action = { type: logout.type };
     const state = signInReducer(initialState, action);
@@ -159,6 +179,10 @@ describe('signInSlice', () => {
       role: null,
       needsVerification: false,
       needs2FA: false,
+      vendor: {
+        id: null,
+        email: null,
+      },
     });
   });
 });

@@ -27,6 +27,7 @@ module.exports = {
     'react/self-closing-comp': 0,
     'react/jsx-props-no-spreading': 0,
     '@typescript-eslint/no-explicit-any': 0,
+    'react/no-array-index-key': 0,
     'no-param-reassign': [
       'error',
       { props: true, ignorePropertyModificationsFor: ['state'] },

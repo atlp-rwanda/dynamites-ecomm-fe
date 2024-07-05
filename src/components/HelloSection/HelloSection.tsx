@@ -1,4 +1,3 @@
-/* eslint-disable react/no-array-index-key */
 import { useState, useEffect } from 'react';
 import { SlArrowLeft, SlArrowRight } from 'react-icons/sl';
 import HSButton from '@/components/form/HSButton';
