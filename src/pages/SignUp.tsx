@@ -219,12 +219,18 @@ function SignUp() {
                 <div className="w-full bg-grayLight h-[1px]" />
               </div>
               <div className="flex items-center justify-center gap-4">
-                <div className="bg-[white] w-8 h-8 rounded-full border-2 flex items-center justify-center cursor-pointer hover:scale-105 transition-all duration-300 ease-in-out">
+                <Link
+                  to={`${import.meta.env.VITE_SOCIAL_URL}/auth/google`}
+                  className="bg-white w-12 h-12 rounded-full border-2 flex items-center justify-center cursor-pointer transition-transform transform active:scale-95 hover:scale-105"
+                >
                   <FcGoogle />
-                </div>
-                <div className="bg-[#335CA6] w-8 h-8 rounded-full flex items-center justify-center cursor-pointer hover:scale-105 transition-all duration-300 ease-in-out">
+                </Link>
+                <Link
+                  to={`${import.meta.env.VITE_SOCIAL_URL}/auth/facebook`}
+                  className="bg-blue-600 w-12 h-12 rounded-full flex items-center justify-center cursor-pointer transition-transform transform active:scale-95 hover:scale-105"
+                >
                   <FaFacebook color="white" size={16} />
-                </div>
+                </Link>
               </div>
             </Form>
           )}

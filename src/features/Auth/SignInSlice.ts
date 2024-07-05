@@ -98,6 +98,22 @@ const signInSlice = createSlice({
         needs2FA: false,
       };
     },
+    socialLogin: (state, action) => {
+      localStorage.setItem('token', action.payload);
+      const decodedToken = jwtDecode<DecodedToken>(action.payload);
+      userFromToken = {
+        id: decodedToken.user.id,
+        firstName: decodedToken.user.firstName,
+        lastName: decodedToken.user.lastName,
+        email: decodedToken.user.email,
+        picture: decodedToken.user.picture,
+        userType: decodedToken.user.userType,
+      };
+
+      state.token = action.payload;
+      state.user = userFromToken;
+      state.role = userFromToken.userType.name;
+    },
   },
   extraReducers: (builder) => {
     builder.addCase(loginUser.pending, (state) => {
@@ -155,6 +171,6 @@ const signInSlice = createSlice({
   },
 });
 
-export const { logout } = signInSlice.actions;
+export const { logout, socialLogin } = signInSlice.actions;
 
 export default signInSlice.reducer;

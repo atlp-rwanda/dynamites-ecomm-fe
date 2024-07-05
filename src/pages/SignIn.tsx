@@ -1,5 +1,5 @@
 import { useEffect } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
+import { Link, useNavigate, useSearchParams } from 'react-router-dom';
 import { useFormik } from 'formik';
 import * as yup from 'yup';
 import BeatLoader from 'react-spinners/BeatLoader';
@@ -10,7 +10,7 @@ import { FaFacebook } from 'react-icons/fa';
 import Button from '@/components/form/Button';
 import HSInput from '@/components/form/HSInput';
 import { useAppDispatch, useAppSelector } from '@/app/hooks';
-import { loginUser } from '@/features/Auth/SignInSlice';
+import { loginUser, socialLogin } from '@/features/Auth/SignInSlice';
 
 interface MyFormValues {
   email: string;
@@ -36,9 +36,25 @@ const validationSchema: yup.ObjectSchema<MyFormValues> = yup.object({
 function SignIn() {
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
+  const [searchParams] = useSearchParams();
 
-  const { loading, error, message, token, role, needsVerification, needs2FA } =
-    useAppSelector((state) => state.signIn);
+  useEffect(() => {
+    const socialToken = searchParams.get('token');
+    if (socialToken) {
+      dispatch(socialLogin(socialToken));
+    }
+  }, [searchParams, dispatch]);
+
+  const {
+    loading,
+    error,
+    message,
+    token,
+    user,
+    role,
+    needsVerification,
+    needs2FA,
+  } = useAppSelector((state) => state.signIn);
 
   const formik = useFormik<MyFormValues>({
     initialValues,
@@ -58,7 +74,7 @@ function SignIn() {
         navigate('/');
       }
     }
-  }, [role, needsVerification, needs2FA, token, navigate]);
+  }, [role, needsVerification, needs2FA, token, user, navigate]);
 
   return (
     <div className="flex justify-center items-center min-h-screen bg-white p-4">
@@ -155,13 +171,13 @@ function SignIn() {
           </div>
           <div className="flex items-center justify-center gap-4">
             <Link
-              to="https://dynamites-ecomm-be.onrender.com/login"
+              to={`${import.meta.env.VITE_SOCIAL_URL}/auth/google`}
               className="bg-white w-12 h-12 rounded-full border-2 flex items-center justify-center cursor-pointer transition-transform transform active:scale-95 hover:scale-105"
             >
               <FcGoogle />
             </Link>
             <Link
-              to="https://dynamites-ecomm-be.onrender.com/login/auth/facebook"
+              to={`${import.meta.env.VITE_SOCIAL_URL}/auth/facebook`}
               className="bg-blue-600 w-12 h-12 rounded-full flex items-center justify-center cursor-pointer transition-transform transform active:scale-95 hover:scale-105"
             >
               <FaFacebook color="white" size={16} />
