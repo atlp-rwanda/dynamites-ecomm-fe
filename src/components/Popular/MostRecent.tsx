@@ -33,7 +33,7 @@ function MostRecent() {
   const mostRecentProducts = [...availableProduct]
     .sort(
       (a, b) =>
-        new Date(b.updatedAt).getTime() - new Date(a.createdAt).getTime()
+        new Date(b.updatedAt).getTime() - new Date(a.updatedAt).getTime()
     )
     .slice(start, end);
 
@@ -49,9 +49,9 @@ function MostRecent() {
         {status === 'loading' &&
           Array(3)
             .fill(null)
-            .map(() => (
+            .map((_, index) => (
               <div
-                key={1}
+                key={index}
                 className="border-2 px-[2px] shadow-lg animate-pulse bg-violet-50 flex flex-row justify-between items-center"
                 role="status"
               >
@@ -66,9 +66,9 @@ function MostRecent() {
         {status === 'failed' &&
           Array(3)
             .fill(null)
-            .map(() => (
+            .map((_, index) => (
               <div
-                key={1}
+                key={index}
                 className="border-2 px-[2px] h-[50px] shadow-lg animate-pulse bg-violet-50 flex flex-row justify-between items-center"
               >
                 Loading Failed...

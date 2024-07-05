@@ -40,12 +40,12 @@ function MostSelling() {
       />
 
       <div className=" grid gap-y-2">
-        {(status === 'failed' || status === 'loading') &&
+        {status === 'loading' &&
           Array(3)
             .fill(null)
-            .map(() => (
+            .map((_, index) => (
               <div
-                key={1}
+                key={index}
                 className="border-2 px-[2px] shadow-lg animate-pulse bg-violet-50 flex flex-row justify-between items-center"
                 role="status"
               >
@@ -60,9 +60,9 @@ function MostSelling() {
         {status === 'failed' &&
           Array(3)
             .fill(null)
-            .map(() => (
+            .map((_, index) => (
               <div
-                key={1}
+                key={index}
                 className="border-2 px-[2px] h-[50px] shadow-lg animate-pulse bg-violet-50 flex flex-row justify-between items-center"
               >
                 Loading Failed...

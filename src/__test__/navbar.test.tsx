@@ -143,6 +143,10 @@ describe('Navbar Component', () => {
           role: null,
           needsVerification: false,
           needs2FA: false,
+          vendor: {
+            id: null,
+            email: null,
+          },
         },
       },
     });

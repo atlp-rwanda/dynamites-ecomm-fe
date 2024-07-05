@@ -1,6 +1,7 @@
 import { createSlice, createAsyncThunk, PayloadAction } from '@reduxjs/toolkit';
 import axios from 'axios';
 import { jwtDecode } from 'jwt-decode';
+import { showErrorToast, showSuccessToast } from '@/utils/ToastConfig';
 
 interface User {
   id: number;
@@ -24,6 +25,10 @@ interface SignInState {
   role: string | null;
   needsVerification: boolean;
   needs2FA: boolean;
+  vendor: {
+    id: number | null;
+    email: string | null;
+  };
 }
 
 interface DecodedToken {
@@ -33,6 +38,10 @@ interface DecodedToken {
 interface LoginResponse {
   token: string;
   message: string;
+  user: {
+    id: number;
+    email: string;
+  };
 }
 
 interface Credentials {
@@ -40,6 +49,10 @@ interface Credentials {
   password: string;
 }
 
+interface Arguments {
+  id: string | undefined;
+  codes: number;
+}
 const tokenFromStorage = localStorage.getItem('token');
 
 let userFromToken: User | null = null;
@@ -69,6 +82,10 @@ export const initialState: SignInState = {
   role: null,
   needsVerification: false,
   needs2FA: false,
+  vendor: {
+    id: null,
+    email: null,
+  },
 };
 
 const apiUrl = `${import.meta.env.VITE_BASE_URL}/user/login`;
@@ -77,8 +94,33 @@ export const loginUser = createAsyncThunk<LoginResponse, Credentials>(
   async (credentials: Credentials, thunkAPI) => {
     return axios
       .post(apiUrl, credentials)
-      .then((response) => response.data)
-      .catch((error) => thunkAPI.rejectWithValue(error.response.data));
+      .then((response) => {
+        showSuccessToast(response.data.message);
+        return response.data;
+      })
+      .catch((error) => {
+        showErrorToast(error.response.data.message);
+        return thunkAPI.rejectWithValue(
+          error.response.data || 'An error occurred'
+        );
+      });
+  }
+);
+
+export const twoFactorverify = createAsyncThunk(
+  'twoFactorAuth/verify',
+  async ({ id, codes }: Arguments, thunkAPI) => {
+    try {
+      const url = `${import.meta.env.VITE_BASE_URL}/user/verify2FA/${id}`;
+      const response = await axios.post(url, { code: codes });
+      showSuccessToast('Vendor Logged in successfully');
+      return response.data;
+    } catch (error: any) {
+      showErrorToast(error.response.data.error);
+      return thunkAPI.rejectWithValue(
+        error.response?.data || 'An error occurred'
+      );
+    }
   }
 );
 
@@ -96,6 +138,10 @@ const signInSlice = createSlice({
         message: 'Logout Successfully',
         needsVerification: false,
         needs2FA: false,
+        vendor: {
+          id: null,
+          email: null,
+        },
       };
     },
     socialLogin: (state, action) => {
@@ -133,16 +179,24 @@ const signInSlice = createSlice({
           ? null
           : action.payload.token;
 
+        const isVendor = action.payload.message.includes('2FA')
+          ? { id: action.payload.user.id, email: action.payload.user.email }
+          : { id: null, email: null };
+
         localStorage.setItem('token', newToken!);
-        const decodedData = jwtDecode<DecodedToken>(action.payload.token);
-        const decodedUser = {
-          id: decodedData.user.id,
-          firstName: decodedData.user.firstName,
-          lastName: decodedData.user.lastName,
-          email: decodedData.user.email,
-          picture: decodedData.user.picture,
-          userType: decodedData.user.userType,
-        };
+
+        let decodedUser = null;
+        if (action.payload.token) {
+          const decodedData = jwtDecode<DecodedToken>(action.payload.token);
+          decodedUser = {
+            id: decodedData.user.id,
+            firstName: decodedData.user.firstName,
+            lastName: decodedData.user.lastName,
+            email: decodedData.user.email,
+            picture: decodedData.user.picture,
+            userType: decodedData.user.userType,
+          };
+        }
 
         return {
           ...state,
@@ -156,6 +210,7 @@ const signInSlice = createSlice({
           needsVerification:
             action.payload.message.includes('verify your email'),
           needs2FA: action.payload.message.includes('2FA'),
+          vendor: isVendor,
         };
       }
     );
@@ -168,6 +223,47 @@ const signInSlice = createSlice({
         needsVerification: action.payload.message.includes('verify your email'),
       };
     });
+    // 2FA reducers
+    builder.addCase(twoFactorverify.pending, (state) => {
+      return {
+        ...state,
+        loading: true,
+        error: null,
+        message: null,
+      };
+    });
+    builder.addCase(twoFactorverify.fulfilled, (state, action) => {
+      const newToken = action.payload.token;
+      localStorage.setItem('token', newToken!);
+      const decodedData = jwtDecode<DecodedToken>(action.payload.token);
+      const decodedUser = {
+        id: decodedData.user.id,
+        firstName: decodedData.user.firstName,
+        lastName: decodedData.user.lastName,
+        email: decodedData.user.email,
+        picture: decodedData.user.picture,
+        userType: decodedData.user.userType,
+      };
+      return {
+        ...state,
+        loading: false,
+        token: newToken,
+        message: 'Vendor Logged in successfully',
+        error: null,
+        user: decodedUser,
+      };
+    });
+    builder.addCase(
+      twoFactorverify.rejected,
+      (state, action: PayloadAction<any>) => {
+        return {
+          ...state,
+          loading: false,
+          error: action.payload.error,
+          message: null,
+        };
+      }
+    );
   },
 });
 
