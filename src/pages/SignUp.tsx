@@ -7,7 +7,6 @@ import { Formik, Field, ErrorMessage, Form, FormikHelpers } from 'formik';
 import BeatLoader from 'react-spinners/BeatLoader';
 import { RootState, AppDispatch } from '@/app/store';
 import { registerUser } from '@/features/Auth/SignUpSlice';
-import HSButton from '@/components/form/HSButton';
 
 interface FormValues {
   firstName: string;
@@ -22,6 +21,7 @@ function SignUp() {
   const dispatch: AppDispatch = useDispatch();
   const signUpState = useSelector((state: RootState) => state.signUp);
   const navigate = useNavigate();
+
   const handleSubmit = (
     values: FormValues,
     actions: FormikHelpers<FormValues>
@@ -45,11 +45,11 @@ function SignUp() {
     if (type === 'radio') {
       return (
         <label htmlFor={id} key={id}>
-          <input
+          <Field
             id={id}
             type="radio"
             name={name}
-            value={name}
+            value={id}
             className="mr-2 border border-gray-200"
           />
           {label}
@@ -59,7 +59,7 @@ function SignUp() {
     if (type === 'checkbox') {
       return (
         <label htmlFor={id} key={id} className="flex items-center">
-          <input
+          <Field
             id={id}
             type="checkbox"
             name={name}
@@ -185,25 +185,25 @@ function SignUp() {
                   'checkbox'
                 )}
               </div>
-              {signUpState.loading}
+              {signUpState.loading && (
+                <div className="flex justify-center"></div>
+              )}
               {signUpState.error && (
-                <p className="text-red-500">{signUpState.error}</p>
+                <p className="text-red-500 text-center mt-2">
+                  {signUpState.error}
+                </p>
               )}
               <button
                 type="submit"
                 disabled={isSubmitting || signUpState.loading}
                 aria-label="Submit Form"
+                className="w-full flex justify-center py-2 sm:py-4 bg-blue-500 text-white rounded-md hover:bg-blue-600 transition-colors"
               >
-                <HSButton
-                  title={
-                    isSubmitting || signUpState.loading ? (
-                      <BeatLoader color="#ffffff" size={8} />
-                    ) : (
-                      'Sign Up'
-                    )
-                  }
-                  styles="w-full flex mx-auto py-2 sm:py-4"
-                />
+                {isSubmitting || signUpState.loading ? (
+                  <BeatLoader color="#ffffff" size={8} />
+                ) : (
+                  'Sign Up'
+                )}
               </button>
               <div>
                 <p className="text-center text-gray-600 text-xs sm:text-sm md:text-sm">
