@@ -1,0 +1,177 @@
+import React, { useState } from 'react';
+import { AiOutlineClose, AiOutlineMenu } from 'react-icons/ai';
+import { MdDashboard } from 'react-icons/md';
+import {
+  ShoppingCart,
+  Users,
+  Box,
+  ChevronDown,
+  ChevronRight,
+} from 'lucide-react';
+
+const sideBarItems = [
+  {
+    path: '/dashboard',
+    name: 'Dashboard',
+    icon: <MdDashboard className="icon" />,
+  },
+  {
+    path: '/orders',
+    name: 'Orders',
+    icon: <ShoppingCart className="icon" />,
+  },
+  {
+    path: '/customers',
+    name: 'Customers',
+    icon: <Users className="icon" />,
+  },
+  {
+    name: 'Products',
+    icon: <Box className="icon" />,
+    subItems: [
+      {
+        path: '/products/all',
+        name: 'All Products',
+      },
+      {
+        path: '/products/add',
+        name: 'Add New',
+      },
+      {
+        path: '/products/categories',
+        name: 'Categories',
+      },
+      {
+        path: '/products/tags',
+        name: 'Tags',
+      },
+    ],
+  },
+];
+
+interface SideBarItemProps {
+  item: {
+    path?: string;
+    name: string;
+    icon: React.ReactNode;
+    subItems?: { path: string; name: string }[];
+  };
+  activeItem: string;
+  setActiveItem: React.Dispatch<React.SetStateAction<string>>;
+}
+
+function SideBarItem({ item, activeItem, setActiveItem }: SideBarItemProps) {
+  const [expanded, setExpanded] = useState(false);
+
+  const handleExpand = () => {
+    setExpanded(!expanded);
+  };
+
+  return (
+    <li
+      className={`p-3 ${activeItem === item.name ? 'bg-primary-lightblue' : ''}`}
+    >
+      <div
+        className="flex items-center justify-between cursor-pointer hover:bg-[#6C32E4] hover:text-white p-2 rounded-md"
+        onClick={() => {
+          if (item.subItems) {
+            handleExpand();
+          } else {
+            setActiveItem(item.name);
+          }
+        }}
+        role="button"
+        tabIndex={0}
+        onKeyDown={(e) => {
+          if (e.key === 'Enter' || e.key === ' ') {
+            if (item.subItems) {
+              handleExpand();
+            } else {
+              setActiveItem(item.name);
+            }
+          }
+        }}
+      >
+        <div className="flex items-center gap-3 text-lg ">
+          {item.icon}
+          <span className="text-black hover:text-white">{item.name}</span>
+        </div>
+        {item.subItems &&
+          (expanded ? (
+            <ChevronDown className="ml-6" />
+          ) : (
+            <ChevronRight className="ml-6" />
+          ))}
+      </div>
+      {expanded && item.subItems && (
+        <ul className="pl-6 p-2 bg-slate-300 rounded-md">
+          {item.subItems.map((subItem) => (
+            <li
+              key={subItem.name}
+              className="py-1 px-1 hover:bg-[#6C32E4] w-[80%] "
+            >
+              <a
+                href={subItem.path}
+                className="flex items-center gap-3 text-lg  "
+                onClick={() => setActiveItem(subItem.name)}
+              >
+                <span className="text-black hover:text-white">
+                  {subItem.name}
+                </span>
+              </a>
+            </li>
+          ))}
+        </ul>
+      )}
+    </li>
+  );
+}
+
+function DashboardSideNav() {
+  const [isVisible, setIsVisible] = useState(false);
+  const [activeItem, setActiveItem] = useState<string>('Dashboard');
+
+  const toggleSidebar = () => {
+    setIsVisible(!isVisible);
+  };
+
+  return (
+    <>
+      <button
+        className="md:hidden fixed top-4 left-4 z-50 p-2 bg-white rounded-md shadow-md"
+        onClick={toggleSidebar}
+        type="button"
+        aria-label="Toggle Menu"
+      >
+        <AiOutlineMenu className="text-2xl" />
+      </button>
+      <aside
+        className={`h-screen bg-white fixed left-0 z-40 ${isVisible ? 'block' : 'hidden'} md:block`}
+      >
+        <nav className="h-full flex flex-col justify-between shadow-sm">
+          <ul className="flex-1 mt-6">
+            <li className="md:hidden flex justify-end p-3">
+              <button
+                onClick={toggleSidebar}
+                type="button"
+                aria-label="Close Menu"
+              >
+                <AiOutlineClose className="text-2xl cursor-pointer" />
+              </button>
+            </li>
+            {sideBarItems.map((item) => (
+              <SideBarItem
+                key={item.name}
+                item={item}
+                activeItem={activeItem}
+                setActiveItem={setActiveItem}
+              />
+            ))}
+          </ul>
+        </nav>
+      </aside>
+    </>
+  );
+}
+
+export default DashboardSideNav;
