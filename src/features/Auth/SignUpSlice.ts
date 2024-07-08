@@ -1,5 +1,6 @@
 import { createSlice, PayloadAction, createAsyncThunk } from '@reduxjs/toolkit';
 import axios from 'axios';
+import { showSuccessToast, showErrorToast } from '@/utils/ToastConfig';
 
 interface SignUpState {
   firstName: string;
@@ -58,10 +59,14 @@ const signUpSlice = createSlice({
       })
       .addCase(registerUser.fulfilled, (state) => {
         state.loading = false;
+        showSuccessToast(
+          'Registration successful! Please check your Email to confirm.'
+        );
       })
       .addCase(registerUser.rejected, (state, action) => {
         state.loading = false;
         state.error = action.error.message || 'Something went wrong';
+        showErrorToast(state.error);
       });
   },
 });
