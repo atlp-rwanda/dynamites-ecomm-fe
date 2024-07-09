@@ -5,6 +5,7 @@ import productsReducer from '@/features/Products/ProductSlice';
 import categoriesReducer from '@/features/Products/categorySlice';
 import bannerReducer from '@/app/bannerAds/BannerSlice';
 import availableProductsSlice from '@/features/Popular/availableProductSlice';
+import DeshboardProductsSlice from '../features/Dashboard/dashboardProductsSlice';
 import subscribeReducer from '@/app/Footer/Subscribe';
 import {
   passwordRequestReducer,
@@ -22,6 +23,7 @@ export const store = configureStore({
     footer: subscribeReducer,
     passwordRequest: passwordRequestReducer,
     passwordReset: passwordResetReducer,
+    DeshboardProducts: DeshboardProductsSlice,
   },
 });
 
