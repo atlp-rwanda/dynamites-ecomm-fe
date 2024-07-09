@@ -30,7 +30,7 @@ const sideBarItems = [
     icon: <Box className="icon" />,
     subItems: [
       {
-        path: '/products/all',
+        path: '/adminDashboard/products',
         name: 'All Products',
       },
       {

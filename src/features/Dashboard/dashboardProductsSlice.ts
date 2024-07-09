@@ -3,19 +3,19 @@ import axios from 'axios';
 import Product from '../../interfaces/product';
 
 interface ProductsState {
-  availableProduct: Product[];
+  DashboardProduct: Product[];
   status: 'idle' | 'loading' | 'succeeded' | 'failed';
 }
 
 const URL = import.meta.env.VITE_BASE_URL;
 
-export const fetchAvailableProducts = createAsyncThunk<Product[]>(
-  '/AvailableProducts',
+export const fetchDashboardProduct = createAsyncThunk<Product[]>(
+  'DashboardProduct',
   async (_, thunkAPI) => {
     try {
-      const response = await axios.get(`${URL}/product/getAvailableProducts`);
+      const response = await axios.get(`${URL}/product`);
       const { data } = response;
-      return data.availableProducts;
+      return data.data;
     } catch (error) {
       return thunkAPI.rejectWithValue(error);
     }
@@ -23,27 +23,27 @@ export const fetchAvailableProducts = createAsyncThunk<Product[]>(
 );
 
 export const initialState: ProductsState = {
-  availableProduct: [],
+  DashboardProduct: [],
   status: 'idle',
 };
 
-const productsSlice = createSlice({
+const DeshboardProductsSlice = createSlice({
   name: 'products',
   initialState,
   reducers: {},
   extraReducers: (builder) => {
     builder
-      .addCase(fetchAvailableProducts.pending, (state) => {
+      .addCase(fetchDashboardProduct.pending, (state) => {
         state.status = 'loading';
       })
-      .addCase(fetchAvailableProducts.fulfilled, (state, action) => {
+      .addCase(fetchDashboardProduct.fulfilled, (state, action) => {
         state.status = 'succeeded';
-        state.availableProduct = action.payload;
+        state.DashboardProduct = action.payload;
       })
-      .addCase(fetchAvailableProducts.rejected, (state) => {
+      .addCase(fetchDashboardProduct.rejected, (state) => {
         state.status = 'failed';
       });
   },
 });
 
-export default productsSlice.reducer;
+export default DeshboardProductsSlice.reducer;

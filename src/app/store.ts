@@ -5,6 +5,7 @@ import productsReducer from '@/app/slices/ProductSlice';
 import categoriesReducer from '@/app/slices/categorySlice';
 import bannerReducer from '@/app/bannerAds/BannerSlice';
 import availableProductsSlice from '@/features/Popular/availableProductSlice';
+import DeshboardProductsSlice from '../features/Dashboard/dashboardProductsSlice';
 import subscribeReducer from '@/app/Footer/Subscribe';
 
 export const store = configureStore({
@@ -16,6 +17,7 @@ export const store = configureStore({
     banners: bannerReducer,
     availableProducts: availableProductsSlice,
     footer: subscribeReducer,
+    DeshboardProducts: DeshboardProductsSlice,
   },
 });
 
