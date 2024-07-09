@@ -7,7 +7,6 @@ import SignIn from '@/pages/SignIn';
 import TwoFactorAuthForm from '@/pages/TwoFactorAuthForm';
 import Table from '../components/Dashboard/Table';
 
-
 function AppRoutes() {
   return (
     <Routes>

@@ -7,7 +7,7 @@ interface ProductsState {
   status: 'idle' | 'loading' | 'succeeded' | 'failed';
 }
 
-const URL = import.meta.env.VITE_BASE_URL
+const URL = import.meta.env.VITE_BASE_URL;
 
 export const fetchDashboardProduct = createAsyncThunk<Product[]>(
   'DashboardProduct',
