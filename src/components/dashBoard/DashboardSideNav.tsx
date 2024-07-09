@@ -72,7 +72,7 @@ function SideBarItem({ item, activeItem, setActiveItem }: SideBarItemProps) {
       className={`p-3 ${activeItem === item.name ? 'bg-primary-lightblue' : ''}`}
     >
       <div
-        className="flex items-center justify-between cursor-pointer hover:bg-[#6C32E4] hover:text-white p-2 rounded-md"
+        className="flex items-center justify-between cursor-pointer hover:bg-primary text-black hover:text-white p-2 rounded-md transition-all duration-300 ease-in-out"
         onClick={() => {
           if (item.subItems) {
             handleExpand();
@@ -94,7 +94,7 @@ function SideBarItem({ item, activeItem, setActiveItem }: SideBarItemProps) {
       >
         <div className="flex items-center gap-3 text-lg ">
           {item.icon}
-          <span className="text-black hover:text-white">{item.name}</span>
+          <span>{item.name}</span>
         </div>
         {item.subItems &&
           (expanded ? (
@@ -104,20 +104,18 @@ function SideBarItem({ item, activeItem, setActiveItem }: SideBarItemProps) {
           ))}
       </div>
       {expanded && item.subItems && (
-        <ul className="pl-6 p-2 bg-slate-300 rounded-md">
+        <ul className="p-2 bg-grayLight rounded-b-md">
           {item.subItems.map((subItem) => (
             <li
               key={subItem.name}
-              className="py-1 px-1 hover:bg-[#6C32E4] w-[80%] "
+              className="px-2 py-1 text-black hover:text-white hover:bg-primary w-full rounded-sm transition-all duration-300 ease-in-out"
             >
               <a
                 href={subItem.path}
                 className="flex items-center gap-3 text-lg  "
                 onClick={() => setActiveItem(subItem.name)}
               >
-                <span className="text-black hover:text-white">
-                  {subItem.name}
-                </span>
+                <span>{subItem.name}</span>
               </a>
             </li>
           ))}
@@ -138,7 +136,7 @@ function DashboardSideNav() {
   return (
     <>
       <button
-        className="md:hidden fixed top-4 left-4 z-50 p-2 bg-white rounded-md shadow-md"
+        className="lg:hidden fixed top-4 left-3 z-50 p-1"
         onClick={toggleSidebar}
         type="button"
         aria-label="Toggle Menu"
@@ -146,11 +144,11 @@ function DashboardSideNav() {
         <AiOutlineMenu className="text-2xl" />
       </button>
       <aside
-        className={`h-screen bg-white fixed left-0 z-40 ${isVisible ? 'block' : 'hidden'} md:block`}
+        className={`h-screen bg-white fixed left-0 z-40 ${isVisible ? 'block' : 'hidden'} lg:block`}
       >
         <nav className="h-full flex flex-col justify-between shadow-sm">
           <ul className="flex-1 mt-6">
-            <li className="md:hidden flex justify-end p-3">
+            <li className="lg:hidden flex justify-end p-3">
               <button
                 onClick={toggleSidebar}
                 type="button"

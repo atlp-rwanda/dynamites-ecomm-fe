@@ -1,18 +1,20 @@
 import { Outlet } from 'react-router-dom';
 import DashboardSideNav from '@/components/dashBoard/DashboardSideNav';
-import Navbar from '@/components/Navbar';
+import Navbar from '@/components/dashBoard/dashBoardNav';
 
 function DashboardLayout() {
   return (
-    <div className="bg-[#F5F6F6] flex-1 flex flex-col w-full min-h-screen">
-      <div className="bg-white">
+    <div className="bg-[#F5F6F6] flex flex-col w-full min-h-screen">
+      <div className="fixed bg-white top-0 left-0 right-0 z-50">
         <Navbar />
       </div>
-      <div className="flex flex-1">
-        <DashboardSideNav />
-      </div>
-      <div className="flex-1 p-5">
-        <Outlet />
+      <div>
+        <div className="mt-16">
+          <DashboardSideNav />
+        </div>
+        <div className="p-4 lg:ml-[200px] min-h-screen">
+          <Outlet />
+        </div>
       </div>
     </div>
   );
