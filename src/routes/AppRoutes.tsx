@@ -6,8 +6,7 @@ import SignUp from '@/pages/SignUp';
 import SignIn from '@/pages/SignIn';
 import TwoFactorAuthForm from '@/pages/TwoFactorAuthForm';
 import Table from '../components/Dashboard/Table';
-import TwoFactorAuthForm from '@/pages/TwoFactorAuthForm';
-import Table from '../components/Dashboard/Table';
+
 
 function AppRoutes() {
   return (

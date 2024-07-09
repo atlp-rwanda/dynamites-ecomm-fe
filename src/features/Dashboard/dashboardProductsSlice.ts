@@ -7,7 +7,7 @@ interface ProductsState {
   status: 'idle' | 'loading' | 'succeeded' | 'failed';
 }
 
-const URL = 'https://dynamites-ecomm-be.onrender.com/api/v1';
+const URL = import.meta.env.VITE_BASE_URL
 
 export const fetchDashboardProduct = createAsyncThunk<Product[]>(
   'DashboardProduct',
