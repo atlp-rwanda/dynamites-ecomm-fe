@@ -1,9 +1,9 @@
 import { useState, useEffect } from 'react';
 import { FaRegTrashAlt } from 'react-icons/fa';
 import { MdOutlineEdit } from 'react-icons/md';
+import { useSelector, useDispatch } from 'react-redux';
 import ConfirmationCard from './ConfirmationCard';
 import CircularPagination from './NavigateonPage';
-import { useSelector, useDispatch } from 'react-redux';
 import { AppDispatch, RootState } from '../../app/store';
 import { fetchDashboardProduct } from '@/features/Dashboard/dashboardProductsSlice';
 
@@ -70,7 +70,6 @@ function Table() {
   const confirmDelete = () => {
     if (itemSelected !== null) {
       // Logic to delete the item
-      console.log('Item deleted:', itemSelected);
     }
     setModalVisible(false);
   };
@@ -78,8 +77,7 @@ function Table() {
 
   const confirmUpdate = () => {
     if (itemSelected !== null) {
-      // Logic to delete the item
-      console.log('Item updated:', itemSelected);
+      // Logic to update the item
     }
     setModalVisible(false);
   };
@@ -90,14 +88,16 @@ function Table() {
   };
 
   return (
-    <div className=" w-full h-full">
+    <div className=" w-full h-full pr-[15px] pl-[25px] pt-[35px]">
       <table className="min-w-full min-h-full">
-        <thead className="h-[26px]  text-[12px] leading-[26px]">
+        <thead className=" text-[12px] leading-[26px]">
           <tr className="bg-morelightgrey rounded-[10px]">
-            {columns.map((column) => (
+            {columns.map((column, index) => (
               <th
                 key={column.Header}
-                className=" px-4 border-b text-left text-grey text-[12px] leading-[26px] hover:scale-105 hover:border hover:border-primary"
+                className={` px-4 text-left text-grey text-[12px] leading-[26px] hover:scale-105 hover:border hover:border-primary ${
+                  index === 0 ? 'rounded-tl-lg rounded-bl-lg' : ''
+                } ${index === columns.length - 1 ? 'rounded-tr-lg rounded-br-lg' : ''}`}
               >
                 {column.Header}
               </th>
