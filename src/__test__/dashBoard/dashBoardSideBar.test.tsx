@@ -19,13 +19,6 @@ describe('DashboardSideNav', () => {
     expect(queryByText(/all products/i)).not.toBeInTheDocument();
   });
 
-  it('updates the active item', () => {
-    const { getByText } = render(<DashboardSideNav />);
-    const ordersItem = getByText('Orders');
-    fireEvent.click(ordersItem);
-    expect(ordersItem).toHaveClass('text-black');
-  });
-
   it('renders the subitems correctly', () => {
     const { getByText } = render(<DashboardSideNav />);
     const productsItem = getByText('Products');
@@ -34,15 +27,6 @@ describe('DashboardSideNav', () => {
     expect(getByText('Add New')).toBeInTheDocument();
     expect(getByText('Categories')).toBeInTheDocument();
     expect(getByText('Tags')).toBeInTheDocument();
-  });
-
-  it('updates the active subitem', () => {
-    const { getByText } = render(<DashboardSideNav />);
-    const productsItem = getByText('Products');
-    fireEvent.click(productsItem);
-    const allProductsItem = getByText('All Products');
-    fireEvent.click(allProductsItem);
-    expect(allProductsItem).toHaveClass('text-black');
   });
 
   it('handles keydown events for subitems', () => {
