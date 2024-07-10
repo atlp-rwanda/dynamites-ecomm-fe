@@ -2,11 +2,16 @@ import React from 'react';
 import { render, screen } from '@testing-library/react';
 import { Provider } from 'react-redux';
 import { MemoryRouter } from 'react-router-dom';
+import { vi } from 'vitest';
 import HomeDashboard from '@/components/dashBoard/HomeDash';
 import { fetchBuyers } from '@/app/Dashboard/buyerSlice';
 import { fetchOrders } from '@/app/Dashboard/orderSlice';
 import { fetchProducts } from '@/features/Products/ProductSlice';
 import { store as appStore } from '@/app/store';
+
+vi.mock('react-chartjs-2', () => ({
+  Line: () => <div data-testid="mock-line-chart" />,
+}));
 
 const renderWithProviders = (ui: React.ReactElement) => {
   return render(
