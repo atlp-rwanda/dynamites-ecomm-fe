@@ -13,7 +13,7 @@ export default function CategoryComponent({ icon, name }: CategoryProps) {
         src={
           icon.startsWith('/') || icon.startsWith('https')
             ? icon
-            : '/src/assets/icons/categories.svg'
+            : '/icons/categories.svg'
         }
         alt="icon"
       />

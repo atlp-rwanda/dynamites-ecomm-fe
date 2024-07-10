@@ -4,7 +4,10 @@ import { RootState } from '@/app/store';
 import { Category } from '@/types/Product';
 import CategoryComponent from './Category';
 import { useAppSelector, useAppDispatch } from '@/app/hooks';
-import { selectCategories, setFocused } from '@/app/slices/categorySlice';
+import {
+  selectCategories,
+  setFocused,
+} from '@/features/Products/categorySlice';
 
 WebFont.load({
   google: {
@@ -37,7 +40,7 @@ function Categories() {
         }}
       >
         <div className="flex gap-2">
-          <img src="/src/assets/icons/categories.svg" alt="category icon" />
+          <img src="/icons/categories.svg" alt="category icon" />
           <span className="font-semibold">All Categories</span>
         </div>
         <svg
@@ -68,7 +71,7 @@ function Categories() {
           }}
         >
           <div className="flex gap-2">
-            <img src="/src/assets/icons/categories.svg" alt="category icon" />
+            <img src="/icons/categories.svg" alt="category icon" />
             <span className="font-semibold">All Categories</span>
           </div>
           <svg
@@ -94,7 +97,7 @@ function Categories() {
                 icon={
                   category.icon
                     ? category.icon
-                    : `/src/assets/icons/${category.name?.toLowerCase().split(' ')[0]}.svg`
+                    : `/icons/${category.name?.toLowerCase().split(' ')[0]}.svg`
                 }
                 name={category.name as string}
               />

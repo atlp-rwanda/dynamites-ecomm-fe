@@ -9,25 +9,25 @@ interface HeaderItem {
 
 const headerItems: HeaderItem[] = [
   {
-    image: '/src/assets/icons/icon1.svg',
+    image: '/icons/icon1.svg',
     title: 'Free Shipping',
     description: 'Free shipping on all orders',
     key: 1,
   },
   {
-    image: '/src/assets/icons/icon4.svg',
+    image: '/icons/icon4.svg',
     title: 'Online Support 24/7',
     description: 'Support online 24 hours a day',
     key: 2,
   },
   {
-    image: '/src/assets/icons/icon3.svg',
+    image: '/icons/icon3.svg',
     title: 'Money Return',
     description: 'Back guarantee under 7 days',
     key: 3,
   },
   {
-    image: '/src/assets/icons/icon2.svg',
+    image: '/icons/icon2.svg',
     title: 'Member Discount',
     description: 'On every order over $20.00',
     key: 4,

@@ -10,7 +10,7 @@ const mockProduct: Product = {
   id: 1,
   name: 'Sample Product',
   shortDesc: 'This is a sample product description',
-  image: '/src/assets/iphone.png',
+  image: '/iphone.png',
   regularPrice: 100,
   salesPrice: 80,
   averageRating: 2.5,
