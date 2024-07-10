@@ -12,6 +12,7 @@ import AdminRoutes from '@/pages/AdminRoutes';
 import Admin from '@/pages/Admin';
 import Shop from '@/pages/Shop';
 import Wishlist from '@/pages/Wishlist';
+import { Orders } from '@/components/Orders/Orders';
 
 function AppRoutes() {
   return (
@@ -36,8 +37,11 @@ function AppRoutes() {
         }
       >
         <Route index element={<Admin />} />
+        <Route path="/adminDashboard/orders" element={<Orders />} />
       </Route>
       <Route path="*" element={<ErrorPage />} />
+      <Route path="/forgot-password" element={<PasswordResetRequestForm />} />
+      <Route path="/reset-password/:token" element={<ResetPasswordForm />} />
     </Routes>
   );
 }
