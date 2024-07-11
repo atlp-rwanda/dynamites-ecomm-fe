@@ -2,7 +2,7 @@ import Table from '@/components/dashBoard/Table';
 
 function DesplayProductPage() {
   return (
-    <div className="bg-white w-full h-full">
+    <div className="w-full h-full">
       <Table />
     </div>
   );
