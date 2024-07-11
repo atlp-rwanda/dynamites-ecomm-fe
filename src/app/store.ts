@@ -6,6 +6,7 @@ import categoriesReducer from '@/features/Products/categorySlice';
 import bannerReducer from '@/app/bannerAds/BannerSlice';
 import availableProductsSlice from '@/features/Popular/availableProductSlice';
 import DeshboardProductsSlice from '../features/Dashboard/dashboardProductsSlice';
+import DeshboardProductsSlice from '../features/Dashboard/dashboardProductsSlice';
 import subscribeReducer from '@/app/Footer/Subscribe';
 import {
   passwordRequestReducer,
