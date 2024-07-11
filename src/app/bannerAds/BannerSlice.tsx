@@ -4,8 +4,8 @@ import Product from '@/interfaces/product';
 
 const apiUrl = `${import.meta.env.VITE_BASE_URL}`;
 
-export const fetchProducts = createAsyncThunk<Product[]>(
-  'products/fetchProducts',
+export const fetchBannerProducts = createAsyncThunk<Product[]>(
+  'products/fetchBannerProducts',
   async (_, thunkAPI) => {
     try {
       const response = await axios.get(
@@ -35,14 +35,14 @@ const productsSlice = createSlice({
   reducers: {},
   extraReducers: (builder) => {
     builder
-      .addCase(fetchProducts.pending, (state) => {
+      .addCase(fetchBannerProducts.pending, (state) => {
         state.status = 'loading';
       })
-      .addCase(fetchProducts.fulfilled, (state, action) => {
+      .addCase(fetchBannerProducts.fulfilled, (state, action) => {
         state.status = 'succeeded';
         state.items = action.payload;
       })
-      .addCase(fetchProducts.rejected, (state) => {
+      .addCase(fetchBannerProducts.rejected, (state) => {
         state.status = 'failed';
       });
   },

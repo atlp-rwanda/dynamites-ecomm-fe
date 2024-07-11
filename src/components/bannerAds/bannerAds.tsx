@@ -9,7 +9,7 @@ interface MyBannerAdsProps {
 
 function BannerAd({ s_title, title, description, image }: MyBannerAdsProps) {
   return (
-    <div className="p-4 bg-bannerBg shadow-md flex flex-wrap xs:p-2 sm:flex-nowrap md:flex-nowrap  lg:flex-nowrap justify-center items-center space-x-4 rounded-md">
+    <div className=" gap-10 bg-bannerBg shadow-md flex flex-wrap xs:p-2 sm:flex-nowrap md:flex-nowrap  lg:flex-nowrap justify-center items-center space-x-4 rounded-md">
       <div className="p-4 xs:w-full md:w-1/2 lg:w-1/2">
         <p className="text-redBg">{s_title}</p>
         <h3 className="text-lg font-bold">{title}</h3>
