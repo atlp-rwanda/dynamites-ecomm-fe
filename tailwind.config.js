@@ -7,7 +7,7 @@ export default {
       xs: '320px',
       sm: '640px',
       md: '768px',
-      mdx:'920px',
+      mdx: '920px',
       lg: '1024px',
     },
     extend: {
