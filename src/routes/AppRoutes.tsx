@@ -9,8 +9,7 @@ import DashboardLayout from '@/layout/DashbordLayout';
 import PasswordResetRequestForm from '@/components/password/PasswordResetRequestForm';
 import ResetPasswordForm from '@/components/password/PasswordResetForm';
 import AdminRoutes from '@/pages/AdminRoutes';
-import DesplayProductPage from '@/pages/DesplayProductPage'
-
+import DesplayProductPage from '@/pages/DesplayProductPage';
 
 function AppRoutes() {
   return (
@@ -29,7 +28,11 @@ function AppRoutes() {
           </AdminRoutes>
         }
       >
-        <Route index path='/adminDashboard/products' element={<DesplayProductPage/>}/>
+        <Route
+          index
+          path="/adminDashboard/products"
+          element={<DesplayProductPage />}
+        />
         {/* add more for dashboard */}
       </Route>
       <Route path="*" element={<ErrorPage />} />
