@@ -10,6 +10,7 @@ import PasswordResetRequestForm from '@/components/password/PasswordResetRequest
 import ResetPasswordForm from '@/components/password/PasswordResetForm';
 import AdminRoutes from '@/pages/AdminRoutes';
 import DesplayProductPage from '@/pages/DesplayProductPage';
+import EditProductPage from '@/pages/EditPage';
 
 function AppRoutes() {
   return (
@@ -32,6 +33,11 @@ function AppRoutes() {
           index
           path="/adminDashboard/products"
           element={<DesplayProductPage />}
+        />
+        <Route
+          index
+          path="/adminDashboard/products/id"
+          element={<EditProductPage />}
         />
         {/* add more for dashboard */}
       </Route>
