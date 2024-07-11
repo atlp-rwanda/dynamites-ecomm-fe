@@ -140,9 +140,7 @@ const EditProducts: React.FC = () => {
   const [regularPrice, setRegularPrice] = useState('');
   const [salesPrice, setSalesPrice] = useState('');
   const [quantity, setQuantity] = useState('');
- 
 
-  
   return (
     <div>
       <p className="text-[#6B7280] text-[22px]">Create new product</p>
@@ -357,7 +355,6 @@ const EditProducts: React.FC = () => {
             </div>
           </div>
         </div>
-        
       </div>
     </div>
   );
