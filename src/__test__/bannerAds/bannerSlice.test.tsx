@@ -1,7 +1,7 @@
 import { describe, it, expect } from 'vitest';
 import productsReducer, {
   initialState,
-  fetchProducts,
+  fetchBannerProducts,
 } from '@/app/bannerAds/BannerSlice';
 
 describe('products reducer', () => {
@@ -13,7 +13,7 @@ describe('products reducer', () => {
   it('should handle fetchProducts.pending', () => {
     expect(
       productsReducer(initialState, {
-        type: fetchProducts.pending.type,
+        type: fetchBannerProducts.pending.type,
       })
     ).toEqual({
       ...initialState,
@@ -28,7 +28,7 @@ describe('products reducer', () => {
     ];
     expect(
       productsReducer(initialState, {
-        type: fetchProducts.fulfilled.type,
+        type: fetchBannerProducts.fulfilled.type,
         payload: mockProducts,
       })
     ).toEqual({
@@ -41,7 +41,7 @@ describe('products reducer', () => {
   it('should handle fetchProducts.rejected', () => {
     expect(
       productsReducer(initialState, {
-        type: fetchProducts.rejected.type,
+        type: fetchBannerProducts.rejected.type,
       })
     ).toEqual({
       ...initialState,

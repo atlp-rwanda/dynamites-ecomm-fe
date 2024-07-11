@@ -1,7 +1,7 @@
 import { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { RootState, AppDispatch } from '../../app/store';
-import { fetchProducts } from '@/app/bannerAds/BannerSlice';
+import { fetchBannerProducts } from '@/app/bannerAds/BannerSlice';
 import BannerAd from '@/components/bannerAds/bannerAds';
 
 function BannerSection() {
@@ -9,7 +9,7 @@ function BannerSection() {
   const { items: banners } = useSelector((state: RootState) => state.banners);
 
   useEffect(() => {
-    dispatch(fetchProducts());
+    dispatch(fetchBannerProducts());
   }, [dispatch]);
 
   return (

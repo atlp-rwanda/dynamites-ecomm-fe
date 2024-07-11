@@ -12,7 +12,7 @@ function Home() {
       <div>
         <CategoriesSection />
       </div>
-      <div className="flex w-full h-auto p-8 ">
+      <div className="flex w-full h-auto py-8">
         <BannerSection />
       </div>
       <div className="w-full bg-white px-10 pb-10 pt-2">
