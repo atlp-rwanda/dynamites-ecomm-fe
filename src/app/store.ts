@@ -10,6 +10,8 @@ import {
   passwordRequestReducer,
   passwordResetReducer,
 } from '@/features/Auth/password';
+import buyerSlice from '@/app/Dashboard/buyerSlice';
+import orderSlice from './Dashboard/orderSlice';
 
 export const store = configureStore({
   reducer: {
@@ -22,6 +24,8 @@ export const store = configureStore({
     footer: subscribeReducer,
     passwordRequest: passwordRequestReducer,
     passwordReset: passwordResetReducer,
+    buyer: buyerSlice,
+    order: orderSlice,
   },
 });
 

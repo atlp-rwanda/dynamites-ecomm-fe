@@ -9,6 +9,7 @@ import DashboardLayout from '@/layout/DashbordLayout';
 import PasswordResetRequestForm from '@/components/password/PasswordResetRequestForm';
 import ResetPasswordForm from '@/components/password/PasswordResetForm';
 import AdminRoutes from '@/pages/AdminRoutes';
+import Admin from '@/pages/Admin';
 
 function AppRoutes() {
   return (
@@ -19,6 +20,9 @@ function AppRoutes() {
       <Route path="/signup" element={<SignUp />} />
       <Route path="/signIn" element={<SignIn />} />
       <Route path="/verify-2fa/:id/:email" element={<TwoFactorAuthForm />} />
+      <Route path="/forgot-password" element={<PasswordResetRequestForm />} />
+      <Route path="/reset-password/:token" element={<ResetPasswordForm />} />
+
       <Route
         path="/adminDashboard"
         element={
@@ -27,12 +31,11 @@ function AppRoutes() {
           </AdminRoutes>
         }
       >
-        {/* add more for dashboard */}
+        <Route index element={<Admin />} />
       </Route>
       <Route path="*" element={<ErrorPage />} />
-      <Route path="/forgot-password" element={<PasswordResetRequestForm />} />
-      <Route path="/reset-password/:token" element={<ResetPasswordForm />} />
     </Routes>
   );
 }
+
 export default AppRoutes;
