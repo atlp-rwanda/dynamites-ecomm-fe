@@ -5,6 +5,8 @@ import { fetchOrders } from '@/app/Dashboard/orderSlice';
 import { useAppSelector } from '@/app/hooks';
 import { AppDispatch, RootState } from '@/app/store';
 import { fetchProducts } from '@/features/Products/ProductSlice';
+import UserMetricsChart from '../Chart';
+import TopCategories from '../TopCategories';
 
 function HomeDash() {
   function getGreeting(): string {
@@ -137,6 +139,10 @@ function HomeDash() {
               <p className="text-sm text-dashbordblue">All Buyers</p>
             </div>
           </div>
+        </div>
+        <div className="w-full xs:flex-col lg:flex-row mt-8 flex items-center justify-between xs:gap-4 lg:gap-0">
+          <UserMetricsChart />
+          <TopCategories />
         </div>
       </div>
     </div>
