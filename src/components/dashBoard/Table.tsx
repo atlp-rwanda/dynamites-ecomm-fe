@@ -36,7 +36,7 @@ function Table() {
     (state: RootState) => state.DeshboardProducts
   );
   // -----------------------------------------------------------
-  const [isDeleteModalVisible, setModalVisible] = useState(false);
+  const [isConfirmationModalVisible, setModalVisible] = useState(false);
   const [itemSelected, setItemToselected] = useState<number | null>(null);
   const [mode, setmode] = useState('');
   const [searchTerm, setSearchTerm] = useState('');
@@ -297,7 +297,7 @@ function Table() {
         {mode === 'delete' && (
           <div className="">
             <ConfirmationCard
-              isVisible={isDeleteModalVisible}
+              isVisible={isConfirmationModalVisible}
               onClose={() => setModalVisible(false)}
               onConfirm={confirmDelete}
               message="Are you sure you want to delete this item?"
@@ -308,7 +308,7 @@ function Table() {
         {mode === 'update' && (
           <div className="">
             <ConfirmationCard
-              isVisible={isDeleteModalVisible}
+              isVisible={isConfirmationModalVisible}
               onClose={() => setModalVisible(false)}
               onConfirm={confirmUpdate}
               message="Are you sure you want to Update this item ?"
