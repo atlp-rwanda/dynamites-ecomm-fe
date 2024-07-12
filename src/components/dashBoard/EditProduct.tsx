@@ -27,43 +27,40 @@ const EditProducts = () => {
     }
   }, [id]);
 
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
-    const { name, value} = e.target;
-    if (name === 'image')
-    {
+  const handleChange = (
+    e: React.ChangeEvent<
+      HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement
+    >
+  ) => {
+    const { name, value } = e.target;
+    if (name === 'image') {
       const input = e.target as HTMLInputElement;
-      if (input.files && input.files.length > 0)
-      {
+      if (input.files && input.files.length > 0) {
         const selectedFile = input.files[0];
-        const imageURL= URL.createObjectURL(selectedFile)
-        console.log('Selected file:', imageURL)
+        const imageURL = URL.createObjectURL(selectedFile);
+        console.log('Selected file:', imageURL);
       }
-    }
-     
-    else if(name == 'gallery')
-    {
+    } else if (name == 'gallery') {
       const input = e.target as HTMLInputElement;
-      if (input.files) 
-      {
+      if (input.files) {
         const selectedFiles = Array.from(input.files).slice(0, 3);
-        const filesArray = selectedFiles.map(file => URL.createObjectURL(file));
+        const filesArray = selectedFiles.map((file) =>
+          URL.createObjectURL(file)
+        );
         console.log('Selected files:', filesArray);
       }
-    }
-
-    else if (Product) {
-      if(name === 'category')
-      {
-        setDashboardProduct({ ...Product, category: { ...Product.category, name: value } });
-      }
-      else if (name === 'tags') {
-        const tagsArray = value.split(',').map(tag => tag.trim());
+    } else if (Product) {
+      if (name === 'category') {
+        setDashboardProduct({
+          ...Product,
+          category: { ...Product.category, name: value },
+        });
+      } else if (name === 'tags') {
+        const tagsArray = value.split(',').map((tag) => tag.trim());
         setDashboardProduct({ ...Product, tags: tagsArray });
-      }
-      else{
+      } else {
         setDashboardProduct({ ...Product, [name]: value });
       }
-      
     }
   };
 
@@ -76,7 +73,7 @@ const EditProducts = () => {
 
   const handleUpdate = () => {
     setModalVisible(true);
-    console.log('the confilmation is on')
+    console.log('the confilmation is on');
   };
 
   return (
@@ -111,7 +108,7 @@ const EditProducts = () => {
                   type="file"
                   name="image"
                   onChange={handleChange}
-                  accept='image/*'
+                  accept="image/*"
                   className="w-full h-full outline-none  bg-[#F5F6F6]"
                 />
               </div>
@@ -202,13 +199,15 @@ const EditProducts = () => {
               </label>
               <div className="bg-[#F5F6F6] min-h-[142px] w-full flex flex-row mt-[10px] items-center pl-[10px] rounded-lg">
                 <div className=" w-full h-full flex flex-col">
-                  <input 
-                  type="file"
-                  name='gallery'
-                  onChange={handleChange} 
-                  multiple
-                  accept='image/*'
-                  id="gallery_" className=" hidden" />
+                  <input
+                    type="file"
+                    name="gallery"
+                    onChange={handleChange}
+                    multiple
+                    accept="image/*"
+                    id="gallery_"
+                    className=" hidden"
+                  />
                   <label
                     htmlFor="gallery_"
                     className=" flex flex-col justify-center items-center"
@@ -224,11 +223,12 @@ const EditProducts = () => {
                 Category
               </label>
               <div className="bg-[#F5F6F6] min-h-[51px] w-full flex flex-row mt-[10px] items-center pl-[10px] rounded-lg">
-                <select 
-                name='category'
-                value={Product?.category.name || ''}
-                onChange={handleChange}
-                className=" w-full h-full outline-none  bg-[#F5F6F6]">
+                <select
+                  name="category"
+                  value={Product?.category.name || ''}
+                  onChange={handleChange}
+                  className=" w-full h-full outline-none  bg-[#F5F6F6]"
+                >
                   <option value="shirt">Shirt</option>
                   <option value="pants">Pants</option>
                   <option value="shoes">Shoes</option>
@@ -256,7 +256,7 @@ const EditProducts = () => {
               <div className="bg-[#F5F6F6] min-h-[51px] w-full flex flex-row mt-[10px] items-center pl-[10px] rounded-lg">
                 <input
                   type="text"
-                  name='tags'
+                  name="tags"
                   value={Product?.tags || []}
                   onChange={handleChange}
                   placeholder="Tags"
@@ -270,10 +270,11 @@ const EditProducts = () => {
               </label>
               <div className="bg-[#F5F6F6] min-h-[51px] w-full flex flex-row mt-[10px] items-center pl-[10px] rounded-lg">
                 <select
-                name='isAvailable'
-                value={String(Product?.isAvailable || false)}
-                onChange={handleChange}
-                className=" w-full h-full outline-none  bg-[#F5F6F6]">
+                  name="isAvailable"
+                  value={String(Product?.isAvailable || false)}
+                  onChange={handleChange}
+                  className=" w-full h-full outline-none  bg-[#F5F6F6]"
+                >
                   <option value="true">True</option>
                   <option value="false">False</option>
                 </select>
@@ -292,12 +293,12 @@ const EditProducts = () => {
         </div>
       </div>
       <div className="">
-            <ConfirmationCard
-              isVisible={isConfirmationModalVisible}
-              onClose={() => setModalVisible(false)}
-              onConfirm={handleSubmit}
-              message="Are you sure you want to Update this item ?"
-            />
+        <ConfirmationCard
+          isVisible={isConfirmationModalVisible}
+          onClose={() => setModalVisible(false)}
+          onConfirm={handleSubmit}
+          message="Are you sure you want to Update this item ?"
+        />
       </div>
     </div>
   );
