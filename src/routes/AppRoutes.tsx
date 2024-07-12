@@ -36,7 +36,7 @@ function AppRoutes() {
         />
         <Route
           index
-          path="/adminDashboard/products/id"
+          path="/adminDashboard/products/:id"
           element={<EditProductPage />}
         />
         {/* add more for dashboard */}

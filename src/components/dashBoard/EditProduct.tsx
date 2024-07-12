@@ -1,40 +1,40 @@
-import React, { useState, ChangeEvent } from 'react';
+import { useState, useEffect } from 'react';
+import { useSelector } from 'react-redux';
+import { RootState } from '../../app/store';
+import { useParams } from 'react-router-dom';
 import { MdOutlineCloudUpload } from 'react-icons/md';
-import HSInput from '@/components/form/HSInput';
+import Product from '@/interfaces/product';
 
 // -------------------------------------------------------------------------------------------
 const EditProducts = () => {
-  const [productTitle, setProductTitle] = useState('');
-  const [shortDescription, setShortDescription] = useState('');
-  const [longDescription, setLongDescription] = useState('');
-  const [regularPrice, setRegularPrice] = useState('');
-  const [salesPrice, setSalesPrice] = useState('');
-  const [quantity, setQuantity] = useState('');
+  const { id } = useParams();
+  const DashboardProduct = useSelector((state: RootState) =>
+    state.DeshboardProducts.DashboardProduct.find(
+      (product) => product.id == Number(id)
+    )
+  );
+  const [Product, setDashboardProduct] = useState<Product | null>(null);
 
-  // ---------------------------------------------------------------
+  useEffect(() => {
+    if (DashboardProduct) {
+      setDashboardProduct(DashboardProduct);
+    } else {
+      alert('Product not found');
+    }
+  }, [id]);
 
-  const [featureImage, setFeatureImage] = useState<string | null>(null);
-  const [galleryImages, setGalleryImages] = useState<string[]>([]);
-
-  const handleFeatureImageChange = (e: ChangeEvent<HTMLInputElement>) => {
-    if (e.target.files && e.target.files[0]) {
-      setFeatureImage(URL.createObjectURL(e.target.files[0]));
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const { name, value } = e.target;
+    if (Product) {
+      setDashboardProduct({ ...Product, [name]: value });
     }
   };
 
-  const handleGalleryImageChange = (e: ChangeEvent<HTMLInputElement>) => {
-    if (e.target.files) {
-      const newImages = Array.from(e.target.files).map((file) =>
-        URL.createObjectURL(file)
-      );
-      setGalleryImages((prevImages) => [...prevImages, ...newImages]);
-    }
+  const handleSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    // Logic to update the product
+    console.log('Updated product:', Product);
   };
-
-  const removeGalleryImage = (index: number) => {
-    setGalleryImages((prevImages) => prevImages.filter((_, i) => i !== index));
-  };
-  // ----------------------------------------------------------------------------
 
   return (
     <div className="pr-[3%]">
@@ -51,7 +51,10 @@ const EditProducts = () => {
               <div className="bg-[#F5F6F6] min-h-[51px] w-full flex flex-row mt-[10px] items-center pl-[10px] rounded-lg">
                 <input
                   type="text"
+                  name="name"
                   placeholder="Iphone"
+                  value={Product?.name || ''}
+                  onChange={handleChange}
                   className=" w-full h-full outline-none  bg-[#F5F6F6]"
                 />
               </div>
@@ -63,6 +66,8 @@ const EditProducts = () => {
               <div className="bg-[#F5F6F6] min-h-[51px] w-full flex flex-row mt-[10px] items-center pl-[10px] rounded-lg">
                 <input
                   type="file"
+                  name="image"
+                  onChange={handleChange}
                   className="w-full h-full outline-none  bg-[#F5F6F6]"
                 />
               </div>
@@ -74,6 +79,9 @@ const EditProducts = () => {
               <div className="bg-[#F5F6F6] min-h-[51px] w-full flex flex-row mt-[10px] items-center pl-[10px] rounded-lg">
                 <input
                   type="text"
+                  name="shortDesc"
+                  value={Product?.shortDesc || ''}
+                  onChange={handleChange}
                   placeholder="Short Description"
                   className=" w-full h-full outline-none  bg-[#F5F6F6]"
                 />
@@ -84,10 +92,11 @@ const EditProducts = () => {
                 Long Description
               </label>
               <div className="bg-[#F5F6F6] min-h-[51px] w-full flex flex-row mt-[10px] items-center pl-[10px] rounded-lg">
-                <input
-                  type="text"
+                <textarea
+                  name="longDesc"
+                  value={Product?.longDesc || ''}
                   placeholder="Long Description"
-                  className=" w-full h-full outline-none  bg-[#F5F6F6]"
+                  className=" w-full h-full outline-none pt-[8px] bg-[#F5F6F6]"
                 />
               </div>
             </div>
@@ -98,7 +107,9 @@ const EditProducts = () => {
               <div className="bg-[#F5F6F6] min-h-[51px] w-full flex flex-row mt-[10px] items-center pl-[10px] rounded-lg">
                 <input
                   type="text"
-                  placeholder="30"
+                  name="quantity"
+                  value={Product?.quantity || ''}
+                  onChange={handleChange}
                   className=" w-full h-full outline-none  bg-[#F5F6F6]"
                 />
               </div>
@@ -110,6 +121,9 @@ const EditProducts = () => {
               <div className="bg-[#F5F6F6] min-h-[51px] w-full flex flex-row mt-[10px] items-center pl-[10px] rounded-lg">
                 <input
                   type="text"
+                  name="regularPrice"
+                  value={Product?.regularPrice || ''}
+                  onChange={handleChange}
                   placeholder="$2000"
                   className=" w-full h-full outline-none  bg-[#F5F6F6]"
                 />
@@ -122,7 +136,11 @@ const EditProducts = () => {
                 Type
               </label>
               <div className="bg-[#F5F6F6] min-h-[51px] w-full flex flex-row mt-[10px] items-center pl-[10px] rounded-lg">
-                <select className=" w-full h-full outline-none  bg-[#F5F6F6]">
+                <select
+                  name="type"
+                  value={Product?.type || ''}
+                  className=" w-full h-full outline-none  bg-[#F5F6F6]"
+                >
                   <option value="simple">Simple</option>
                   <option value="grouped">Grouped</option>
                   <option value="variable">Variable</option>
@@ -202,6 +220,7 @@ const EditProducts = () => {
         </div>
         <div className="flex flex-row items-center justify-between self-center">
           <button
+            onClick={handleSubmit}
             className=" bg-primary border-[2px] h-full w-full border-primary text-white px-[60px] py-[7px] rounded-md flex justify-center items-center gap-2 text-lg
                 hover:shadow-lg hover:scale-105 transition-all duration-300 ease-in-out hover:bg-white hover:text-primary"
           >

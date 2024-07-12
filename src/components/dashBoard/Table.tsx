@@ -6,6 +6,7 @@ import ConfirmationCard from './ConfirmationCard';
 import CircularPagination from './NavigateonPage';
 import { AppDispatch, RootState } from '../../app/store';
 import { fetchDashboardProduct } from '@/features/Dashboard/dashboardProductsSlice';
+import { useNavigate } from 'react-router-dom';
 
 interface Column {
   Header: string;
@@ -59,7 +60,9 @@ function Table() {
     .slice(startIndex, startIndex + PRODUCTS_PER_PAGE);
 
   // ---------------------------------------------------
+  const navigate = useNavigate();
 
+  // -----------------------------------------------------
   const handleDelete = (id: number) => {
     setItemToselected(id);
     setmode('delete');
@@ -84,7 +87,7 @@ function Table() {
 
   const confirmUpdate = () => {
     if (itemSelected !== null) {
-      // Logic to update the item
+      navigate(`/adminDashboard/products/${itemSelected}`);
     }
     setModalVisible(false);
   };
