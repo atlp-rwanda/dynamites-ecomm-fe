@@ -15,7 +15,7 @@ interface Buyer {
   picture: string;
   provider: string | null;
   isVerified: boolean;
-  status: 'active';
+  status: string;
   twoFactorCode: string | null;
 }
 

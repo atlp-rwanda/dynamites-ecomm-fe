@@ -1,13 +1,12 @@
 import { Outlet } from 'react-router-dom';
-import { ToastContainer } from 'react-toastify';
+//  import { ToastContainer } from 'react-toastify';
 import DashboardSideNav from '@/components/dashBoard/DashboardSideNav';
 import Navbar from '@/components/dashBoard/dashBoardNav';
-import ToastProps from '@/utils/ToastConfig';
 
 function DashboardLayout() {
   return (
     <div className="bg-dashgrey flex flex-col  min-h-screen">
-      <ToastContainer {...ToastProps} />
+      {/* <ToastContainer /> */}
       <div className="fixed bg-white top-0 left-0 right-0 z-50">
         <Navbar />
       </div>

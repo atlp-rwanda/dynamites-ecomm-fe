@@ -6,6 +6,7 @@ import HSButton from '@/components/form/Button';
 import otpVector from '../assets/otp.png';
 import { useAppDispatch, useAppSelector } from '@/app/hooks';
 import { twoFactorverify } from '@/features/Auth/SignInSlice';
+import { showSuccessToast } from '@/utils/ToastConfig';
 
 // formik global valiables
 interface MyFormValues {
@@ -88,6 +89,7 @@ function TwoFactorAuthForm() {
 
   useEffect(() => {
     if (token && user?.userType.name === 'Vendor') {
+      showSuccessToast('Vendor Logged In Sucessfully');
       navigate('/');
     }
   }, [token, user, navigate]);
