@@ -63,6 +63,7 @@ function SignIn() {
       navigate(`/verify-2fa/${id}/${email}`);
     } else if (token) {
       if (role === 'Admin') {
+        showSuccessToast('Admin Logged in Successfully');
         navigate('/adminDashboard');
       } else {
         showSuccessToast('Buyer Logged in Successfully');

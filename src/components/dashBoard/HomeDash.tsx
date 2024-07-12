@@ -4,7 +4,6 @@ import { fetchBuyers } from '@/app/Dashboard/buyerSlice';
 import { fetchOrders } from '@/app/Dashboard/orderSlice';
 import { useAppSelector } from '@/app/hooks';
 import { AppDispatch, RootState } from '@/app/store';
-import { fetchProducts } from '@/features/Products/ProductSlice';
 import UserMetricsChart from '../Chart';
 import TopCategories from '../TopCategories';
 
@@ -25,7 +24,6 @@ function HomeDash() {
   const greetings = getGreeting();
   const dispatch: AppDispatch = useDispatch();
   useEffect(() => {
-    dispatch(fetchProducts());
     dispatch(fetchBuyers());
     dispatch(fetchOrders());
   }, [dispatch]);
@@ -66,7 +64,7 @@ function HomeDash() {
             </div>
           </div>
           <div>
-            <img src="/src/assets/farmer.svg" alt="farmer" />
+            <img src="/icons/farmer.svg" alt="farmer" />
           </div>
         </div>
 
@@ -77,7 +75,7 @@ function HomeDash() {
               className="border flex items-center px-2 py-1 rounded-md"
               type="submit"
             >
-              <img src="/src/assets/ExportIcon.svg" alt="Export" />
+              <img src="/icons/ExportIcon.svg" alt="Export" />
               Export
             </button>
           </div>
@@ -86,7 +84,7 @@ function HomeDash() {
             <div className="mx-4 bg-salesbg p-4 rounded-xl">
               <div className="flex items-center gap-2 text-xl font-semibold py-4">
                 <div className="bg-iconsales p-1 rounded-full w-8">
-                  <img src="/src/assets/SalesIcon.svg" alt="Sales" />
+                  <img src="/icons/SalesIcon.svg" alt="Sales" />
                 </div>
                 <div>
                   <div>{sum}$</div>
@@ -100,7 +98,7 @@ function HomeDash() {
             <div className="mx-4 bg-orderbg p-4 rounded-xl">
               <div className="flex items-center gap-2 text-xl font-semibold py-4">
                 <div className="bg-iconorder p-1 rounded-full w-8">
-                  <img src="/src/assets/OrderIcon.svg" alt="Order" />
+                  <img src="/icons/OrderIcon.svg" alt="Order" />
                 </div>
                 <div>{order.length}</div>
               </div>
@@ -112,7 +110,7 @@ function HomeDash() {
             <div className="mx-4 bg-psoldbg p-4 rounded-xl">
               <div className="flex items-center gap-2 text-xl font-semibold py-4">
                 <div className="bg-psoldicon p-1 rounded-full w-8">
-                  <img src="/src/assets/DiscIcon.svg" alt="Product Sold" />
+                  <img src="/icons/DiscIcon.svg" alt="Product Sold" />
                 </div>
                 <div>{tproduct}</div>
               </div>
@@ -124,7 +122,7 @@ function HomeDash() {
             <div className="mx-4 bg-customerbg p-4 rounded-xl">
               <div className="flex items-center gap-2 text-xl font-semibold py-4">
                 <div className="bg-customericon p-1 rounded-full">
-                  <img src="/src/assets/AddPeople.svg" alt="New Customers" />
+                  <img src="/icons/AddPeople.svg" alt="New Customers" />
                 </div>
                 <div>
                   {buyers &&
