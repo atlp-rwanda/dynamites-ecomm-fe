@@ -10,12 +10,14 @@ import PasswordResetRequestForm from '@/components/password/PasswordResetRequest
 import ResetPasswordForm from '@/components/password/PasswordResetForm';
 import AdminRoutes from '@/pages/AdminRoutes';
 import Admin from '@/pages/Admin';
+import Shop from '@/pages/Shop';
 
 function AppRoutes() {
   return (
     <Routes>
       <Route element={<HomeLayout />}>
         <Route index path="/" element={<Home />} />
+        <Route path="shop" element={<Shop />} />
       </Route>
       <Route path="/signup" element={<SignUp />} />
       <Route path="/signIn" element={<SignIn />} />

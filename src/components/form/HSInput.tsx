@@ -8,6 +8,7 @@ interface MyInputProps {
   label?: string;
   onChange?: (event: React.ChangeEvent<HTMLInputElement>) => void;
   onChangeTextArea?: (event: React.ChangeEvent<HTMLTextAreaElement>) => void;
+  onKeyDown?: (event: React.KeyboardEvent<HTMLInputElement>) => void;
   placeholder: string;
   type?: string;
   text?: string;
@@ -25,6 +26,7 @@ function HSInput({
   label,
   onChange,
   onChangeTextArea,
+  onKeyDown,
   placeholder,
   type,
   text,
@@ -51,6 +53,7 @@ function HSInput({
             placeholder={placeholder}
             className="w-full h-full bg-transparent py-3 outline-none"
             maxLength={maxLength}
+            onKeyDown={onKeyDown}
           />
         </div>
       ) : (

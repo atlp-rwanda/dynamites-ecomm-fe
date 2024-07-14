@@ -38,6 +38,8 @@ export default {
         customerbg: '#F3E8FF',
         customericon: '#BF83FF',
         dashbordblue: '#4079ED',
+        linkGrey: '#9095A1',
+        sliderBg: '#F0F9FF',
       },
       fontFamily: {
         Lexend: ['Lexend'],

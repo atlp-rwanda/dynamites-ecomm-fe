@@ -4,11 +4,23 @@ import axios from 'axios';
 import { Product } from '@/types/Product';
 import User from '@/types/User';
 import { RootState } from '../../app/store';
+import { showErrorToast } from '@/utils/ToastConfig';
 
 interface Payload {
   message: string;
   data: Product[];
 }
+
+interface SearchParams {
+  keyword?: string;
+  category?: number[];
+  rating?: number[];
+  page?: number;
+  sort?: string;
+  minPrice?: number;
+  maxPrice?: number;
+}
+
 export const fetchProducts = createAsyncThunk(
   'products/fetchProducts',
   async () => {
@@ -19,10 +31,57 @@ export const fetchProducts = createAsyncThunk(
   }
 );
 
+export const fetchRecommendedProducts = createAsyncThunk<Product[]>(
+  'products/fetchRecommendedProducts',
+  async () => {
+    const response = await axios.get(
+      `${import.meta.env.VITE_BASE_URL}/product/recommended`
+    );
+    return response.data.data;
+  }
+);
+
+export const searchProducts = createAsyncThunk<
+  { data: Product[]; total: number },
+  SearchParams
+>(
+  'products/searchProducts',
+  async (
+    { keyword, category, rating, page, sort, minPrice, maxPrice },
+    thunkAPI
+  ) => {
+    try {
+      const response = await axios.get(
+        `${import.meta.env.VITE_BASE_URL}/search`,
+        {
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem('token')}`,
+          },
+          params: {
+            keyword,
+            category,
+            rating,
+            page,
+            sort,
+            minPrice,
+            maxPrice,
+          },
+        }
+      );
+
+      return response.data;
+    } catch (err) {
+      return thunkAPI.rejectWithValue('An error occured');
+    }
+  }
+);
+
 interface ProductsState {
   isLoading: boolean;
   products: Product[];
   allProducts: Product[];
+  recommendedProducts: Product[];
+  total: number;
 }
 
 const initialState: ProductsState = {
@@ -59,6 +118,8 @@ const initialState: ProductsState = {
     },
   ],
   allProducts: [],
+  recommendedProducts: [],
+  total: 0,
 };
 
 const productsSlice = createSlice({
@@ -107,6 +168,24 @@ const productsSlice = createSlice({
           ...state,
           isLoading: false,
         };
+      })
+      .addCase(searchProducts.pending, (state) => {
+        state.isLoading = true;
+      })
+      .addCase(searchProducts.fulfilled, (state, action) => {
+        state.isLoading = false;
+        state.allProducts = action.payload.data;
+        state.total = action.payload.total;
+      })
+      .addCase(searchProducts.rejected, (state, action) => {
+        state.isLoading = false;
+        showErrorToast(action.payload as string);
+      })
+      .addCase(fetchRecommendedProducts.fulfilled, (state, action) => {
+        state.recommendedProducts = action.payload;
+      })
+      .addCase(fetchRecommendedProducts.rejected, (_, action) => {
+        showErrorToast(action.payload as string);
       });
   },
 });
