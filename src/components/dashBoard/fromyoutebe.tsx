@@ -1,11 +1,11 @@
-import React from "react";
-import { useState } from "react";
-import assets from "../assets/assets.gif";
-import axios from "axios";
+import React from 'react';
+import { useState } from 'react';
+import assets from '../assets/assets.gif';
+import axios from 'axios';
 
 export default function UploadImage() {
   const [loading, setLoading] = useState(false);
-  const [url, setUrl] = useState("");
+  const [url, setUrl] = useState('');
 
   const convertBase64 = (file) => {
     return new Promise((resolve, reject) => {
@@ -25,10 +25,10 @@ export default function UploadImage() {
   function uploadSingleImage(base64) {
     setLoading(true);
     axios
-      .post("http://localhost:5000/uploadImage", { image: base64 })
+      .post('http://localhost:5000/uploadImage', { image: base64 })
       .then((res) => {
         setUrl(res.data);
-        alert("Image uploaded Succesfully");
+        alert('Image uploaded Succesfully');
       })
       .then(() => setLoading(false))
       .catch(console.log);
@@ -37,10 +37,10 @@ export default function UploadImage() {
   function uploadMultipleImages(images) {
     setLoading(true);
     axios
-      .post("http://localhost:5000/uploadMultipleImages", { images })
+      .post('http://localhost:5000/uploadMultipleImages', { images })
       .then((res) => {
         setUrl(res.data);
-        alert("Image uploaded Succesfully");
+        alert('Image uploaded Succesfully');
       })
       .then(() => setLoading(false))
       .catch(console.log);
@@ -117,7 +117,7 @@ export default function UploadImage() {
       <div>
         {url && (
           <div>
-            Access you file at{" "}
+            Access you file at{' '}
             <a href={url} target="_blank" rel="noopener noreferrer">
               {url}
             </a>
@@ -127,7 +127,7 @@ export default function UploadImage() {
       <div>
         {loading ? (
           <div className="flex items-center justify-center">
-            <img src={assets} />{" "}
+            <img src={assets} />{' '}
           </div>
         ) : (
           <UploadInput />
@@ -137,36 +137,35 @@ export default function UploadImage() {
   );
 }
 
-
 <div className="bg-[#F5F6F6] min-h-[142px] w-full flex flex-row mt-[10px] items-center pl-[10px] rounded-lg">
-      <div className="w-full h-full flex flex-col">
-        <input
-          type="file"
-          name="gallery"
-          onChange={handleFileChange}
-          multiple
-          accept="image/*"
-          id="gallery_"
-          className="hidden"
-        />
-        <label
-          htmlFor="gallery_"
-          className="flex flex-col justify-center items-center cursor-pointer"
-        >
-          <MdOutlineCloudUpload className="w-[32px] h-[32px] text-primary" />
-          <div className="text-lg">Click to upload</div>
-        </label>
+  <div className="w-full h-full flex flex-col">
+    <input
+      type="file"
+      name="gallery"
+      onChange={handleFileChange}
+      multiple
+      accept="image/*"
+      id="gallery_"
+      className="hidden"
+    />
+    <label
+      htmlFor="gallery_"
+      className="flex flex-col justify-center items-center cursor-pointer"
+    >
+      <MdOutlineCloudUpload className="w-[32px] h-[32px] text-primary" />
+      <div className="text-lg">Click to upload</div>
+    </label>
+  </div>
+  <div className="ml-4 flex flex-col">
+    {selectedFiles.length > 0 && (
+      <div className="mt-2">
+        <strong>Uploaded Files:</strong>
+        <ul>
+          {selectedFiles.map((file, index) => (
+            <li key={index}>{file.name}</li>
+          ))}
+        </ul>
       </div>
-      <div className="ml-4 flex flex-col">
-        {selectedFiles.length > 0 && (
-          <div className="mt-2">
-            <strong>Uploaded Files:</strong>
-            <ul>
-              {selectedFiles.map((file, index) => (
-                <li key={index}>{file.name}</li>
-              ))}
-            </ul>
-          </div>
-        )}
-      </div>
-    </div>
+    )}
+  </div>
+</div>;
