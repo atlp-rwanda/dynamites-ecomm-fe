@@ -1,3 +1,4 @@
+import axios from 'axios';
 import { useState, useEffect } from 'react';
 import { useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
@@ -6,8 +7,25 @@ import { useParams } from 'react-router-dom';
 import { MdOutlineCloudUpload } from 'react-icons/md';
 import ConfirmationCard from './ConfirmationCard';
 import Product from '@/interfaces/product';
-
+import {uploadSingleImage, uploadGalleryImages} from '@/utils/UploadImages'
+import { MdCheckCircle } from "react-icons/md";
 // -------------------------------------------------------------------------------------------
+
+interface UpdateProduct {
+  name: string;
+  image: string;
+  gallery: string[];
+  shortDesc: string;
+  longDesc: string;
+  categoryId: number;
+  quantity: number;
+  regularPrice: number;
+  salesPrice: number;
+  tags: string[];
+  type: string; 
+  isAvailable: boolean;
+}
+
 const EditProducts = () => {
   const { id } = useParams();
   const DashboardProduct = useSelector((state: RootState) =>
@@ -18,6 +36,9 @@ const EditProducts = () => {
   const navigate = useNavigate();
   const [Product, setDashboardProduct] = useState<Product | null>(null);
   const [isConfirmationModalVisible, setModalVisible] = useState(false);
+  const [Preview_Of_Files, setPreview_Of_Files] = useState<string[]>([]);
+  const [loading, setLoading] = useState(true)
+  const [image_loading, setimageloading] = useState(true)
 
   useEffect(() => {
     if (DashboardProduct) {
@@ -27,29 +48,49 @@ const EditProducts = () => {
     }
   }, [id]);
 
-  const handleChange = (
-    e: React.ChangeEvent<
-      HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement
-    >
-  ) => {
+
+  const handleChange = async(e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
     const { name, value } = e.target;
-    if (name === 'image') {
+    if (Product && name === 'image') {
       const input = e.target as HTMLInputElement;
       if (input.files && input.files.length > 0) {
         const selectedFile = input.files[0];
-        const imageURL = URL.createObjectURL(selectedFile);
-        console.log('Selected file:', imageURL);
+        setLoading(true);
+        try{
+          const url = await uploadSingleImage(selectedFile);
+          setDashboardProduct({ ...Product, image: url });
+          setimageloading(false)
+          console.log('Selected files:', url);
+        }
+        catch(error)
+        {
+          console.log('Error uploading images:', error);
+        }
       }
-    } else if (name == 'gallery') {
+    } 
+
+    else if (Product && name == 'gallery') {
       const input = e.target as HTMLInputElement;
       if (input.files) {
         const selectedFiles = Array.from(input.files).slice(0, 3);
-        const filesArray = selectedFiles.map((file) =>
-          URL.createObjectURL(file)
-        );
-        console.log('Selected files:', filesArray);
+        setPreview_Of_Files(selectedFiles.map(file => URL.createObjectURL(file)));
+        setLoading(true);
+        try{
+          const urls = await uploadGalleryImages(selectedFiles);
+          const filesArray = Array.from(urls)
+          setDashboardProduct({ ...Product, gallery: filesArray });
+          setLoading(false)
+          console.log('Selected files:', filesArray, Preview_Of_Files);
+          
+        }
+        catch(error)
+        {
+          console.log('Error uploading images:', error);
+        }
       }
-    } else if (Product) {
+    } 
+
+    else if (Product) {
       if (name === 'category') {
         setDashboardProduct({
           ...Product,
@@ -64,16 +105,59 @@ const EditProducts = () => {
     }
   };
 
-  const handleSubmit = () => {
-    // Logic to update the product
-    console.log('Updated product:', Product, id);
-    setModalVisible(false);
-    navigate(`/adminDashboard/products/`);
+
+  const transformToNewProduct = (oldProduct:Product):UpdateProduct => {
+    return {
+      name: oldProduct.name,
+      image: oldProduct.image,
+      gallery: oldProduct.gallery,
+      shortDesc: oldProduct.shortDesc,
+      longDesc: oldProduct.longDesc,
+      categoryId: DashboardProduct?.category.id || 5,
+      quantity: oldProduct.quantity,
+      regularPrice: oldProduct.regularPrice,
+      salesPrice: oldProduct.salesPrice,
+      tags: oldProduct.tags,
+      type: oldProduct.type,
+      isAvailable: oldProduct.isAvailable
+    };
   };
+  
+  const handleSubmit = async () => {
+
+    let newproduct
+
+    if(Product)
+    {
+      newproduct = transformToNewProduct(Product);
+    }
+    console.log('Updated product:', newproduct);
+    try {
+      const token = localStorage.getItem('token'); 
+      const response = await axios.put(`https://dynamites-ecomm-be.onrender.com/api/v1/product/${id}`, newproduct, {
+        headers:{Authorization: `Bearer ${token}`}
+      });
+      console.log('The backend response:', response);
+      setModalVisible(false);
+      navigate(`/adminDashboard/products/`);
+    } 
+    catch (error) {
+      if (axios.isAxiosError(error)) {
+        console.error(`Error updating product with id ${id}:`, error);
+      } else {
+        console.error('Unexpected error occurred:', error);
+      }
+      setModalVisible(false);
+    }
+  };
+  
 
   const handleUpdate = () => {
-    setModalVisible(true);
-    console.log('the confilmation is on');
+
+      setModalVisible(true);
+      console.log('the confilmation is on');
+    return
+
   };
 
   return (
@@ -111,6 +195,8 @@ const EditProducts = () => {
                   accept="image/*"
                   className="w-full h-full outline-none  bg-[#F5F6F6]"
                 />
+                <div className={image_loading ? 'hidden' : ''}><MdCheckCircle className={image_loading ? 'text-red-500' : 'text-green-800'} /></div>
+                
               </div>
             </div>
             <div className="w-full mx-[7%] mb-[2.5%]">
@@ -215,6 +301,30 @@ const EditProducts = () => {
                     <MdOutlineCloudUpload className=" w-[32px] h-[32px] text-primary" />
                     <div className=" text-lg">Click To upload</div>
                   </label>
+                  <div className="ml-4 mb-2 flex flex-col">
+                      {Preview_Of_Files.length > 0 && (
+                        <div className="mt-2">
+                          <strong className='text-primary flex flex-row'>
+                            Uploaded Files:{loading
+                            ?<div className=' text-red-500 ml-1'>Uploading...</div> 
+                            :<div className=' text-green-800 ml-1'>Uploaded</div>}
+                          </strong>
+                          <ul className='flex flex-row items-center justify-evenly'>
+                              {Preview_Of_Files.map((preview, index) => (
+                                <li key={index} >
+                                  <div className='flex flex-row justify-start items-center'>
+                                    <div className={` border-2  rounded ${loading ? 'border-red-500' : 'border-green-800'}`}>
+                                      <img src={preview} alt="" className=" h-[80px] w-[80px]" />
+                                    </div>
+                                    <MdCheckCircle className={loading ? 'text-red-500' : 'text-green-800'} />
+                                  </div>
+                                </li>
+                            ))}
+                          </ul>
+
+                        </div>
+                      )}
+                  </div>
                 </div>
               </div>
             </div>

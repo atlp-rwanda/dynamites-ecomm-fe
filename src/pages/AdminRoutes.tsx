@@ -9,7 +9,7 @@ interface Adminprops {
 function AdminRoutes({ children }: Adminprops) {
   const user = useAppSelector((state) => state.signIn.user);
 
-  return user?.userType?.name === 'Admin' ? (
+  return user?.userType?.name === 'Admin' || user?.userType?.name === 'Vendor' ? (
     children
   ) : (
     <Navigate to="/signIn" />

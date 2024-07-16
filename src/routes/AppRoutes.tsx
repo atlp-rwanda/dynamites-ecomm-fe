@@ -21,24 +21,9 @@ function AppRoutes() {
       <Route path="/signup" element={<SignUp />} />
       <Route path="/signIn" element={<SignIn />} />
       <Route path="/verify-2fa/:id/:email" element={<TwoFactorAuthForm />} />
-      <Route
-        path="/adminDashboard"
-        element={
-          <AdminRoutes>
-            <DashboardLayout />
-          </AdminRoutes>
-        }
-      >
-        <Route
-          index
-          path="/adminDashboard/products"
-          element={<DesplayProductPage />}
-        />
-        <Route
-          index
-          path="/adminDashboard/products/:id"
-          element={<EditProductPage />}
-        />
+      <Route path="/adminDashboard" element={<AdminRoutes><DashboardLayout /></AdminRoutes>}>
+        <Route index path="/adminDashboard/products" element={<DesplayProductPage />}/>
+        <Route index path="/adminDashboard/products/:id" element={<EditProductPage />}/>
         {/* add more for dashboard */}
       </Route>
       <Route path="*" element={<ErrorPage />} />

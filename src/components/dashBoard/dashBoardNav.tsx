@@ -55,7 +55,7 @@ function DashNavbar() {
             </div>
             <div className="flex flex-col items-start">
               <h2 className="text-textBlack text-sm hidden lg:block">{`${user.firstName} ${user.lastName}`}</h2>
-              {/* <span className="text-grey text-xs">{user.role}</span> */}
+              <span className="text-grey text-xs">{user.userType.name}</span>
             </div>
             <FaAngleDown size="15" color="#424856" title="toggleProfile" />
           </div>
