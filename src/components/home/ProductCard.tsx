@@ -28,7 +28,8 @@ function ProductCard({ product }: ProductCardProps) {
       >
         <div className="flex justify-between items-center">
           <h3 className="text-lg font-semibold text-gray-800">
-            {product.name}
+            {product.name.substring(0, 17)}
+            {product.name.length > 18 && '...'}
           </h3>
           <svg
             xmlns="http://www.w3.org/2000/svg"
@@ -42,7 +43,8 @@ function ProductCard({ product }: ProductCardProps) {
           </svg>
         </div>
         <p className="text-gray-400 tracking-wide font-light text-sm">
-          {product.shortDesc}
+          {product.shortDesc.substring(0, 27)}
+          {product.shortDesc.length > 28 && '...'}
         </p>
         <div className="flex items-center gap-2 py-2 w-fit">
           <div className="flex items-center font-medium gap-2 relative w-fit">

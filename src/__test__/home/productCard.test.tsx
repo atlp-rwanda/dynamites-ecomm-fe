@@ -39,10 +39,14 @@ describe('ProductCard Component', () => {
   it('renders the ProductCard component with product details', () => {
     render(<ProductCard product={mockProduct} />);
 
-    const productName = screen.getByText(mockProduct.name);
+    const productName = screen.getByText(
+      `${mockProduct.name.substring(0, 17)}${mockProduct.name.length > 18 ? '...' : ''}`
+    );
     expect(productName).toBeInTheDocument();
 
-    const productDesc = screen.getByText(mockProduct.shortDesc);
+    const productDesc = screen.getByText(
+      `${mockProduct.shortDesc.substring(0, 27)}${mockProduct.shortDesc.length > 28 ? '...' : ''}`
+    );
     expect(productDesc).toBeInTheDocument();
 
     const productImage = screen.getByAltText(mockProduct.name);

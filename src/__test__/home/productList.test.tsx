@@ -88,10 +88,14 @@ describe('ProductsList Component', () => {
     );
 
     mockProducts.forEach((product) => {
-      const productName = screen.getByText(product.name);
+      const productName = screen.getByText(
+        `${product.name.substring(0, 17)}${product.name.length > 18 ? '...' : ''}`
+      );
       expect(productName).toBeInTheDocument();
 
-      const productDesc = screen.getByText(product.shortDesc);
+      const productDesc = screen.getByText(
+        `${product.shortDesc.substring(0, 27)}${product.shortDesc.length > 28 ? '...' : ''}`
+      );
       expect(productDesc).toBeInTheDocument();
 
       const productImage = screen.getByAltText(product.name);

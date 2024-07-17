@@ -59,8 +59,18 @@ describe('Shop Component', () => {
     mock.onGet(`${import.meta.env.VITE_BASE_URL}/search`).reply(200, {
       message: 'success',
       data: [
-        { id: 1, name: 'Product 1', image: '/product1.jpg' },
-        { id: 2, name: 'Product 2', image: '/product2.jpg' },
+        {
+          id: 1,
+          name: 'Product 1',
+          shortDesc: 'short desc',
+          image: '/product1.jpg',
+        },
+        {
+          id: 2,
+          name: 'Product 2',
+          shortDesc: 'short desc',
+          image: '/product2.jpg',
+        },
       ],
     });
 
@@ -75,7 +85,14 @@ describe('Shop Component', () => {
   it('filters products based on user input', async () => {
     mock.onGet(`${import.meta.env.VITE_BASE_URL}/search`).reply(200, {
       message: 'success',
-      data: [{ id: 1, name: 'Product 1', image: '/product1.jpg' }],
+      data: [
+        {
+          id: 1,
+          name: 'Product 1',
+          shortDesc: 'short desc',
+          image: '/product1.jpg',
+        },
+      ],
     });
 
     renderWithProviders(<Shop />);

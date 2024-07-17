@@ -169,8 +169,16 @@ describe('ProductGridFour Component', () => {
 
     // Check that product details are displayed correctly
     mockProducts.slice(0, 4).forEach((product) => {
-      expect(screen.getByText(product.name)).toBeInTheDocument();
-      expect(screen.getByText(product.shortDesc)).toBeInTheDocument();
+      expect(
+        screen.getByText(
+          `${product.name.substring(0, 17)}${product.name.length > 18 ? '...' : ''}`
+        )
+      ).toBeInTheDocument();
+      expect(
+        screen.getAllByText(
+          `${product.shortDesc.substring(0, 27)}${product.shortDesc.length > 28 ? '...' : ''}`
+        )[0]
+      ).toBeInTheDocument();
       expect(screen.getByAltText(product.name)).toBeInTheDocument();
       expect(screen.getByAltText(product.name)).toHaveAttribute(
         'src',
