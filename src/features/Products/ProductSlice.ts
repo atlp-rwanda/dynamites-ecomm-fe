@@ -48,6 +48,7 @@ const initialState: ProductsState = {
       tags: ['tag1', 'tag2'],
       type: 'Simple',
       isAvailable: true,
+      isFeatured: true,
       reviews: [],
       vendor: {
         id: 1,

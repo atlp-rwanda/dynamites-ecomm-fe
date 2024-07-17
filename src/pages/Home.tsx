@@ -2,6 +2,8 @@ import CategoriesSection from '@/components/home/categories';
 import HelloSection from '../components/HelloSection/HelloSection';
 import BannerSection from '@/components/bannerAds/bannerSection';
 import PopularSection from '@/components/Popular/Popular_section';
+import BestSellerSection from '../components/home/BestSellerSection';
+import FeaturedSection from '../components/home/FeaturedSection';
 
 function Home() {
   return (
@@ -15,10 +17,11 @@ function Home() {
       <div className="flex w-full h-auto py-8">
         <BannerSection />
       </div>
+      <FeaturedSection />
+      <BestSellerSection />
       <div className="w-full bg-white px-10 pb-10 pt-2">
         <PopularSection></PopularSection>
       </div>
-      {/* Add more componets as you wish!!! */}
     </main>
   );
 }
