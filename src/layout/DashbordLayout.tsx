@@ -14,7 +14,7 @@ function DashboardLayout() {
         <div className="mt-16">
           <DashboardSideNav />
         </div>
-        <div className="p-4 lg:ml-[200px] min-h-screen">
+        <div className="p-4 lg:ml-[200px]">
           <Outlet />
         </div>
       </div>

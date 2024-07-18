@@ -6,6 +6,7 @@ import { useAppSelector } from '@/app/hooks';
 import { AppDispatch, RootState } from '@/app/store';
 import UserMetricsChart from '../Chart';
 import TopCategories from '../TopCategories';
+import SalesMap from '../salesMap/SalesMap';
 
 function HomeDash() {
   function getGreeting(): string {
@@ -55,9 +56,9 @@ function HomeDash() {
 
   return (
     <div className="bg-dashgrey min-h-screen">
-      <div className="rounded-md p-5">
-        <div className="md:flex items-center justify-between rounded-2xl bg-white p-5">
-          <div className="mx-4">
+      <div className="rounded-md">
+        <div className="md:flex items-center justify-between rounded-2xl bg-white p-4">
+          <div>
             <p className="text-dashgreytext text-sm">{greetings}, </p>
             <div className="font-semibold text-2xl">
               {currentUser?.lastName}
@@ -69,7 +70,7 @@ function HomeDash() {
         </div>
 
         <div className="mt-4 p-5 rounded-2xl bg-white">
-          <div className="flex items-center justify-between mx-4">
+          <div className="flex items-center justify-between">
             <h1>Total Sales Available</h1>
             <button
               className="border flex items-center px-2 py-1 rounded-md"
@@ -79,9 +80,9 @@ function HomeDash() {
               Export
             </button>
           </div>
-          <p className="text-dashgreytext text-sm mx-4 mb-7">Sales Summary</p>
+          <p className="text-dashgreytext text-sm mb-7">Sales Summary</p>
           <div className="grid md:grid-cols-4 gap-2">
-            <div className="mx-4 bg-salesbg p-4 rounded-xl">
+            <div className="bg-salesbg p-4 rounded-xl">
               <div className="flex items-center gap-2 text-xl font-semibold py-4">
                 <div className="bg-iconsales p-1 rounded-full w-8">
                   <img src="/icons/SalesIcon.svg" alt="Sales" />
@@ -95,7 +96,7 @@ function HomeDash() {
               </div>
               <p className="text-sm text-dashbordblue">All Products Sales</p>
             </div>
-            <div className="mx-4 bg-orderbg p-4 rounded-xl">
+            <div className="bg-orderbg p-4 rounded-xl">
               <div className="flex items-center gap-2 text-xl font-semibold py-4">
                 <div className="bg-iconorder p-1 rounded-full w-8">
                   <img src="/icons/OrderIcon.svg" alt="Order" />
@@ -107,7 +108,7 @@ function HomeDash() {
               </div>
               <p className="text-sm text-dashbordblue">All Orders </p>
             </div>
-            <div className="mx-4 bg-psoldbg p-4 rounded-xl">
+            <div className="bg-psoldbg p-4 rounded-xl">
               <div className="flex items-center gap-2 text-xl font-semibold py-4">
                 <div className="bg-psoldicon p-1 rounded-full w-8">
                   <img src="/icons/DiscIcon.svg" alt="Product Sold" />
@@ -119,7 +120,7 @@ function HomeDash() {
               </div>
               <p className="text-sm text-dashbordblue">All Products Sold </p>
             </div>
-            <div className="mx-4 bg-customerbg p-4 rounded-xl">
+            <div className="bg-customerbg p-4 rounded-xl">
               <div className="flex items-center gap-2 text-xl font-semibold py-4">
                 <div className="bg-customericon p-1 rounded-full">
                   <img src="/icons/AddPeople.svg" alt="New Customers" />
@@ -141,6 +142,9 @@ function HomeDash() {
         <div className="w-full xs:flex-col lg:flex-row mt-8 flex items-center justify-between xs:gap-4 lg:gap-0">
           <UserMetricsChart />
           <TopCategories />
+        </div>
+        <div className="mt-4">
+          <SalesMap />
         </div>
       </div>
     </div>
