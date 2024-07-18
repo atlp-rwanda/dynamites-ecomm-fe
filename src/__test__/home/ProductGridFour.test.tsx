@@ -1,9 +1,13 @@
 import { render, screen } from '@testing-library/react';
 import '@testing-library/jest-dom';
 import { describe, it, expect } from 'vitest';
+import { configureStore } from '@reduxjs/toolkit';
+import { Provider } from 'react-redux';
+import { MemoryRouter } from 'react-router-dom';
 import ProductGridFour from '@/components/home/ProductGridFour';
 import { Product } from '@/types/Product';
 import User from '@/types/User';
+import signInReducer from '@/features/Auth/SignInSlice';
 
 // Mock Product Data
 const mockProducts: Product[] = [
@@ -149,34 +153,53 @@ const mockProducts: Product[] = [
   },
 ];
 
+const renderWithProviders = (
+  ui: React.ReactElement,
+  {
+    store = configureStore({
+      reducer: {
+        signIn: signInReducer,
+      },
+    }),
+  } = {}
+) => {
+  return render(
+    <Provider store={store}>
+      <MemoryRouter>{ui}</MemoryRouter>
+    </Provider>
+  );
+};
+
 describe('ProductGridFour Component', () => {
   it('renders ProductGridFour with up to 4 products', () => {
-    render(<ProductGridFour products={mockProducts.slice(0, 4)} />);
+    renderWithProviders(
+      <ProductGridFour products={mockProducts.slice(0, 4)} />
+    );
 
     // Check that exactly 4 products are displayed
     expect(screen.getAllByText(/Sample Product/).length).toBe(4);
   });
 
   it('handles empty product list', () => {
-    render(<ProductGridFour products={[]} />);
+    renderWithProviders(<ProductGridFour products={[]} />);
 
     // Check that "No Products Found" message is displayed
     expect(screen.getByText(/No Products Found/i)).toBeInTheDocument();
   });
 
   it('renders the correct product details', () => {
-    render(<ProductGridFour products={mockProducts} />);
+    renderWithProviders(<ProductGridFour products={mockProducts} />);
 
     // Check that product details are displayed correctly
     mockProducts.slice(0, 4).forEach((product) => {
       expect(
         screen.getByText(
-          `${product.name.substring(0, 17)}${product.name.length > 18 ? '...' : ''}`
+          `${product.name.substring(0, 17)}${product.name.length > 17 ? '...' : ''}`
         )
       ).toBeInTheDocument();
       expect(
         screen.getAllByText(
-          `${product.shortDesc.substring(0, 27)}${product.shortDesc.length > 28 ? '...' : ''}`
+          `${product.shortDesc.substring(0, 27)}${product.shortDesc.length > 27 ? '...' : ''}`
         )[0]
       ).toBeInTheDocument();
       expect(screen.getByAltText(product.name)).toBeInTheDocument();

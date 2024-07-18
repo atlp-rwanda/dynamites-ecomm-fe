@@ -1,9 +1,13 @@
 import { render, screen } from '@testing-library/react';
 import '@testing-library/jest-dom';
 import { describe, it, expect } from 'vitest';
+import { configureStore } from '@reduxjs/toolkit';
+import { Provider } from 'react-redux';
+import { MemoryRouter } from 'react-router-dom';
 import ProductCard from '@/components/home/ProductCard';
 import { Product } from '@/types/Product';
 import User from '@/types/User';
+import signInReducer from '@/features/Auth/SignInSlice';
 
 // Mock Product Data
 const mockProduct: Product = {
@@ -35,17 +39,34 @@ const mockProduct: Product = {
   } as User,
 };
 
+const renderWithProviders = (
+  ui: React.ReactElement,
+  {
+    store = configureStore({
+      reducer: {
+        signIn: signInReducer,
+      },
+    }),
+  } = {}
+) => {
+  return render(
+    <Provider store={store}>
+      <MemoryRouter>{ui}</MemoryRouter>
+    </Provider>
+  );
+};
+
 describe('ProductCard Component', () => {
   it('renders the ProductCard component with product details', () => {
-    render(<ProductCard product={mockProduct} />);
+    renderWithProviders(<ProductCard product={mockProduct} />);
 
     const productName = screen.getByText(
-      `${mockProduct.name.substring(0, 17)}${mockProduct.name.length > 18 ? '...' : ''}`
+      `${mockProduct.name.substring(0, 17)}${mockProduct.name.length > 17 ? '...' : ''}`
     );
     expect(productName).toBeInTheDocument();
 
     const productDesc = screen.getByText(
-      `${mockProduct.shortDesc.substring(0, 27)}${mockProduct.shortDesc.length > 28 ? '...' : ''}`
+      `${mockProduct.shortDesc.substring(0, 27)}${mockProduct.shortDesc.length > 27 ? '...' : ''}`
     );
     expect(productDesc).toBeInTheDocument();
 

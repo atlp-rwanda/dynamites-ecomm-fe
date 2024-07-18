@@ -40,6 +40,7 @@ export default {
         dashbordblue: '#4079ED',
         linkGrey: '#9095A1',
         sliderBg: '#F0F9FF',
+        wishlistBg: '#F5F1F1',
       },
       fontFamily: {
         Lexend: ['Lexend'],

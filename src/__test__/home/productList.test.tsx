@@ -74,6 +74,9 @@ describe('ProductsList Component', () => {
 
   beforeEach(() => {
     store = mockStore({
+      signIn: {
+        token: 'fake token',
+      },
       products: {
         products: mockProducts,
       },
@@ -89,12 +92,12 @@ describe('ProductsList Component', () => {
 
     mockProducts.forEach((product) => {
       const productName = screen.getByText(
-        `${product.name.substring(0, 17)}${product.name.length > 18 ? '...' : ''}`
+        `${product.name.substring(0, 17)}${product.name.length > 17 ? '...' : ''}`
       );
       expect(productName).toBeInTheDocument();
 
       const productDesc = screen.getByText(
-        `${product.shortDesc.substring(0, 27)}${product.shortDesc.length > 28 ? '...' : ''}`
+        `${product.shortDesc.substring(0, 27)}${product.shortDesc.length > 27 ? '...' : ''}`
       );
       expect(productDesc).toBeInTheDocument();
 

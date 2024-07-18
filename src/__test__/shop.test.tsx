@@ -14,6 +14,7 @@ import productsReducer, {
 import categoryReducer from '@/features/Products/categorySlice';
 import Shop from '@/pages/Shop';
 import { AppDispatch, RootState } from '@/app/store';
+import signInReducer from '@/features/Auth/SignInSlice';
 
 const mock = new MockAdapter(axios);
 
@@ -24,6 +25,7 @@ const renderWithProviders = (
       reducer: {
         products: productsReducer,
         categories: categoryReducer,
+        signIn: signInReducer,
       },
     }),
   } = {}
