@@ -68,7 +68,13 @@ function Navbar() {
               5
             </div>
           </div>
-          <FiHeart color="#424856" size="20" title="wishlist" />
+          <FiHeart
+            color="#424856"
+            size="20"
+            title="wishlist"
+            className="cursor-pointer"
+            onClick={() => navigate('/wishlist')}
+          />
         </div>
         {user ? (
           <div className="xs:hidden lg:flex items-center gap-2">

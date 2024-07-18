@@ -1,10 +1,10 @@
 // In your counterSlice.ts or a similar file
 import { createSlice, createAsyncThunk, PayloadAction } from '@reduxjs/toolkit';
-import axios from 'axios';
+import axios, { AxiosError } from 'axios';
 import { Product } from '@/types/Product';
 import User from '@/types/User';
 import { RootState } from '../../app/store';
-import { showErrorToast } from '@/utils/ToastConfig';
+import { showErrorToast, showSuccessToast } from '@/utils/ToastConfig';
 
 interface Payload {
   message: string;
@@ -76,12 +76,95 @@ export const searchProducts = createAsyncThunk<
   }
 );
 
+export const fetchWishlistProducts = createAsyncThunk<Product[], string | null>(
+  'products/fetchWishlistProducts',
+  async (token, thunkAPI) => {
+    try {
+      const response = await axios.get(
+        `${import.meta.env.VITE_BASE_URL}/buyer/getOneWishlist`,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+      return response.data.data.product;
+    } catch (err) {
+      const error = err as AxiosError;
+      if (error.response) {
+        return thunkAPI.rejectWithValue(
+          (error.response.data as { message: string }).message
+        );
+      }
+      return thunkAPI.rejectWithValue('An error occured');
+    }
+  }
+);
+
+export const addToWishlist = createAsyncThunk<
+  Product[],
+  { id: number; token: string | null }
+>('products/addToWishlist', async ({ id, token }, thunkAPI) => {
+  try {
+    const response = await axios.post(
+      `${import.meta.env.VITE_BASE_URL}/buyer/addItemToWishlist`,
+      { productId: id },
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      }
+    );
+
+    return response.data.data.product;
+  } catch (err) {
+    const error = err as AxiosError;
+    if (error.response) {
+      return thunkAPI.rejectWithValue(
+        (error.response.data as { message: string }).message
+      );
+    }
+    return thunkAPI.rejectWithValue('An error occured');
+  }
+});
+
+export const removeFromWishlist = createAsyncThunk<
+  Product[],
+  { id: number; token: string | null }
+>('products/removeFromWishlist', async ({ id, token }, thunkAPI) => {
+  try {
+    const response = await axios.delete(
+      `${import.meta.env.VITE_BASE_URL}/buyer/removeToWishlist`,
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+        data: {
+          productId: id,
+        },
+      }
+    );
+
+    return response.data.data.product;
+  } catch (err) {
+    const error = err as AxiosError;
+    if (error.response) {
+      return thunkAPI.rejectWithValue(
+        (error.response.data as { message: string }).message
+      );
+    }
+    return thunkAPI.rejectWithValue('An error occured');
+  }
+});
+
 interface ProductsState {
   isLoading: boolean;
   products: Product[];
   allProducts: Product[];
   recommendedProducts: Product[];
   total: number;
+  wishlistProducts: Product[];
+  wishlistLoading: boolean;
 }
 
 const initialState: ProductsState = {
@@ -119,6 +202,8 @@ const initialState: ProductsState = {
   ],
   allProducts: [],
   recommendedProducts: [],
+  wishlistProducts: [],
+  wishlistLoading: false,
   total: 0,
 };
 
@@ -185,6 +270,41 @@ const productsSlice = createSlice({
         state.recommendedProducts = action.payload;
       })
       .addCase(fetchRecommendedProducts.rejected, (_, action) => {
+        showErrorToast(action.payload as string);
+      })
+      .addCase(fetchWishlistProducts.pending, (state) => {
+        state.wishlistLoading = true;
+      })
+      .addCase(fetchWishlistProducts.fulfilled, (state, action) => {
+        state.wishlistLoading = false;
+        state.wishlistProducts = action.payload;
+      })
+      .addCase(fetchWishlistProducts.rejected, (state, action) => {
+        state.wishlistLoading = false;
+        showErrorToast(action.payload as string);
+      })
+      .addCase(addToWishlist.pending, (state) => {
+        state.wishlistLoading = true;
+      })
+      .addCase(addToWishlist.fulfilled, (state, action) => {
+        state.wishlistLoading = false;
+        showSuccessToast('Product succesfully added to wishlist');
+        state.wishlistProducts = action.payload;
+      })
+      .addCase(addToWishlist.rejected, (state, action) => {
+        state.wishlistLoading = false;
+        showErrorToast(action.payload as string);
+      })
+      .addCase(removeFromWishlist.pending, (state) => {
+        state.wishlistLoading = true;
+      })
+      .addCase(removeFromWishlist.fulfilled, (state, action) => {
+        state.wishlistLoading = false;
+        showSuccessToast('Product successfully removed from wishlist');
+        state.wishlistProducts = action.payload;
+      })
+      .addCase(removeFromWishlist.rejected, (state, action) => {
+        state.wishlistLoading = false;
         showErrorToast(action.payload as string);
       });
   },

@@ -11,6 +11,7 @@ import ResetPasswordForm from '@/components/password/PasswordResetForm';
 import AdminRoutes from '@/pages/AdminRoutes';
 import Admin from '@/pages/Admin';
 import Shop from '@/pages/Shop';
+import Wishlist from '@/pages/Wishlist';
 
 function AppRoutes() {
   return (
@@ -18,6 +19,7 @@ function AppRoutes() {
       <Route element={<HomeLayout />}>
         <Route index path="/" element={<Home />} />
         <Route path="shop" element={<Shop />} />
+        <Route path="wishlist" element={<Wishlist />} />
       </Route>
       <Route path="/signup" element={<SignUp />} />
       <Route path="/signIn" element={<SignIn />} />

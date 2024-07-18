@@ -566,7 +566,9 @@ function Shop() {
           </div>
           <div className="flex w-full gap-4 mt-8 flex-col">
             {recommendedProducts.length > 0 && <h3>Recommended?</h3>}
-            <ImageSlider products={recommendedProducts} />
+            {recommendedProducts.length > 0 && (
+              <ImageSlider products={recommendedProducts} />
+            )}
           </div>
         </div>
         <div className="flex flex-col xs:w-full lg:w-[75%]">
