@@ -1,4 +1,3 @@
-// In your counterSlice.ts or a similar file
 import { createSlice, createAsyncThunk, PayloadAction } from '@reduxjs/toolkit';
 import axios from 'axios';
 import { Category } from '@/types/Product';
