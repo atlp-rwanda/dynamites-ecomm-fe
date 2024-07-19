@@ -40,7 +40,7 @@ function MostSelling() {
       />
 
       <div className=" grid gap-y-2">
-        {(status === 'failed' || status === 'loading') &&
+        {status === 'loading' &&
           Array(3)
             .fill(null)
             .map(() => (
