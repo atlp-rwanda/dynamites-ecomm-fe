@@ -7,6 +7,7 @@ import { AppDispatch, RootState } from '@/app/store';
 import UserMetricsChart from '../Chart';
 import TopCategories from '../TopCategories';
 import SalesMap from '../salesMap/SalesMap';
+import ProductTable from './BestSellingProducts';
 
 function HomeDash() {
   function getGreeting(): string {
@@ -145,6 +146,9 @@ function HomeDash() {
         </div>
         <div className="mt-4">
           <SalesMap />
+        </div>
+        <div className="mt-4">
+          <ProductTable />
         </div>
       </div>
     </div>
