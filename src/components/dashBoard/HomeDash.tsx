@@ -10,6 +10,8 @@ import SalesMap from '../salesMap/SalesMap';
 import ProductTable from './BestSellingProducts';
 
 function HomeDash() {
+  const Role = useAppSelector((state) => state.signIn.user?.userType.name);
+
   function getGreeting(): string {
     const now = new Date();
     const hour = now.getHours();
@@ -69,87 +71,93 @@ function HomeDash() {
             <img src="/icons/farmer.svg" alt="farmer" />
           </div>
         </div>
-
-        <div className="mt-4 p-5 rounded-2xl bg-white">
-          <div className="flex items-center justify-between">
-            <h1>Total Sales Available</h1>
-            <button
-              className="border flex items-center px-2 py-1 rounded-md"
-              type="submit"
-            >
-              <img src="/icons/ExportIcon.svg" alt="Export" />
-              Export
-            </button>
-          </div>
-          <p className="text-dashgreytext text-sm mb-7">Sales Summary</p>
-          <div className="grid md:grid-cols-4 gap-2">
-            <div className="bg-salesbg p-4 rounded-xl">
-              <div className="flex items-center gap-2 text-xl font-semibold py-4">
-                <div className="bg-iconsales p-1 rounded-full w-8">
-                  <img src="/icons/SalesIcon.svg" alt="Sales" />
+        {Role === 'Admin' && (
+          <>
+            <div className="mt-4 p-5 rounded-2xl bg-white">
+              <div className="flex items-center justify-between">
+                <h1>Total Sales Available</h1>
+                <button
+                  className="border flex items-center px-2 py-1 rounded-md"
+                  type="submit"
+                >
+                  <img src="/icons/ExportIcon.svg" alt="Export" />
+                  Export
+                </button>
+              </div>
+              <p className="text-dashgreytext text-sm mb-7">Sales Summary</p>
+              <div className="grid md:grid-cols-4 gap-2">
+                <div className="bg-salesbg p-4 rounded-xl">
+                  <div className="flex items-center gap-2 text-xl font-semibold py-4">
+                    <div className="bg-iconsales p-1 rounded-full w-8">
+                      <img src="/icons/SalesIcon.svg" alt="Sales" />
+                    </div>
+                    <div>
+                      <div>{sum}$</div>
+                    </div>
+                  </div>
+                  <div className="text-md font-medium text-dashgreytext">
+                    Total Sales
+                  </div>
+                  <p className="text-sm text-dashbordblue">
+                    All Products Sales
+                  </p>
                 </div>
-                <div>
-                  <div>{sum}$</div>
+                <div className="bg-orderbg p-4 rounded-xl">
+                  <div className="flex items-center gap-2 text-xl font-semibold py-4">
+                    <div className="bg-iconorder p-1 rounded-full w-8">
+                      <img src="/icons/OrderIcon.svg" alt="Order" />
+                    </div>
+                    <div>{order.length}</div>
+                  </div>
+                  <div className="text-md font-medium text-dashgreytext">
+                    Total Order
+                  </div>
+                  <p className="text-sm text-dashbordblue">All Orders </p>
+                </div>
+                <div className="bg-psoldbg p-4 rounded-xl">
+                  <div className="flex items-center gap-2 text-xl font-semibold py-4">
+                    <div className="bg-psoldicon p-1 rounded-full w-8">
+                      <img src="/icons/DiscIcon.svg" alt="Product Sold" />
+                    </div>
+                    <div>{tproduct}</div>
+                  </div>
+                  <div className="text-md font-medium text-dashgreytext">
+                    Product Sold
+                  </div>
+                  <p className="text-sm text-dashbordblue">
+                    All Products Sold{' '}
+                  </p>
+                </div>
+                <div className="bg-customerbg p-4 rounded-xl">
+                  <div className="flex items-center gap-2 text-xl font-semibold py-4">
+                    <div className="bg-customericon p-1 rounded-full">
+                      <img src="/icons/AddPeople.svg" alt="New Customers" />
+                    </div>
+                    <div>
+                      {buyers &&
+                        buyers.filter(
+                          (user) =>
+                            user.userType && user.userType.name === 'Buyer'
+                        ).length}
+                    </div>
+                  </div>
+                  <div className="text-md font-medium text-dashgreytext">
+                    New Customers
+                  </div>
+                  <p className="text-sm text-dashbordblue">All Buyers</p>
                 </div>
               </div>
-              <div className="text-md font-medium text-dashgreytext">
-                Total Sales
-              </div>
-              <p className="text-sm text-dashbordblue">All Products Sales</p>
             </div>
-            <div className="bg-orderbg p-4 rounded-xl">
-              <div className="flex items-center gap-2 text-xl font-semibold py-4">
-                <div className="bg-iconorder p-1 rounded-full w-8">
-                  <img src="/icons/OrderIcon.svg" alt="Order" />
-                </div>
-                <div>{order.length}</div>
-              </div>
-              <div className="text-md font-medium text-dashgreytext">
-                Total Order
-              </div>
-              <p className="text-sm text-dashbordblue">All Orders </p>
+            <div className="w-full xs:flex-col lg:flex-row mt-4 flex items-center xs:gap-4 lg:gap-4">
+              <UserMetricsChart />
+              <TopCategories />
             </div>
-            <div className="bg-psoldbg p-4 rounded-xl">
-              <div className="flex items-center gap-2 text-xl font-semibold py-4">
-                <div className="bg-psoldicon p-1 rounded-full w-8">
-                  <img src="/icons/DiscIcon.svg" alt="Product Sold" />
-                </div>
-                <div>{tproduct}</div>
-              </div>
-              <div className="text-md font-medium text-dashgreytext">
-                Product Sold
-              </div>
-              <p className="text-sm text-dashbordblue">All Products Sold </p>
+            <div className="mt-4 flex flex-col md:flex-row gap-4">
+              <SalesMap />
+              <ProductTable />
             </div>
-            <div className="bg-customerbg p-4 rounded-xl">
-              <div className="flex items-center gap-2 text-xl font-semibold py-4">
-                <div className="bg-customericon p-1 rounded-full">
-                  <img src="/icons/AddPeople.svg" alt="New Customers" />
-                </div>
-                <div>
-                  {buyers &&
-                    buyers.filter(
-                      (user) => user.userType && user.userType.name === 'Buyer'
-                    ).length}
-                </div>
-              </div>
-              <div className="text-md font-medium text-dashgreytext">
-                New Customers
-              </div>
-              <p className="text-sm text-dashbordblue">All Buyers</p>
-            </div>
-          </div>
-        </div>
-        <div className="w-full xs:flex-col lg:flex-row mt-8 flex items-center justify-between xs:gap-4 lg:gap-0">
-          <UserMetricsChart />
-          <TopCategories />
-        </div>
-        <div className="mt-4">
-          <SalesMap />
-        </div>
-        <div className="mt-4">
-          <ProductTable />
-        </div>
+          </>
+        )}
       </div>
     </div>
   );

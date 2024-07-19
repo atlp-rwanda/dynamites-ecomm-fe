@@ -2,7 +2,7 @@ import { describe, it, expect } from 'vitest';
 import DeshboardProductsSlice, {
   initialState,
   fetchDashboardProduct,
-} from '@/features/Dashboard/dashboardProductsSlice'; // Adjust path as needed
+} from '@/features/Dashboard/dashboardProductsSlice';
 
 describe('DeshboardProductsSlice reducer', () => {
   it('should return the initial state', () => {
