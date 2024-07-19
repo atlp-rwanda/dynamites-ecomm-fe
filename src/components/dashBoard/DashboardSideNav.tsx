@@ -7,6 +7,7 @@ import {
   Box,
   ChevronDown,
   ChevronRight,
+  Store,
 } from 'lucide-react';
 
 const sideBarItems = [
@@ -26,15 +27,29 @@ const sideBarItems = [
     icon: <Users className="icon" />,
   },
   {
+    name: 'seller',
+    icon: <Store className="icon" />,
+    subItems: [
+      {
+        name: 'All Seller',
+        path: '/dashboard/seller',
+      },
+      {
+        name: 'Add New',
+        path: '/dashboard/addSeller',
+      },
+    ],
+  },
+  {
     name: 'Products',
     icon: <Box className="icon" />,
     subItems: [
       {
-        path: '/products/all',
+        path: '/dashboard/product',
         name: 'All Products',
       },
       {
-        path: '/products/add',
+        path: '/dashboard/addProduct',
         name: 'Add New',
       },
       {

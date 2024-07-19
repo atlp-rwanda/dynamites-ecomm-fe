@@ -102,8 +102,12 @@ function WishlistCard({ product }: { product: Product }) {
           )}
         </div>
         <div className="flex gap-4 items-center">
-          <span className="text-red-700 font-bold text-lg">${500}</span>
-          <span className="line-through text-gray-500">${700}</span>
+          <span className="text-red-700 font-bold text-lg">
+            ${product.salesPrice}
+          </span>
+          <span className="line-through text-gray-500">
+            ${product.regularPrice}
+          </span>
         </div>
         <Button title="Add to Cart" />
       </div>

@@ -64,7 +64,7 @@ function SignIn() {
     } else if (token) {
       if (role === 'Admin') {
         showSuccessToast('Admin Logged in Successfully');
-        navigate('/adminDashboard');
+        navigate('/dashboard');
       } else {
         showSuccessToast('Buyer Logged in Successfully');
         navigate('/');

@@ -38,5 +38,6 @@ module.exports = {
     'postcss.config.js',
     'tailwind.config.js',
     'vite.config.ts',
+    // 'EditProduct.tsx'
   ],
 };

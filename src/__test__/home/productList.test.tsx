@@ -3,6 +3,7 @@ import '@testing-library/jest-dom';
 import { describe, it, expect, beforeEach } from 'vitest';
 import { Provider } from 'react-redux';
 import configureStore from 'redux-mock-store';
+import { MemoryRouter } from 'react-router';
 import ProductsList from '@/components/home/productList';
 import { Product } from '@/types/Product';
 import User from '@/types/User';
@@ -86,7 +87,9 @@ describe('ProductsList Component', () => {
   it('renders the ProductsList component with products', () => {
     render(
       <Provider store={store}>
-        <ProductsList focused="all" />
+        <MemoryRouter>
+          <ProductsList focused="all" />
+        </MemoryRouter>
       </Provider>
     );
 
