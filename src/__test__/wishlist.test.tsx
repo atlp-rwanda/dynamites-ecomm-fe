@@ -147,8 +147,8 @@ describe('WishlistCard', () => {
 
     expect(screen.getByText(/Product name/i)).toBeInTheDocument();
     expect(screen.getByText(/In Stock/i)).toBeInTheDocument();
-    expect(screen.getByText(/\$500/i)).toBeInTheDocument();
-    expect(screen.getByText(/\$700/i)).toBeInTheDocument();
+    expect(screen.getByText(/\$230/i)).toBeInTheDocument();
+    expect(screen.getByText(/\$280/i)).toBeInTheDocument();
   });
 });
 

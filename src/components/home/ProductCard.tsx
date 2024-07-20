@@ -1,3 +1,4 @@
+import { useNavigate } from 'react-router';
 import { useAppDispatch, useAppSelector } from '@/app/hooks';
 import { addToWishlist } from '@/features/Products/ProductSlice';
 import { Product } from '@/types/Product';
@@ -7,6 +8,7 @@ interface ProductCardProps {
 }
 
 function ProductCard({ product }: ProductCardProps) {
+  const navigate = useNavigate();
   const dispatch = useAppDispatch();
   const { token } = useAppSelector((state) => state.signIn);
   return (
@@ -31,10 +33,14 @@ function ProductCard({ product }: ProductCardProps) {
         }}
       >
         <div className="flex justify-between items-center">
-          <h3 className="text-lg font-semibold text-gray-800">
+          <button
+            type="button"
+            className="text-lg font-semibold text-gray-800 cursor-pointer"
+            onClick={() => navigate(`/product-details/${product.id}`)}
+          >
             {product.name.substring(0, 17)}
             {product.name.length > 17 && '...'}
-          </h3>
+          </button>
           <svg
             onClick={() => dispatch(addToWishlist({ token, id: product.id }))}
             xmlns="http://www.w3.org/2000/svg"
