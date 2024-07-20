@@ -41,6 +41,7 @@ export default {
         linkGrey: '#9095A1',
         sliderBg: '#F0F9FF',
         wishlistBg: '#F5F1F1',
+        textareaBorder: '#A8ADB7',
       },
       fontFamily: {
         Lexend: ['Lexend'],

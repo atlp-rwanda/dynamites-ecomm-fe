@@ -16,6 +16,8 @@ import Shop from '@/pages/Shop';
 import Wishlist from '@/pages/Wishlist';
 import { Orders } from '@/components/Orders/Orders';
 import AddProducts from '@/components/dashBoard/addProducts';
+import ProductDetails from '@/pages/ProductDetails';
+import ProtectedRoute from '@/components/ProtectedRoute';
 
 function AppRoutes() {
   return (
@@ -23,7 +25,15 @@ function AppRoutes() {
       <Route element={<HomeLayout />}>
         <Route index path="/" element={<Home />} />
         <Route path="shop" element={<Shop />} />
-        <Route path="wishlist" element={<Wishlist />} />
+        <Route
+          path="wishlist"
+          element={
+            <ProtectedRoute roles={['Buyer']}>
+              <Wishlist />
+            </ProtectedRoute>
+          }
+        />
+        <Route path="product-details/:id" element={<ProductDetails />} />
       </Route>
       <Route path="/signup" element={<SignUp />} />
       <Route path="/signIn" element={<SignIn />} />

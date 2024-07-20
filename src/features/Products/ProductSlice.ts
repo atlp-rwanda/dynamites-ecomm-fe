@@ -11,6 +11,11 @@ interface Payload {
   data: Product[];
 }
 
+interface IProduct extends Product {
+  similarProducts: Product[];
+  totalQtySold: number;
+}
+
 interface SearchParams {
   keyword?: string;
   category?: number[];
@@ -33,11 +38,30 @@ export const fetchProducts = createAsyncThunk(
 
 export const fetchRecommendedProducts = createAsyncThunk<Product[]>(
   'products/fetchRecommendedProducts',
-  async () => {
-    const response = await axios.get(
-      `${import.meta.env.VITE_BASE_URL}/product/recommended`
-    );
-    return response.data.data;
+  async (_, thunkAPI) => {
+    try {
+      const response = await axios.get(
+        `${import.meta.env.VITE_BASE_URL}/product/recommended`
+      );
+      return response.data.data;
+    } catch (err) {
+      return thunkAPI.rejectWithValue('An error occured');
+    }
+  }
+);
+
+export const fetchProductDetails = createAsyncThunk<IProduct, number>(
+  'products/fetchProductDetails',
+  async (id, thunkAPI) => {
+    try {
+      const response = await axios.get(
+        `${import.meta.env.VITE_BASE_URL}/buyer/get_product/${id}`
+      );
+
+      return response.data.product;
+    } catch (err) {
+      return thunkAPI.rejectWithValue('An error occured');
+    }
   }
 );
 
@@ -165,6 +189,8 @@ interface ProductsState {
   total: number;
   wishlistProducts: Product[];
   wishlistLoading: boolean;
+  productDetailsLoading: boolean;
+  productDetails: IProduct | null;
 }
 
 const initialState: ProductsState = {
@@ -204,6 +230,8 @@ const initialState: ProductsState = {
   recommendedProducts: [],
   wishlistProducts: [],
   wishlistLoading: false,
+  productDetails: null,
+  productDetailsLoading: false,
   total: 0,
 };
 
@@ -305,6 +333,17 @@ const productsSlice = createSlice({
       })
       .addCase(removeFromWishlist.rejected, (state, action) => {
         state.wishlistLoading = false;
+        showErrorToast(action.payload as string);
+      })
+      .addCase(fetchProductDetails.pending, (state) => {
+        state.productDetailsLoading = true;
+      })
+      .addCase(fetchProductDetails.fulfilled, (state, action) => {
+        state.productDetailsLoading = false;
+        state.productDetails = action.payload;
+      })
+      .addCase(fetchProductDetails.rejected, (state, action) => {
+        state.productDetailsLoading = false;
         showErrorToast(action.payload as string);
       });
   },
