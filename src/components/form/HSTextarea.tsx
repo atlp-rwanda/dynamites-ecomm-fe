@@ -7,6 +7,7 @@ interface MyTextareaProps {
   value?: string;
   style?: string;
   label?: string;
+  rows?: string;
   onChange?: (event: React.ChangeEvent<HTMLTextAreaElement>) => void;
   placeholder: string;
 }
@@ -18,6 +19,7 @@ const HSTextarea: React.FC<MyTextareaProps> = ({
   value,
   style,
   label,
+  rows,
   onChange,
   placeholder,
 }) => {
@@ -29,7 +31,8 @@ const HSTextarea: React.FC<MyTextareaProps> = ({
       placeholder={placeholder}
       onChange={onChange}
       value={value}
-      className={`${style} text-black text-xs md:text-sm duration-150 w-full outline-none rounded-md border-[1px] group-hover:border-grayDark px-5 py-3`}
+      rows={rows}
+      className={`${style} bg-grayLight text-black text-xs md:text-sm duration-150 w-full outline-none rounded-md border-[1px] group-hover:border-grayDark px-5 py-3`}
     />
   );
 };
