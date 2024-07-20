@@ -64,7 +64,7 @@ function HSInput({
           name={name}
           onBlur={onBlurTextArea}
           cols={30}
-          rows={rows}
+          rows={6}
           placeholder={placeholder}
           onChange={onChangeTextArea}
           value={values}
