@@ -15,6 +15,7 @@ import EditProductPage from '@/pages/EditPage';
 import Shop from '@/pages/Shop';
 import Wishlist from '@/pages/Wishlist';
 import { Orders } from '@/components/Orders/Orders';
+import AddProducts from '@/components/dashBoard/addProducts';
 
 function AppRoutes() {
   return (
@@ -31,7 +32,7 @@ function AppRoutes() {
       <Route path="/reset-password/:token" element={<ResetPasswordForm />} />
 
       <Route
-        path="/adminDashboard"
+        path="/dashboard"
         element={
           <AdminRoutes>
             <DashboardLayout />
@@ -39,17 +40,18 @@ function AppRoutes() {
         }
       >
         <Route index element={<Admin />} />
-        <Route path="/adminDashboard/orders" element={<Orders />} />
+        <Route path="/dashboard/orders" element={<Orders />} />
         <Route
           index
-          path="/adminDashboard/products"
+          path="/dashboard/product"
           element={<DesplayProductPage />}
         />
         <Route
           index
-          path="/adminDashboard/products/:id"
+          path="/dashboard/product/:id"
           element={<EditProductPage />}
         />
+        <Route index path="/dashboard/addProduct/" element={<AddProducts />} />
       </Route>
       <Route path="*" element={<ErrorPage />} />
       <Route path="/forgot-password" element={<PasswordResetRequestForm />} />
