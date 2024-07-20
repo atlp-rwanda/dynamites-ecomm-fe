@@ -1,4 +1,3 @@
-/* eslint-disable jsx-a11y/control-has-associated-label */
 import { ChangeEvent, useState } from 'react';
 
 export default function EditableOrderModal({ onClose }: any) {

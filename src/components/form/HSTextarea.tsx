@@ -6,23 +6,21 @@ interface MyTextareaProps {
   onBlur?: (event: React.FocusEvent<HTMLTextAreaElement>) => void;
   value?: string;
   style?: string;
-  label?: string;
-  rows?: string;
+  rows?: number;
   onChange?: (event: React.ChangeEvent<HTMLTextAreaElement>) => void;
   placeholder: string;
 }
 
-const HSTextarea: React.FC<MyTextareaProps> = ({
+function HSTextarea({
   id,
   name,
   onBlur,
   value,
   style,
-  label,
   rows,
   onChange,
   placeholder,
-}) => {
+}: MyTextareaProps) {
   return (
     <textarea
       id={id}
@@ -35,6 +33,6 @@ const HSTextarea: React.FC<MyTextareaProps> = ({
       className={`${style} bg-grayLight text-black text-xs md:text-sm duration-150 w-full outline-none rounded-md border-[1px] group-hover:border-grayDark px-5 py-3`}
     />
   );
-};
+}
 
 export default HSTextarea;

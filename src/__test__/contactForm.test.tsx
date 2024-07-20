@@ -33,8 +33,6 @@ describe('ContactForm', () => {
     render(
       <Provider store={store}>
         <MemoryRouter>
-          {' '}
-          {/* Wrap ContactForm with MemoryRouter */}
           <ContactForm />
         </MemoryRouter>
       </Provider>
@@ -52,13 +50,29 @@ describe('ContactForm', () => {
 
   it('should submit form and call sendMessage action', async () => {
     // Mock sendMessage to resolve immediately
-    vi.mocked(sendMessage).mockResolvedValue({});
+    const mockPayload = {
+      name: 'John Doe',
+      phoneNumber: '1234567890',
+      email: 'john@example.com',
+      message: 'Hello!',
+    };
+
+    const mockResolvedValue = {
+      type: 'contact/sendMessage/fulfilled',
+      payload: mockPayload,
+      meta: {
+        arg: mockPayload,
+        requestId: 'some-request-id',
+        requestStatus: 'fulfilled',
+      },
+      error: null,
+    };
+
+    vi.mocked(sendMessage).mockResolvedValue(mockResolvedValue as any); // Cast to any to satisfy type
 
     render(
       <Provider store={store}>
         <MemoryRouter>
-          {' '}
-          {/* Wrap ContactForm with MemoryRouter */}
           <ContactForm />
         </MemoryRouter>
       </Provider>
@@ -85,12 +99,7 @@ describe('ContactForm', () => {
     fireEvent.click(screen.getByText('Send Message'));
 
     await waitFor(() => {
-      expect(vi.mocked(sendMessage).mock.calls[0][0]).toEqual({
-        name: 'John Doe',
-        email: 'john@example.com',
-        phoneNumber: '1234567890',
-        message: 'Hello!',
-      });
+      expect(vi.mocked(sendMessage).mock.calls[0][0]).toEqual(mockPayload);
     });
   });
 });

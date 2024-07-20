@@ -6,7 +6,7 @@ import { MapIcon, PhoneIcon } from 'lucide-react';
 import { FaEnvelope } from 'react-icons/fa6';
 import { useAppSelector, useAppDispatch } from '@/app/hooks';
 import Button from '@/components/form/Button';
-import HSInput from '@/components/form/HSInput';
+import HSInput from '@/components/form/HSInputForm';
 import HSTextarea from '@/components/form/HSTextarea';
 import { sendMessage, resetStatus } from '@/features/contact/contactSlice';
 
@@ -86,7 +86,6 @@ function ContactForm() {
                 data-testid="Name"
                 id="pname"
                 type="input"
-                text="text"
                 placeholder="Enter your name"
                 style={
                   formik.touched.name && formik.errors.name
@@ -106,7 +105,6 @@ function ContactForm() {
                 data-testid="email"
                 id="email"
                 type="input"
-                text="email"
                 placeholder="Enter your email"
                 style={
                   formik.touched.email && formik.errors.email
@@ -126,7 +124,6 @@ function ContactForm() {
                 data-testid="phoneNumber"
                 id="phoneNumber"
                 type="input"
-                text="text"
                 placeholder="Enter your phone Number"
                 style={
                   formik.touched.phoneNumber && formik.errors.phoneNumber
@@ -176,12 +173,18 @@ function ContactForm() {
 
           {/* Success or Error message */}
           {successMessage && (
-            <p className="mt-4 text-green-500" data-testid="successMessage">
+            <p
+              className="mt-4 bg-green-500 text-white p-3 text-xl"
+              data-testid="successMessage"
+            >
               {successMessage}
             </p>
           )}
           {errorMessage && (
-            <p className="mt-4 text-red-500" data-testid="errorMessage">
+            <p
+              className="mt-4 bg-red-500 text-white p-3 text-xl"
+              data-testid="errorMessage"
+            >
               {errorMessage}
             </p>
           )}
@@ -212,5 +215,4 @@ function ContactForm() {
     </div>
   );
 }
-
 export default ContactForm;
