@@ -18,6 +18,7 @@ import { Orders } from '@/components/Orders/Orders';
 import AddProducts from '@/components/dashBoard/addProducts';
 import ProductDetails from '@/pages/ProductDetails';
 import ProtectedRoute from '@/components/ProtectedRoute';
+import Cart from '@/components/Cart/Cart';
 
 function AppRoutes() {
   return (
@@ -34,6 +35,8 @@ function AppRoutes() {
           }
         />
         <Route path="product-details/:id" element={<ProductDetails />} />
+        <Route path="wishlist" element={<Wishlist />} />
+        <Route path="/cart" element={<Cart />} />
       </Route>
       <Route path="/signup" element={<SignUp />} />
       <Route path="/signIn" element={<SignIn />} />
