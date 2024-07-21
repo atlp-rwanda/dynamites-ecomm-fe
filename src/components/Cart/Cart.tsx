@@ -85,7 +85,7 @@ export default function Cart() {
             <h2 className="text-2xl font-bold text-gray-900">Total:</h2>
             <span className="text-xl font-medium text-primary">${total}</span>
           </div>
-          <HSButton title="CHECKOUT" />
+          <HSButton title="CHECKOUT" path="/checkout" />
         </div>
       </div>
       <div className="flex flex-col gap-12">

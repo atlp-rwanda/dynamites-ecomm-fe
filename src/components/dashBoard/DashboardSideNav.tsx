@@ -17,7 +17,7 @@ const sideBarItems = [
     icon: <MdDashboard className="icon" />,
   },
   {
-    path: '/orders',
+    path: '/dashboard/orders',
     name: 'Orders',
     icon: <ShoppingCart className="icon" />,
   },

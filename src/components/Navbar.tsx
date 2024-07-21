@@ -1,5 +1,5 @@
 import { Link, useLocation, useNavigate } from 'react-router-dom';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { LuShoppingCart } from 'react-icons/lu';
 import { FiHeart } from 'react-icons/fi';
 import { FaAngleDown } from 'react-icons/fa6';
@@ -7,6 +7,8 @@ import { RxHamburgerMenu } from 'react-icons/rx';
 import HSButton from './form/HSButton';
 import { logout } from '@/features/Auth/SignInSlice';
 import { useAppDispatch, useAppSelector } from '@/app/hooks';
+import { RootState } from '@/app/store';
+import { selectCartItems, fetchCartItems } from '@/features/Cart/cartSlice';
 
 function Navbar() {
   const dispatch = useAppDispatch();
@@ -15,6 +17,13 @@ function Navbar() {
   const [toggleMenu, setToggleMenu] = useState(false);
   const [toggleProfileMenu, setToggleProfileMenu] = useState(false);
   const user = useAppSelector((state) => state.signIn.user);
+  const cartItems = useAppSelector((state: RootState) =>
+    selectCartItems(state)
+  );
+
+  useEffect(() => {
+    dispatch(fetchCartItems());
+  }, [dispatch]);
 
   return (
     <div className="relative flex items-center justify-between w-full h-16 shadow-sm">
@@ -62,12 +71,12 @@ function Navbar() {
       </nav>
       <div className="flex items-center gap-8 mr-8">
         <div className="flex items-center gap-4">
-          <div className="relative">
+          <Link className="relative" to="/cart">
             <LuShoppingCart size="20" color="#424856" title="cart" />
             <div className="flex items-center justify-center w-4 h-4 rounded-full bg-red-700 text-white absolute right-[-0.3rem] top-[-0.2rem] text-sm">
-              5
+              {cartItems.length || 0}
             </div>
-          </div>
+          </Link>
           <FiHeart
             color="#424856"
             size="20"

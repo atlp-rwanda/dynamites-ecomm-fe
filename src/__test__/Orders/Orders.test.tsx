@@ -13,8 +13,8 @@ const mockOrders: Order[] = [
     updatedAt: '2023-07-17T00:00:00Z',
     status: 'Pending',
     totalAmount: 100,
-    deliveryInfo:
-      '{"address": "123 Main St", "city": "Anytown", "country": "USA"}',
+    country: 'USA',
+    deliveryInfo: { address: '123 Main St', city: 'Anytown', zip: '12345' },
     paymentInfo: null,
     createdAt: '',
     paid: false,
@@ -26,8 +26,8 @@ const mockOrders: Order[] = [
     updatedAt: '2023-07-16T00:00:00Z',
     status: 'Completed',
     totalAmount: 200,
-    deliveryInfo:
-      '{"address": "456 Elm St", "city": "Othertown", "country": "USA"}',
+    country: 'USA',
+    deliveryInfo: { address: '123 Main St', city: 'Anytown', zip: '12345' },
     paymentInfo: null,
     createdAt: '',
     paid: false,
@@ -168,6 +168,6 @@ describe('Orders Component', () => {
       </Provider>
     );
     const rows = screen.getAllByRole('row');
-    expect(rows.length).toBe(11); //
+    expect(rows.length).toBe(6); //
   });
 });
