@@ -1,16 +1,29 @@
 import { useState } from 'react';
+import {
+  updateCartItemQuantity,
+  removeCartItem,
+} from '@/features/Cart/cartSlice';
+import { useAppDispatch } from '@/app/hooks';
 
 interface CartProps {
+  id: number;
   price: number;
   name: string;
+  quantity: number;
 }
 
-function CartItem({ price, name }: CartProps) {
-  const [quantity, setQuantity] = useState(0);
+function CartItem({ id, price, name, quantity }: CartProps) {
+  const dispatch = useAppDispatch();
   const [size, setSize] = useState<'M' | 'S' | 'L'>('M');
 
   const handleQuantityChange = (amount: number) => {
-    setQuantity((prevQuantity) => Math.max(0, prevQuantity + amount));
+    if (quantity + amount < 1) {
+      dispatch(removeCartItem(id));
+    } else {
+      dispatch(
+        updateCartItemQuantity({ itemId: id, quantity: amount + quantity })
+      );
+    }
   };
 
   const handleSize = (newSize: 'M' | 'S' | 'L') => {
@@ -82,7 +95,7 @@ function CartItem({ price, name }: CartProps) {
               >
                 -
               </button>
-              <span>{quantity}</span>
+              <span>{Math.round(quantity)}</span>
               <button
                 type="button"
                 onClick={() => handleQuantityChange(1)}
@@ -95,10 +108,16 @@ function CartItem({ price, name }: CartProps) {
         </div>
       </div>
       <div className="flex flex-col gap-6 py-4 items-end w-64 justify-between">
-        <button type="button" className="text-red-500 text-lg font-medium">
+        <button
+          type="button"
+          className="text-red-500 text-lg font-medium"
+          onClick={() => dispatch(removeCartItem(id))}
+        >
           Remove
         </button>
-        <span className="font-bold text-xl mt-4">${price * quantity}</span>
+        <span className="font-bold text-xl mt-4">
+          ${Math.round(price * quantity)}
+        </span>
       </div>
     </div>
   );

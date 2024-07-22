@@ -15,6 +15,7 @@ import {
 } from '@/features/Auth/password';
 import buyerSlice from '@/app/Dashboard/buyerSlice';
 import orderSlice from './Dashboard/orderSlice';
+import cartReducer from '@/features/Cart/cartSlice';
 
 import ordersSliceReducer from '@/features/Orders/ordersSlice';
 
@@ -35,6 +36,7 @@ export const store = configureStore({
     orders: ordersSliceReducer,
     product: addProductSlice,
     DeshboardProducts: dashboardProductsSlice,
+    cartItems: cartReducer,
   },
 });
 

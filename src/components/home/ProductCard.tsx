@@ -2,6 +2,7 @@ import { useNavigate } from 'react-router';
 import { useAppDispatch, useAppSelector } from '@/app/hooks';
 import { addToWishlist } from '@/features/Products/ProductSlice';
 import { Product } from '@/types/Product';
+import { addCartItem } from '@/features/Cart/cartSlice';
 
 interface ProductCardProps {
   product: Product;
@@ -139,18 +140,26 @@ function ProductCard({ product }: ProductCardProps) {
               ${product.regularPrice}
             </span>
           </div>
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            className="text-white h-10 w-10 rounded p-2 cursor-pointer"
-            viewBox="0 0 256 256"
-            data-testid="addToCart"
-            style={{ backgroundColor: '6D31ED' }}
+          <button
+            type="button"
+            onClick={() =>
+              dispatch(addCartItem({ productId: product.id, quantity: 1 }))
+            }
           >
-            <path
-              fill="currentColor"
-              d="M222 128a6 6 0 0 1-6 6h-82v82a6 6 0 0 1-12 0v-82H40a6 6 0 0 1 0-12h82V40a6 6 0 0 1 12 0v82h82a6 6 0 0 1 6 6"
-            />
-          </svg>
+            {' '}
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              className="text-white h-10 w-10 rounded p-2 cursor-pointer"
+              viewBox="0 0 256 256"
+              data-testid="addToCart"
+              style={{ backgroundColor: '6D31ED' }}
+            >
+              <path
+                fill="currentColor"
+                d="M222 128a6 6 0 0 1-6 6h-82v82a6 6 0 0 1-12 0v-82H40a6 6 0 0 1 0-12h82V40a6 6 0 0 1 12 0v82h82a6 6 0 0 1 6 6"
+              />
+            </svg>
+          </button>
         </div>
       </div>
     </div>
