@@ -16,7 +16,7 @@ export const fetchBestSellingProducts = createAsyncThunk<
 >('bestSellingProducts/fetchBestSellingProducts', async (_, thunkAPI) => {
   try {
     const response = await axios.get(`${URL}/product/bestselling`);
-    return response.data; // Ensure this matches your API response structure
+    return response.data;
   } catch (error: any) {
     return thunkAPI.rejectWithValue(error.response?.data || error.message);
   }
