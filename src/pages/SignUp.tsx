@@ -197,7 +197,7 @@ function SignUp() {
                 type="submit"
                 disabled={isSubmitting || signUpState.loading}
                 aria-label="Submit Form"
-                className="w-full flex justify-center py-2 sm:py-4 bg-blue-500 text-white rounded-md hover:bg-blue-600 transition-colors"
+                className="w-full flex justify-center py-2 sm:py-4 bg-[#6d31ed] text-white rounded-md hover:bg-blue-[#6d31ed] transition-colors"
               >
                 {isSubmitting || signUpState.loading ? (
                   <BeatLoader color="#ffffff" size={8} />
