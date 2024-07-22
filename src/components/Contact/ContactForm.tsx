@@ -174,7 +174,7 @@ function ContactForm() {
           {/* Success or Error message */}
           {successMessage && (
             <p
-              className="mt-4 bg-green-500 text-white p-3 text-xl"
+              className="mt-4 bg-green-500 text-white rounded-md p-3 text-xl"
               data-testid="successMessage"
             >
               {successMessage}
@@ -182,7 +182,7 @@ function ContactForm() {
           )}
           {errorMessage && (
             <p
-              className="mt-4 bg-red-500 text-white p-3 text-xl"
+              className="mt-4 bg-red-500 text-white rounded-md p-3 text-xl"
               data-testid="errorMessage"
             >
               {errorMessage}
