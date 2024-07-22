@@ -1,6 +1,5 @@
 import * as Yup from 'yup';
 import { ErrorMessage, Form, Formik, FormikHelpers } from 'formik';
-import { IoMdCart } from 'react-icons/io';
 import { MdOutlineMail } from 'react-icons/md';
 import { useDispatch } from 'react-redux';
 import { Link } from 'react-router-dom';
@@ -42,51 +41,82 @@ function Footer() {
       });
   };
 
+  const scroolUp = () => {
+    window.scroll({
+      top: 0,
+      behavior: 'smooth',
+    });
+  };
   return (
     <div className="bg-footerGray bottom-0 left-0 right-0 p-4 md:p-10">
       <div className="md:flex justify-around flex-wrap">
         <div className="py-4 md:py-10">
-          <div className="flex items-center relative left-2">
-            <div className="w-2 h-2 bg-redBg rounded-full"></div>
-            <div className="w-2 h-2 bg-blue-500 rounded-full ml-1"></div>
-          </div>
           <div className="flex items-center">
-            <IoMdCart
-              style={{
-                color: 'blue',
-                fontSize: '24px',
-                width: '50px',
-              }}
-              className="md:relative md:top-0 pr-7"
-            />
-            <h1 className=" ">Dynamites</h1>
+            <img src="/iconcart.svg" alt="" className="w-10 text-primary" />
+            <Link to="/" className="font-semibold text-xl" onClick={scroolUp}>
+              Dynamites
+            </Link>
           </div>
         </div>
         <div className="md:py-0 ">
-          <Link to="/Products" className="text-xl font-semibold ">
+          <Link
+            to="/shop"
+            className="text-xl font-semibold hover:text-primary transition-colors duration-300 "
+          >
             Products
           </Link>
-          <p className="text-lg py-2 font-light text-grey">Features</p>
-          <p className="text-lg py-2 font-light text-grey">Pricing</p>
+          <p className="text-lg py-2 font-light text-grey cursor-pointer hover:text-primary transition-colors duration-300">
+            Features
+          </p>
+          <p className="text-lg py-2 font-light text-grey cursor-pointer hover:text-primary transition-colors duration-300">
+            Pricing
+          </p>
         </div>
         <div className="py-2 md:py-0">
-          <Link to="/Resources" className="text-xl font-semibold">
+          <Link
+            to="/Resources"
+            className="text-xl font-semibold  hover:text-primary transition-colors duration-300"
+          >
             Resources
           </Link>
-          <p className="text-lg py-2 font-light text-grey">Blog</p>
-          <p className="text-lg py-2 font-light text-grey">User Guides</p>
-          <p className="text-lg py-2 font-light text-grey">Webinars</p>
+          <Link
+            to="/blog"
+            className="text-lg py-2 font-light text-grey block cursor-pointer hover:text-primary transition-colors duration-300"
+          >
+            Blog
+          </Link>
+          <p className="text-lg py-2 font-light text-grey cursor-pointer hover:text-primary transition-colors duration-300">
+            User Guides
+          </p>
+          <p className="text-lg py-2 font-light text-grey cursor-pointer hover:text-primary transition-colors duration-300">
+            Webinars
+          </p>
         </div>
         <div className="py-2 md:py-0">
-          <Link to="/Company" className="text-xl font-semibold">
+          <Link
+            to="/Company"
+            className="text-xl font-semibold  hover:text-primary transition-colors duration-300"
+          >
             Company
           </Link>
-          <p className="text-lg py-2 font-light text-grey">About</p>
-          <p className="text-lg py-2 font-light text-grey">Join Us</p>
+          <Link
+            to="/about"
+            className="text-lg py-2 font-light text-grey block cursor-pointer  hover:text-primary transition-colors duration-300"
+          >
+            About
+          </Link>
+          <Link
+            to="/signUp"
+            className="text-lg py-2 font-light text-grey cursor-pointer hover:text-primary transition-colors duration-300"
+          >
+            Join Us
+          </Link>
         </div>
         <div className="py-2 md:py-0 flex flex-col">
-          <div className="text-primary">Subscribe To Our Newsletter</div>
-          <div className="text-black font-light text-xs">
+          <div className="text-primary py-1 text-xl">
+            Subscribe To Our Newsletter
+          </div>
+          <div className="text-dashgreytext font-normal text-md">
             For product announcements and exclusive insights
           </div>
           <div className="mt-2">
@@ -103,12 +133,12 @@ function Footer() {
                       fontSize: '24px',
                       width: '50px',
                       height: '20px',
-                      marginTop: '8px',
+                      marginTop: '12px',
                       position: 'absolute',
                       zIndex: '1',
                     }}
                   />
-                  <div className="flex gap-2 mt-2">
+                  <div className="flex gap-2 mt-2 grow">
                     <input
                       type="email"
                       id="email"
@@ -117,7 +147,7 @@ function Footer() {
                       value={values.email}
                       onChange={handleChange}
                       onBlur={handleBlur}
-                      className="md:w-90 p-1 relative border-2 rounded-md px-10"
+                      className="md:w-90 py-2 relative border-2 rounded-md px-10"
                     />
                     <button
                       className="bg-primary text-white px-4 py-1 z-0 rounded-md"
@@ -162,7 +192,7 @@ function Footer() {
         </ul>
         <div>
           <ul className="flex gap-2 mt-2 md:mt-0">
-            <li>
+            <Link to="x.com" target="_blank">
               <svg
                 xmlns="http://www.w3.org/2000/svg"
                 width="20"
@@ -171,8 +201,8 @@ function Footer() {
               >
                 <path d="M18.42,14.009L27.891,3h-2.244l-8.224,9.559L10.855,3H3.28l9.932,14.455L3.28,29h2.244l8.684-10.095,6.936,10.095h7.576l-10.301-14.991h0Zm-3.074,3.573l-1.006-1.439L6.333,4.69h3.447l6.462,9.243,1.006,1.439,8.4,12.015h-3.447l-6.854-9.804h0Z"></path>
               </svg>
-            </li>
-            <li>
+            </Link>
+            <Link to="facebook.com" target="_blank">
               <svg
                 xmlns="http://www.w3.org/2000/svg"
                 width="20"
@@ -184,8 +214,8 @@ function Footer() {
                   fill="#2E6FE8"
                 ></path>
               </svg>
-            </li>
-            <li>
+            </Link>
+            <Link to="linkedIn.com" target="_blank">
               <svg
                 xmlns="http://www.w3.org/2000/svg"
                 width="20"
@@ -198,8 +228,8 @@ function Footer() {
                   fill="#2148A5"
                 ></path>
               </svg>
-            </li>
-            <li>
+            </Link>
+            <Link to="youtube.com" target="_blank">
               <svg
                 xmlns="http://www.w3.org/2000/svg"
                 width="20"
@@ -211,7 +241,7 @@ function Footer() {
                   fill="#E82E2E"
                 ></path>
               </svg>
-            </li>
+            </Link>
           </ul>
         </div>
       </div>
