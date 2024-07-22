@@ -16,9 +16,9 @@ export const uploadSingleImage = async (file: File): Promise<string> => {
     return response.data.secure_url;
   } catch (error) {
     if (error instanceof AxiosError) {
-      throw new Error(`Error uploading image: ${error.message}`);
+      throw error;
     } else {
-      throw new Error(`Unexpected error occurred: ${error}`);
+      throw error;
     }
   }
 };
@@ -37,9 +37,9 @@ export const uploadGalleryImages = async (files: File[]): Promise<string[]> => {
       return response.data.secure_url;
     } catch (error) {
       if (error instanceof AxiosError) {
-        throw new Error(`Error uploading image: ${error.message}`);
+        throw error;
       } else {
-        throw new Error(`Unexpected error occurred: ${error}`);
+        throw error;
       }
     }
   });

@@ -3,6 +3,7 @@ import '@testing-library/jest-dom';
 import { describe, it, expect, beforeEach } from 'vitest';
 import { Provider } from 'react-redux';
 import configureStore from 'redux-mock-store';
+import { MemoryRouter } from 'react-router';
 import Categories from '@/components/home/sidebar';
 
 const mockStore = configureStore([]);
@@ -32,7 +33,9 @@ describe('Categories Component', () => {
   it('renders Categories component with category details', () => {
     render(
       <Provider store={store}>
-        <Categories />
+        <MemoryRouter>
+          <Categories />
+        </MemoryRouter>
       </Provider>
     );
 

@@ -9,7 +9,7 @@ import { RootState } from '../../app/store';
 
 import ConfirmationCard from './ConfirmationCard';
 import Product from '@/interfaces/product';
-import { uploadSingleImage, uploadGalleryImages } from '@/utils/UploadImages';
+import { uploadSingleImage, uploadGalleryImages } from '@/utils/cloudinary.tsx';
 
 // -------------------------------------------------------------------------------------------
 
@@ -47,7 +47,7 @@ function EditProducts() {
     if (DashboardProduct) {
       setDashboardProduct(DashboardProduct);
     } else {
-      navigate(`/adminDashboard/products/`);
+      navigate(`/dashboard/product/`);
     }
   }, [id, DashboardProduct, navigate]);
 
@@ -137,7 +137,7 @@ function EditProducts() {
           headers: { Authorization: `Bearer ${token}` },
         }
       );
-      navigate(`/adminDashboard/products/`);
+      navigate(`/dashboard/product/`);
       setupdating(false);
     } catch (error) {
       if (axios.isAxiosError(error)) {

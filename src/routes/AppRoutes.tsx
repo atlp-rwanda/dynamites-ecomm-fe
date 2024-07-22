@@ -15,6 +15,11 @@ import EditProductPage from '@/pages/EditPage';
 import Shop from '@/pages/Shop';
 import Wishlist from '@/pages/Wishlist';
 import { Orders } from '@/components/Orders/Orders';
+import AddProducts from '@/components/dashBoard/addProducts';
+import ProductDetails from '@/pages/ProductDetails';
+import ProtectedRoute from '@/components/ProtectedRoute';
+import Cart from '@/components/Cart/Cart';
+import Seller from '@/pages/Seller';
 
 function AppRoutes() {
   return (
@@ -22,7 +27,17 @@ function AppRoutes() {
       <Route element={<HomeLayout />}>
         <Route index path="/" element={<Home />} />
         <Route path="shop" element={<Shop />} />
+        <Route
+          path="wishlist"
+          element={
+            <ProtectedRoute roles={['Buyer']}>
+              <Wishlist />
+            </ProtectedRoute>
+          }
+        />
+        <Route path="product-details/:id" element={<ProductDetails />} />
         <Route path="wishlist" element={<Wishlist />} />
+        <Route path="/cart" element={<Cart />} />
       </Route>
       <Route path="/signup" element={<SignUp />} />
       <Route path="/signIn" element={<SignIn />} />
@@ -31,7 +46,7 @@ function AppRoutes() {
       <Route path="/reset-password/:token" element={<ResetPasswordForm />} />
 
       <Route
-        path="/adminDashboard"
+        path="/dashboard"
         element={
           <AdminRoutes>
             <DashboardLayout />
@@ -39,17 +54,19 @@ function AppRoutes() {
         }
       >
         <Route index element={<Admin />} />
-        <Route path="/adminDashboard/orders" element={<Orders />} />
+        <Route path="/dashboard/orders" element={<Orders />} />
+        <Route path="/dashboard/seller" element={<Seller />} />
         <Route
           index
-          path="/adminDashboard/products"
+          path="/dashboard/product"
           element={<DesplayProductPage />}
         />
         <Route
           index
-          path="/adminDashboard/products/:id"
+          path="/dashboard/product/:id"
           element={<EditProductPage />}
         />
+        <Route index path="/dashboard/addProduct/" element={<AddProducts />} />
       </Route>
       <Route path="*" element={<ErrorPage />} />
       <Route path="/forgot-password" element={<PasswordResetRequestForm />} />

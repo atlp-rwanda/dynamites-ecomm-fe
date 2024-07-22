@@ -1,0 +1,702 @@
+import axios, { AxiosError } from 'axios';
+import { useEffect, useState } from 'react';
+import { Link, useNavigate, useParams } from 'react-router-dom';
+import { FaStar } from 'react-icons/fa';
+import ClipLoader from 'react-spinners/ClipLoader';
+import { IoClose } from 'react-icons/io5';
+import { useAppDispatch, useAppSelector } from '@/app/hooks';
+import Button from '@/components/form/Button';
+import {
+  addToWishlist,
+  fetchProductDetails,
+} from '@/features/Products/ProductSlice';
+import { Product } from '@/types/Product';
+import { showErrorToast, showSuccessToast } from '@/utils/ToastConfig';
+import { fetchBestSellingProducts } from '@/features/Popular/bestSellingProductSlice';
+
+interface IProduct extends Product {
+  similarProducts: Product[];
+  totalQtySold: number;
+}
+
+function SimilarProductCard({ product }: { product: Product }) {
+  const navigate = useNavigate();
+  return (
+    <div className="relative flex flex-col xs:w-full lg:w-60 h-60 border border-grayLight overflow-hidden rounded-md">
+      <button
+        type="button"
+        className="absolute top-2 right-2 flex p-2 items-center rounded-2xl bg-blueBg text-white text-xs"
+      >
+        {Math.round(
+          (product.regularPrice - product.salesPrice) /
+            product.regularPrice /
+            0.01
+        )}
+        % Off
+      </button>
+      <img
+        src={product.image}
+        alt="prodImg"
+        className="w-full h-[65%] object-cover"
+      />
+      <div className="flex-1 flex flex-col justify-between pt-2 pb-4 px-2">
+        <button
+          type="button"
+          className="flex items-center justify-start text-base font-semibold text-gray-800 cursor-pointer"
+          onClick={() => navigate(`/product-details/${product.id}`)}
+        >
+          {product.name.substring(0, 17)}
+          {product.name.length > 17 && '...'}
+        </button>
+        <div className="flex items-center justify-between">
+          <div className="flex items-center font-medium gap-2 relative w-fit">
+            <div className="flex items-center font-medium gap-2 relative w-fit">
+              <span className="">{product.averageRating}</span>
+              {Array.from({ length: Math.floor(product.averageRating) }).map(
+                (_, index) => {
+                  return (
+                    <div data-testid="ratingStar" key={index}>
+                      <svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        className="h-6 w-6 text-yellow-400"
+                        viewBox="0 0 36 36"
+                      >
+                        <path
+                          fill="currentColor"
+                          d="M27.287 34.627c-.404 0-.806-.124-1.152-.371L18 28.422l-8.135 5.834a1.97 1.97 0 0 1-2.312-.008a1.971 1.971 0 0 1-.721-2.194l3.034-9.792l-8.062-5.681a1.98 1.98 0 0 1-.708-2.203a1.978 1.978 0 0 1 1.866-1.363L12.947 13l3.179-9.549a1.976 1.976 0 0 1 3.749 0L23 13l10.036.015a1.975 1.975 0 0 1 1.159 3.566l-8.062 5.681l3.034 9.792a1.97 1.97 0 0 1-.72 2.194a1.957 1.957 0 0 1-1.16.379"
+                        />
+                      </svg>
+                    </div>
+                  );
+                }
+              )}
+              <div>
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  className="h-6 w-6"
+                  viewBox="0 0 36 36"
+                  data-testid="halfStar"
+                >
+                  <defs>
+                    <linearGradient
+                      id="grad1"
+                      x1="0%"
+                      y1="0%"
+                      x2="100%"
+                      y2="0%"
+                    >
+                      <stop
+                        offset={`${(product.averageRating - Math.floor(product.averageRating)) * 100}%`}
+                        style={{
+                          stopColor: 'rgb(250 204 21)',
+                          stopOpacity: 1,
+                        }}
+                      />
+                      <stop
+                        offset={`${(product.averageRating - Math.floor(product.averageRating)) * 100}%`}
+                        style={{
+                          stopColor: 'rgb(156 163 175)',
+                          stopOpacity: 1,
+                        }}
+                      />
+                    </linearGradient>
+                  </defs>
+                  <path
+                    fill="url(#grad1)"
+                    d="M27.287 34.627c-.404 0-.806-.124-1.152-.371L18 28.422l-8.135 5.834a1.97 1.97 0 0 1-2.312-.008a1.971 1.971 0 0 1-.721-2.194l3.034-9.792l-8.062-5.681a1.98 1.98 0 0 1-.708-2.203a1.978 1.978 0 0 1 1.866-1.363L12.947 13l3.179-9.549a1.976 1.976 0 0 1 3.749 0L23 13l10.036.015a1.975 1.975 0 0 1 1.159 3.566l-8.062 5.681l3.034 9.792a1.97 1.97 0 0 1-.72 2.194a1.957 1.957 0 0 1-1.16.379"
+                  />
+                </svg>
+              </div>
+            </div>
+            {Array.from({ length: Math.floor(4 - product.averageRating) }).map(
+              (_, index) => {
+                return (
+                  <div data-testid="emptyStar" key={index}>
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      className="h-6 w-6 text-gray-400"
+                      viewBox="0 0 36 36"
+                    >
+                      <path
+                        fill="currentColor"
+                        d="M27.287 34.627c-.404 0-.806-.124-1.152-.371L18 28.422l-8.135 5.834a1.97 1.97 0 0 1-2.312-.008a1.971 1.971 0 0 1-.721-2.194l3.034-9.792l-8.062-5.681a1.98 1.98 0 0 1-.708-2.203a1.978 1.978 0 0 1 1.866-1.363L12.947 13l3.179-9.549a1.976 1.976 0 0 1 3.749 0L23 13l10.036.015a1.975 1.975 0 0 1 1.159 3.566l-8.062 5.681l3.034 9.792a1.97 1.97 0 0 1-.72 2.194a1.957 1.957 0 0 1-1.16.379"
+                      />
+                    </svg>
+                  </div>
+                );
+              }
+            )}
+          </div>
+          <h2>${product.salesPrice}</h2>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+function ProductDetails() {
+  const product = useAppSelector((state) => state.products.productDetails);
+  const { productDetailsLoading } = useAppSelector((state) => state.products);
+  const bestSellers = useAppSelector(
+    (state) => state.bestSellingProducts.bestSellingProduct
+  );
+  const { token } = useAppSelector((state) => state.signIn);
+  const dispatch = useAppDispatch();
+  const { id } = useParams();
+  const [newReview, setNewReview] = useState(false);
+  const [review, setReview] = useState<{
+    rating: number | null;
+    content: string;
+    productId: number | undefined;
+  }>({ rating: null, content: '', productId: product?.id });
+  const [error, setError] = useState('');
+  const [reviewLoading, setReviewLoading] = useState(false);
+  const [toggleLoginOverlay, setToggleLoginOverlay] = useState(false);
+  const [isVisible, setIsVisible] = useState({ state: true, name: 'details' });
+
+  useEffect(() => {
+    if (id) {
+      dispatch(fetchProductDetails(parseInt(id, 10)));
+    }
+  }, [dispatch, newReview, id]);
+
+  useEffect(() => {
+    dispatch(fetchBestSellingProducts());
+  }, [dispatch]);
+
+  const isBestSeller = (prod: IProduct, bestSellerProds: Product[]) => {
+    return bestSellerProds.some(
+      (bestSellerProd) => bestSellerProd.id === prod.id
+    );
+  };
+
+  const submitReview = async () => {
+    if (!token) {
+      setToggleLoginOverlay(true);
+      return;
+    }
+
+    if (!review.rating) {
+      setError('Rating is required');
+      return;
+    }
+
+    if (!review.content) {
+      setError('Content is required');
+      return;
+    }
+
+    setReviewLoading(true);
+
+    try {
+      const response = await axios.post(
+        `${import.meta.env.VITE_BASE_URL}/review`,
+        review,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+
+      setNewReview(true);
+      setError('');
+      setReviewLoading(false);
+      showSuccessToast(response.data.message as string);
+    } catch (err) {
+      const errorObj = err as AxiosError;
+      setError('');
+      setReviewLoading(false);
+      if (!errorObj.response) {
+        showErrorToast('An error occured');
+        return;
+      }
+      showErrorToast((errorObj.response.data as { message: string }).message);
+    }
+  };
+
+  return (
+    <div className="relative flex flex-col items-center w-full xs:min-h-[35rem] lg:min-h-80 p-8">
+      {!productDetailsLoading && !product && (
+        <div className="absolute top-[40%] text-xl text-grey">
+          Failed to load product details
+        </div>
+      )}
+      {productDetailsLoading && (
+        <div className="absolute top-[40%] flex flex-col items-center gap-4">
+          <ClipLoader size={50} color="#6D31ED" />
+          <h1 className="text-grey">Just a sec! We are almost there</h1>
+        </div>
+      )}
+      {toggleLoginOverlay && (
+        <div className="fixed w-screen h-screen top-0 left-0 flex items-center justify-center z-50  bg-black bg-opacity-50">
+          <div className="relative flex flex-col w-[30rem] h-60 bg-white rounded-lg">
+            <div className="w-full p-4 py-2 border-b border-greyLight text-xl">
+              Error
+            </div>
+            <IoClose
+              color="black"
+              size="25"
+              className="absolute top-2 right-2 cursor-pointer"
+              onClick={() => setToggleLoginOverlay(false)}
+            />
+            <div className="flex flex-1 flex-col justify-between items-center p-4 pb-6">
+              <p className="text-grey">
+                Only logged in users are allowed to submit product reviews.
+                Please login or create an account if you do not have one
+              </p>
+              <Button title="Go to login" path="/signIn" />
+            </div>
+          </div>
+        </div>
+      )}
+      <h1 className="self-start">
+        <Link to="/shop" className="text-linkGrey">
+          Shop
+        </Link>{' '}
+        &gt; {(!productDetailsLoading && product?.name) || 'Product Details'}
+      </h1>
+      {!productDetailsLoading && product && (
+        <div className="flex xs:flex-col lg:flex-row xs:w-full lg:w-[90%] xs:gap-8 lg:gap-0 mt-8">
+          <div className="flex flex-col xs:w-full lg:w-3/5 h-[30rem] justify-between">
+            <div className="w-full h-[73%] rounded-md overflow-hidden hover:border-[2px] border-primary">
+              <img
+                src={product.image}
+                alt="prodImg"
+                className="w-full h-full object-cover"
+              />
+            </div>
+            <div className="flex items-center gap-4 w-full h-[23%] rounded-md overflow-hidden">
+              {product.gallery.map((image) => (
+                <div
+                  className="w-1/4 h-full rounded-md overflow-hidden hover:border-[2px] border-primary"
+                  key={crypto.randomUUID()}
+                >
+                  <img
+                    src={image}
+                    alt="galleryImg"
+                    className="w-full h-full object-cover"
+                  />
+                </div>
+              ))}
+            </div>
+          </div>
+          <div className="flex flex-col xs:w-full lg:w-2/5 justify-between h-[30rem] rounded-md overflow-hidden lg:px-4">
+            <div className="flex items-center gap-4 w-full">
+              <h2 className="font-semibold text-lg">
+                {product.name.slice(0, 25)}
+                {product.name.length > 25 ? '...' : ''}
+              </h2>
+              {isBestSeller(product, bestSellers) && (
+                <button
+                  type="button"
+                  className="flex px-2 py-1 items-center rounded-2xl bg-blueBg text-white text-xs"
+                >
+                  Best Seller
+                </button>
+              )}
+            </div>
+            <div
+              className="flex items-center justify-between w-full"
+              id="rating-div"
+            >
+              <div className="flex items-center font-medium gap-2 relative w-fit">
+                <div className="flex items-center font-medium gap-2 relative w-fit">
+                  <span className="">{product.averageRating}</span>
+                  {Array.from({
+                    length: Math.floor(product.averageRating),
+                  }).map((_, index) => {
+                    return (
+                      <div data-testid="ratingStar" key={index}>
+                        <svg
+                          xmlns="http://www.w3.org/2000/svg"
+                          className="h-6 w-6 text-yellow-400"
+                          viewBox="0 0 36 36"
+                        >
+                          <path
+                            fill="currentColor"
+                            d="M27.287 34.627c-.404 0-.806-.124-1.152-.371L18 28.422l-8.135 5.834a1.97 1.97 0 0 1-2.312-.008a1.971 1.971 0 0 1-.721-2.194l3.034-9.792l-8.062-5.681a1.98 1.98 0 0 1-.708-2.203a1.978 1.978 0 0 1 1.866-1.363L12.947 13l3.179-9.549a1.976 1.976 0 0 1 3.749 0L23 13l10.036.015a1.975 1.975 0 0 1 1.159 3.566l-8.062 5.681l3.034 9.792a1.97 1.97 0 0 1-.72 2.194a1.957 1.957 0 0 1-1.16.379"
+                          />
+                        </svg>
+                      </div>
+                    );
+                  })}
+                  <div>
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      className="h-6 w-6"
+                      viewBox="0 0 36 36"
+                      data-testid="halfStar"
+                    >
+                      <defs>
+                        <linearGradient
+                          id="grad1"
+                          x1="0%"
+                          y1="0%"
+                          x2="100%"
+                          y2="0%"
+                        >
+                          <stop
+                            offset={`${(product.averageRating - Math.floor(product.averageRating)) * 100}%`}
+                            style={{
+                              stopColor: 'rgb(250 204 21)',
+                              stopOpacity: 1,
+                            }}
+                          />
+                          <stop
+                            offset={`${(product.averageRating - Math.floor(product.averageRating)) * 100}%`}
+                            style={{
+                              stopColor: 'rgb(156 163 175)',
+                              stopOpacity: 1,
+                            }}
+                          />
+                        </linearGradient>
+                      </defs>
+                      <path
+                        fill="url(#grad1)"
+                        d="M27.287 34.627c-.404 0-.806-.124-1.152-.371L18 28.422l-8.135 5.834a1.97 1.97 0 0 1-2.312-.008a1.971 1.971 0 0 1-.721-2.194l3.034-9.792l-8.062-5.681a1.98 1.98 0 0 1-.708-2.203a1.978 1.978 0 0 1 1.866-1.363L12.947 13l3.179-9.549a1.976 1.976 0 0 1 3.749 0L23 13l10.036.015a1.975 1.975 0 0 1 1.159 3.566l-8.062 5.681l3.034 9.792a1.97 1.97 0 0 1-.72 2.194a1.957 1.957 0 0 1-1.16.379"
+                      />
+                    </svg>
+                  </div>
+                </div>
+                {Array.from({
+                  length: Math.floor(4 - product.averageRating),
+                }).map((_, index) => {
+                  return (
+                    <div data-testid="emptyStar" key={index}>
+                      <svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        className="h-6 w-6 text-gray-400"
+                        viewBox="0 0 36 36"
+                      >
+                        <path
+                          fill="currentColor"
+                          d="M27.287 34.627c-.404 0-.806-.124-1.152-.371L18 28.422l-8.135 5.834a1.97 1.97 0 0 1-2.312-.008a1.971 1.971 0 0 1-.721-2.194l3.034-9.792l-8.062-5.681a1.98 1.98 0 0 1-.708-2.203a1.978 1.978 0 0 1 1.866-1.363L12.947 13l3.179-9.549a1.976 1.976 0 0 1 3.749 0L23 13l10.036.015a1.975 1.975 0 0 1 1.159 3.566l-8.062 5.681l3.034 9.792a1.97 1.97 0 0 1-.72 2.194a1.957 1.957 0 0 1-1.16.379"
+                        />
+                      </svg>
+                    </div>
+                  );
+                })}
+              </div>
+            </div>
+            <div className="flex items-center gap-4">
+              <h2 className="text-linkGrey">
+                <span className="text-black font-semibold">
+                  {product.reviews.length}
+                </span>{' '}
+                Reviews
+              </h2>
+              <h2 className="text-linkGrey">
+                <span className="text-black font-semibold">
+                  {product.totalQtySold}
+                </span>{' '}
+                Products sold
+              </h2>
+            </div>
+            <div className="flex gap-4 items-center">
+              <span className="text-red-700 font-bold text-3xl">
+                ${product.salesPrice}
+              </span>
+              <span className="line-through text-gray-500 text-xl">
+                ${product.regularPrice}
+              </span>
+            </div>
+            <div className="flex flex-col gap-4 w-full">
+              <h2 className="m-0">Promotion</h2>
+              <div className="p-2 w-fit rounded-md text-xs flex items-center justify-center bg-violeteBg text-primary">
+                {Math.round(
+                  (product.regularPrice - product.salesPrice) /
+                    product.regularPrice /
+                    0.01
+                )}
+                % Off
+              </div>
+            </div>
+            <div className="w-full flex items-center gap-4">
+              <button
+                type="button"
+                className="flex items-center justify-center border border-primary text text-primary rounded-md text-sm h-11 w-40"
+              >
+                Add to Cart
+              </button>
+              <Button title="Checkout" styles="w-40" />
+            </div>
+            <div className="flex items-center gap-4 w-full">
+              <svg
+                onClick={() =>
+                  dispatch(addToWishlist({ token, id: product.id }))
+                }
+                xmlns="http://www.w3.org/2000/svg"
+                className="h-8 w-8 text-gray-600 cursor-pointer bg-gray-100 p-1"
+                viewBox="0 0 24 24"
+              >
+                <path
+                  fill="currentColor"
+                  d="m12 19.654l-.758-.685q-2.448-2.236-4.05-3.828q-1.601-1.593-2.528-2.81t-1.296-2.2T3 8.15q0-1.908 1.296-3.204T7.5 3.65q1.32 0 2.475.675T12 6.289Q12.87 5 14.025 4.325T16.5 3.65q1.908 0 3.204 1.296T21 8.15q0 .996-.368 1.98q-.369.986-1.296 2.202t-2.519 2.809q-1.592 1.592-4.06 3.828zm0-1.354q2.4-2.17 3.95-3.716t2.45-2.685t1.25-2.015Q20 9.006 20 8.15q0-1.5-1-2.5t-2.5-1q-1.194 0-2.204.682T12.49 7.385h-.978q-.817-1.39-1.817-2.063q-1-.672-2.194-.672q-1.48 0-2.49 1T4 8.15q0 .856.35 1.734t1.25 2.015t2.45 2.675T12 18.3m0-6.825"
+                />
+              </svg>
+              <h2>Add to wishlist</h2>
+            </div>
+            <div className="flex items-center">
+              <span className="text-grey mr-2">Tags:</span>
+              {product.tags.map((tag, i) => (
+                <h2 className="m-0" key={crypto.randomUUID()}>
+                  {i !== 0 && ', '}
+                  {tag}
+                </h2>
+              ))}
+            </div>
+          </div>
+        </div>
+      )}
+      {!productDetailsLoading && product && (
+        <div className="flex xs:w-full lg:w-[90%] flex-col gap-4 mt-20">
+          <div className="flex items-center">
+            <button
+              type="button"
+              className={`lg:text-xl xs:text-sm text-grey font-semibold px-4 py-2 ${isVisible.name === 'details' && 'border-b-[2px] border-primary text-primary'}`}
+              onClick={() => setIsVisible({ state: true, name: 'details' })}
+            >
+              Product Details
+            </button>
+            <button
+              type="button"
+              className={`lg:text-xl xs:text-sm text-grey font-semibold px-4 py-2 ${isVisible.name === 'reviews' && 'border-b-[2px] border-primary text-primary'}`}
+              onClick={() => setIsVisible({ state: true, name: 'reviews' })}
+            >
+              Reviews ({product.reviews.length})
+            </button>
+            <button
+              type="button"
+              className={`lg:text-xl xs:text-sm text-grey font-semibold px-4 py-2 ${isVisible.name === 'about' && 'border-b-[2px] border-primary text-primary'}`}
+              onClick={() => setIsVisible({ state: true, name: 'about' })}
+            >
+              About Store
+            </button>
+          </div>
+          {isVisible.state && isVisible.name === 'details' && (
+            <div className="flex flex-col gap-6 xs:w-full lg:w-4/5 pt-4">
+              <div className="flex flex-col gap-4 w-full">
+                <h2 className="font-semibold">Short Description</h2>
+                <p className="font-light text-justify">{product.shortDesc}</p>
+              </div>
+              <div className="flex flex-col gap-4 w-full">
+                <h2 className="font-semibold">Long Description</h2>
+                <p className="font-light text-justify">{product.longDesc}</p>
+              </div>
+            </div>
+          )}
+          {isVisible.state && isVisible.name === 'about' && (
+            <div className="flex flex-col gap-6 xs:w-full lg:w-4/5 pt-4">
+              <div className="flex items-center gap-6 xs:flex-col lg:flex-row xs:w-full lg:w-fit">
+                <div className="w-[5.6rem] h-[5.6rem] rounded-full border-[2px] border-primary flex items-center justify-center">
+                  <div className="w-20 h-20 rounded-full overflow-hidden">
+                    <img
+                      src={product.vendor.picture}
+                      alt="vendorImg"
+                      className="w-full h-full object-cover"
+                    />
+                  </div>
+                </div>
+                <div className="flex flex-col gap-4 xs:items-center lg:items-start xs:w-full lg:w-fit">
+                  <h2 className="xs:hidden lg:flex font-semibold">
+                    Vendor Name:
+                    <span className="font-light text-grey ml-2">
+                      {`${product.vendor.firstName} ${product.vendor.lastName}`}
+                    </span>
+                  </h2>
+                  <h2 className="xs:hidden lg:flex font-semibold">
+                    Vendor Email:
+                    <span className="font-light text-grey ml-2">
+                      {product.vendor.email}
+                    </span>
+                  </h2>
+                  <h2 className="xs:flex lg:hidden text-grey font-semibold">
+                    {`${product.vendor.firstName} ${product.vendor.lastName}`}
+                  </h2>
+                  <h2 className="xs:flex lg:hidden text-grey font-light">
+                    {product.vendor.email}
+                  </h2>
+                </div>
+              </div>
+            </div>
+          )}
+          {isVisible.state && isVisible.name === 'reviews' && (
+            <div className="flex flex-col gap-6 xs:w-full lg:w-4/5 pt-4">
+              {product?.reviews.length === 0 && (
+                <div className="text-grey font-medium">No reviews found</div>
+              )}
+              {product?.reviews.map((productReview) => (
+                <div
+                  className="flex flex-col w-full gap-4"
+                  key={crypto.randomUUID()}
+                >
+                  <div className="flex items-center gap-4">
+                    <div className="w-12 h-12 flex items-center justify-center overflow-hidden rounded-full">
+                      <img
+                        src={productReview.user.picture}
+                        alt="profImg"
+                        className="w-full h-full object-cover"
+                      />
+                    </div>
+                    <div className="flex flex-col gap-2">
+                      <h2 className="font-semibold">{`${productReview.user.firstName} ${productReview.user.lastName}`}</h2>
+                      <div className="flex items-center font-medium gap-2 relative w-fit">
+                        <div className="flex items-center font-medium gap-2 relative w-fit">
+                          <span className="">{productReview.rating}</span>
+                          {Array.from({
+                            length: Math.floor(productReview.rating),
+                          }).map((_, index) => {
+                            return (
+                              <div data-testid="ratingStar" key={index}>
+                                <svg
+                                  xmlns="http://www.w3.org/2000/svg"
+                                  className="h-6 w-6 text-yellow-400"
+                                  viewBox="0 0 36 36"
+                                >
+                                  <path
+                                    fill="currentColor"
+                                    d="M27.287 34.627c-.404 0-.806-.124-1.152-.371L18 28.422l-8.135 5.834a1.97 1.97 0 0 1-2.312-.008a1.971 1.971 0 0 1-.721-2.194l3.034-9.792l-8.062-5.681a1.98 1.98 0 0 1-.708-2.203a1.978 1.978 0 0 1 1.866-1.363L12.947 13l3.179-9.549a1.976 1.976 0 0 1 3.749 0L23 13l10.036.015a1.975 1.975 0 0 1 1.159 3.566l-8.062 5.681l3.034 9.792a1.97 1.97 0 0 1-.72 2.194a1.957 1.957 0 0 1-1.16.379"
+                                  />
+                                </svg>
+                              </div>
+                            );
+                          })}
+                          <div>
+                            <svg
+                              xmlns="http://www.w3.org/2000/svg"
+                              className="h-6 w-6"
+                              viewBox="0 0 36 36"
+                              data-testid="halfStar"
+                            >
+                              <defs>
+                                <linearGradient
+                                  id="grad1"
+                                  x1="0%"
+                                  y1="0%"
+                                  x2="100%"
+                                  y2="0%"
+                                >
+                                  <stop
+                                    offset={`${(productReview.rating - Math.floor(productReview.rating)) * 100}%`}
+                                    style={{
+                                      stopColor: 'rgb(250 204 21)',
+                                      stopOpacity: 1,
+                                    }}
+                                  />
+                                  <stop
+                                    offset={`${(productReview.rating - Math.floor(productReview.rating)) * 100}%`}
+                                    style={{
+                                      stopColor: 'rgb(156 163 175)',
+                                      stopOpacity: 1,
+                                    }}
+                                  />
+                                </linearGradient>
+                              </defs>
+                              <path
+                                fill="url(#grad1)"
+                                d="M27.287 34.627c-.404 0-.806-.124-1.152-.371L18 28.422l-8.135 5.834a1.97 1.97 0 0 1-2.312-.008a1.971 1.971 0 0 1-.721-2.194l3.034-9.792l-8.062-5.681a1.98 1.98 0 0 1-.708-2.203a1.978 1.978 0 0 1 1.866-1.363L12.947 13l3.179-9.549a1.976 1.976 0 0 1 3.749 0L23 13l10.036.015a1.975 1.975 0 0 1 1.159 3.566l-8.062 5.681l3.034 9.792a1.97 1.97 0 0 1-.72 2.194a1.957 1.957 0 0 1-1.16.379"
+                              />
+                            </svg>
+                          </div>
+                        </div>
+                        {Array.from({
+                          length: Math.floor(4 - productReview.rating),
+                        }).map((_, index) => {
+                          return (
+                            <div data-testid="emptyStar" key={index}>
+                              <svg
+                                xmlns="http://www.w3.org/2000/svg"
+                                className="h-6 w-6 text-gray-400"
+                                viewBox="0 0 36 36"
+                              >
+                                <path
+                                  fill="currentColor"
+                                  d="M27.287 34.627c-.404 0-.806-.124-1.152-.371L18 28.422l-8.135 5.834a1.97 1.97 0 0 1-2.312-.008a1.971 1.971 0 0 1-.721-2.194l3.034-9.792l-8.062-5.681a1.98 1.98 0 0 1-.708-2.203a1.978 1.978 0 0 1 1.866-1.363L12.947 13l3.179-9.549a1.976 1.976 0 0 1 3.749 0L23 13l10.036.015a1.975 1.975 0 0 1 1.159 3.566l-8.062 5.681l3.034 9.792a1.97 1.97 0 0 1-.72 2.194a1.957 1.957 0 0 1-1.16.379"
+                                />
+                              </svg>
+                            </div>
+                          );
+                        })}
+                      </div>
+                    </div>
+                  </div>
+                  <p className="font-light">{productReview.content}</p>
+                </div>
+              ))}
+            </div>
+          )}
+        </div>
+      )}
+      {!productDetailsLoading && product && (
+        <div className="flex xs:w-full lg:w-[90%] gap-4 flex-col items-start mt-20">
+          <h1 className="text-2xl font-semibold">Add a review</h1>
+          <h2>
+            Your rating<span className="text-red-700"> *</span>
+          </h2>
+          <div className="flex items-center gap-2">
+            {Array.from({ length: 5 }, (_, i) => (
+              <FaStar
+                size="25"
+                color={
+                  review.rating && i + 1 <= review.rating
+                    ? '#FACC15'
+                    : '#9CA3AF'
+                }
+                key={i}
+                onClick={() =>
+                  setReview({ ...review, rating: i + 1, productId: product.id })
+                }
+              />
+            ))}
+          </div>
+          <h2>
+            Your review<span className="text-red-700"> *</span>
+          </h2>
+          <textarea
+            className="xs:w-full lg:w-4/5 h-40 rounded-md border-[1.5px] outline-none border-textareaBorder"
+            onChange={(e) =>
+              setReview({
+                ...review,
+                content: e.target.value,
+                productId: product.id,
+              })
+            }
+          ></textarea>
+          {error && <div className="text-sm text-red-700">{error}</div>}
+          <Button
+            title={!reviewLoading ? 'Submit' : ''}
+            icon={
+              reviewLoading ? <ClipLoader size={20} color="white" /> : undefined
+            }
+            styles="w-40"
+            onClick={submitReview}
+          />
+        </div>
+      )}
+      {!productDetailsLoading && product && (
+        <div className="flex xs:w-full lg:w-[90%] flex-col items-start mt-20">
+          <h1 className="mb-2 text-2xl font-semibold">Similar Products</h1>
+          <h3 className="text-sm text-linkGrey mb-4">
+            Dont miss this opportunity at a special discount just for this week.
+          </h3>
+          <div className="w-full flex-wrap flex gap-4">
+            {product.similarProducts.map((item: Product) => {
+              if (item.id !== product.id) {
+                return (
+                  <SimilarProductCard
+                    product={item}
+                    key={crypto.randomUUID()}
+                  />
+                );
+              }
+              return null;
+            })}
+          </div>
+        </div>
+      )}
+    </div>
+  );
+}
+
+export default ProductDetails;

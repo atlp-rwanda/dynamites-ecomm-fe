@@ -7,15 +7,18 @@ import bannerReducer from '@/app/bannerAds/BannerSlice';
 import availableProductsSlice from '@/features/Popular/availableProductSlice';
 import bestSellingProductSlice from '@/features/Popular/bestSellingProductSlice';
 import subscribeReducer from '@/app/Footer/Subscribe';
+import addProductSlice from '@/features/Dashboard/addProductSlice';
+import dashboardProductsSlice from '@/features/Dashboard/dashboardProductsSlice';
+import allProductSlice from '@/app/Dashboard/AllProductSlices';
 import {
   passwordRequestReducer,
   passwordResetReducer,
 } from '@/features/Auth/password';
 import buyerSlice from '@/app/Dashboard/buyerSlice';
 import orderSlice from './Dashboard/orderSlice';
+import cartReducer from '@/features/Cart/cartSlice';
 
 import ordersSliceReducer from '@/features/Orders/ordersSlice';
-import DeshboardProductsSlice from '@/features/Dashboard/dashboardProductsSlice';
 
 export const store = configureStore({
   reducer: {
@@ -32,7 +35,10 @@ export const store = configureStore({
     buyer: buyerSlice,
     order: orderSlice,
     orders: ordersSliceReducer,
-    DeshboardProducts: DeshboardProductsSlice,
+    product: addProductSlice,
+    DeshboardProducts: dashboardProductsSlice,
+    cartItems: cartReducer,
+    allProducts: allProductSlice,
   },
 });
 
