@@ -8,6 +8,7 @@ import ProductCard from '@/components/home/ProductCard';
 import { Product } from '@/types/Product';
 import User from '@/types/User';
 import signInReducer from '@/features/Auth/SignInSlice';
+import productsReducer from '@/features/Products/ProductSlice';
 
 // Mock Product Data
 const mockProduct: Product = {
@@ -45,6 +46,7 @@ const renderWithProviders = (
     store = configureStore({
       reducer: {
         signIn: signInReducer,
+        products: productsReducer,
       },
     }),
   } = {}

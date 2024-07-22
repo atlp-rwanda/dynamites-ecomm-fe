@@ -13,16 +13,18 @@ function BannerSection() {
   }, [dispatch]);
 
   return (
-    <div className="flex w-full flex-wrap md:flex-nowrap justify-center gap-8 ">
-      {banners.map((banner) => (
-        <BannerAd
-          key={banner.id}
-          s_title="Only This Week"
-          title={banner.name}
-          description={banner.shortDesc}
-          image={banner.image}
-        />
-      ))}
+    <div className="w-full flex justify-center xs:px-4 lg:p-0">
+      <div className="flex lg:w-[90%] xs:w-full flex-wrap md:flex-nowrap justify-center gap-8">
+        {banners.map((banner) => (
+          <BannerAd
+            key={banner.id}
+            s_title="Only This Week"
+            title={banner.name}
+            description={banner.shortDesc}
+            image={banner.image}
+          />
+        ))}
+      </div>
     </div>
   );
 }

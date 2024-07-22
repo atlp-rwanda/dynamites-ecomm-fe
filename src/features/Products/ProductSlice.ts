@@ -307,9 +307,8 @@ const productsSlice = createSlice({
         state.wishlistLoading = false;
         state.wishlistProducts = action.payload;
       })
-      .addCase(fetchWishlistProducts.rejected, (state, action) => {
+      .addCase(fetchWishlistProducts.rejected, (state) => {
         state.wishlistLoading = false;
-        showErrorToast(action.payload as string);
       })
       .addCase(addToWishlist.pending, (state) => {
         state.wishlistLoading = true;
@@ -323,16 +322,11 @@ const productsSlice = createSlice({
         state.wishlistLoading = false;
         showErrorToast(action.payload as string);
       })
-      .addCase(removeFromWishlist.pending, (state) => {
-        state.wishlistLoading = true;
-      })
       .addCase(removeFromWishlist.fulfilled, (state, action) => {
-        state.wishlistLoading = false;
         showSuccessToast('Product successfully removed from wishlist');
         state.wishlistProducts = action.payload;
       })
-      .addCase(removeFromWishlist.rejected, (state, action) => {
-        state.wishlistLoading = false;
+      .addCase(removeFromWishlist.rejected, (_, action) => {
         showErrorToast(action.payload as string);
       })
       .addCase(fetchProductDetails.pending, (state) => {

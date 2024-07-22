@@ -170,7 +170,7 @@ describe('Wishlist Page', () => {
     });
   });
 
-  it('shows no products message when wishlist is empty', () => {
+  it('shows no products message when wishlist is empty', async () => {
     mock
       .onGet(`${import.meta.env.VITE_BASE_URL}/buyer/getOneWishlist`)
       .reply(200, {
@@ -179,8 +179,10 @@ describe('Wishlist Page', () => {
 
     renderWithProviders(<Wishlist />);
 
-    expect(
-      screen.getByText(/You currently have no products in your wishlist/i)
-    ).toBeInTheDocument();
+    await waitFor(() => {
+      expect(
+        screen.getByText(/You currently have no products in your wishlist/i)
+      ).toBeInTheDocument();
+    });
   });
 });

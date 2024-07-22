@@ -22,6 +22,7 @@ export default function Cart() {
     (acc, item) => acc + item.product.salesPrice * item.quantity,
     0
   );
+
   const [viewAll, setViewAll] = useState(false);
   const dispatch = useAppDispatch();
   useEffect(() => {
