@@ -19,6 +19,7 @@ import AddProducts from '@/components/dashBoard/addProducts';
 import ProductDetails from '@/pages/ProductDetails';
 import ProtectedRoute from '@/components/ProtectedRoute';
 import Cart from '@/components/Cart/Cart';
+import Seller from '@/pages/Seller';
 
 function AppRoutes() {
   return (
@@ -54,6 +55,7 @@ function AppRoutes() {
       >
         <Route index element={<Admin />} />
         <Route path="/dashboard/orders" element={<Orders />} />
+        <Route path="/dashboard/seller" element={<Seller />} />
         <Route
           index
           path="/dashboard/product"

@@ -45,3 +45,19 @@
 .swiper-button-prev {
   display: none;
 }
+.column-img {
+  width: 50px;
+}
+
+.column-firstName,
+.column-lastName,
+.column-items,
+.column-status,
+.column-action {
+  width: 100px;
+}
+
+.column-email,
+.column-date {
+  width: 200px;
+}
