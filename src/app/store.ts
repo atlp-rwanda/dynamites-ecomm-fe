@@ -19,6 +19,7 @@ import orderSlice from './Dashboard/orderSlice';
 import cartReducer from '@/features/Cart/cartSlice';
 
 import ordersSliceReducer from '@/features/Orders/ordersSlice';
+import contactReducer from '@/features/contact/contactSlice';
 
 export const store = configureStore({
   reducer: {
@@ -37,8 +38,12 @@ export const store = configureStore({
     orders: ordersSliceReducer,
     product: addProductSlice,
     DeshboardProducts: dashboardProductsSlice,
+<<<<<<< HEAD
     cartItems: cartReducer,
     allProducts: allProductSlice,
+=======
+    contact: contactReducer,
+>>>>>>> 511e3c0 (Adding Test for the contact form)
   },
 });
 

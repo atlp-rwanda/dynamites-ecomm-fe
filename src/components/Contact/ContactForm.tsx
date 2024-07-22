@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 import { useEffect } from 'react';
 import { Link, useNavigate, useSearchParams } from 'react-router-dom';
 import { useFormik } from 'formik';
@@ -8,6 +9,19 @@ import Button from '@/components/form/Button';
 import HSInput from '@/components/form/HSInput';
 import { MapIcon, PhoneIcon } from 'lucide-react';
 import { FaEnvelope } from 'react-icons/fa6';
+=======
+import React from 'react';
+import { useFormik } from 'formik';
+import * as yup from 'yup';
+import BeatLoader from 'react-spinners/BeatLoader';
+import { MapIcon, PhoneIcon } from 'lucide-react';
+import { FaEnvelope } from 'react-icons/fa6';
+import { useAppSelector, useAppDispatch } from '@/app/hooks';
+import Button from '@/components/form/Button';
+import HSInput from '@/components/form/HSInput';
+import HSTextarea from '@/components/form/HSTextarea';
+import { sendMessage, resetStatus } from '@/features/contact/contactSlice';
+>>>>>>> 511e3c0 (Adding Test for the contact form)
 
 interface MyFormValues {
   name: string;
@@ -36,15 +50,33 @@ const validationSchema: yup.ObjectSchema<MyFormValues> = yup.object({
     .required('Phone number is required!'),
 });
 function ContactForm() {
+  const dispatch = useAppDispatch();
+  const { loading, error, success } = useAppSelector((state) => state.contact);
+
   const formik = useFormik<MyFormValues>({
     initialValues,
     onSubmit: (values) => {
+<<<<<<< HEAD
       dispatch(loginUser(values));
+=======
+      dispatch(sendMessage(values));
+>>>>>>> 511e3c0 (Adding Test for the contact form)
     },
     validationSchema,
   });
 
-  const { loading } = useAppSelector((state) => state.signIn);
+  React.useEffect(() => {
+    if (success) {
+      formik.resetForm();
+      alert('Message sent successfully!');
+      console.log('Success:', success);
+      dispatch(resetStatus());
+    }
+    if (error) {
+      alert(`Error: ${error}`);
+      dispatch(resetStatus());
+    }
+  }, [success, error, dispatch, formik]);
   return (
     <div className="w-full mx-auto mt-8 md:mt-12 px-32">
       <div className="flex flex-row justify-between gap-20 items-start mb-6 ">
@@ -116,11 +148,14 @@ function ContactForm() {
             </div>
 
             <div>
-              <HSInput
+              <HSTextarea
                 data-testid="message"
                 id="message"
+<<<<<<< HEAD
                 type="textarea"
                 rows={4}
+=======
+>>>>>>> 511e3c0 (Adding Test for the contact form)
                 placeholder="Enter your message here ..."
                 style={
                   formik.touched.message && formik.errors.message
