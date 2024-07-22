@@ -9,6 +9,7 @@ import bestSellingProductSlice from '@/features/Popular/bestSellingProductSlice'
 import subscribeReducer from '@/app/Footer/Subscribe';
 import addProductSlice from '@/features/Dashboard/addProductSlice';
 import dashboardProductsSlice from '@/features/Dashboard/dashboardProductsSlice';
+import allProductSlice from '@/app/Dashboard/AllProductSlices';
 import {
   passwordRequestReducer,
   passwordResetReducer,
@@ -37,6 +38,7 @@ export const store = configureStore({
     product: addProductSlice,
     DeshboardProducts: dashboardProductsSlice,
     cartItems: cartReducer,
+    allProducts: allProductSlice,
   },
 });
 

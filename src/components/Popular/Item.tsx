@@ -16,10 +16,10 @@ function SingleItem({ product }: MostPopularItemProps) {
         </div>
         <div className=" flex flex-row">
           <p className="text-redBg font-medium text-base">
-            ${product.salesPrice}
+            ${product.salesPrice != 0 ? product.salesPrice : product.regularPrice }
           </p>
           <p className=" text-redBg pl-2 line-through opacity-60 text-sm">
-            ${product.regularPrice}
+            {product.salesPrice != 0 ? `$ ${product.regularPrice}` : ''}
           </p>
         </div>
       </div>
