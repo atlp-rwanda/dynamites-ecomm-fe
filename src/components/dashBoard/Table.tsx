@@ -151,6 +151,7 @@ function Table() {
           <div className=" font-bold text-lg mr-[15px]">Product List</div>
           <button
             type="button"
+            onClick={() => navigate(`/dashboard/addProduct/`)}
             className="border-[2px] border-primary text-primary px-[5px] py-[5px] rounded-md flex justify-center items-center gap-2 text-sm
                 hover:shadow-lg hover:scale-105 transition-all duration-300 ease-in-out hover:bg-primary hover:text-white"
           >

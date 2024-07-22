@@ -19,6 +19,17 @@ export default defineConfig({
     globals: true,
     environment: 'jsdom',
     setupFiles: ['./src/__test__/setupTests.ts'],
+    coverage: {
+      exclude: [
+        'tailwind.config.js',
+        '.prettierrc.cjs',
+        'postcss.config.js',
+        'src/App.tsx',
+        'src/main.tsx',
+        'src/components/dashBoard/Admin.tsx',
+        'src/components/dashBoard/Table.tsx',
+      ],
+    },
   },
   resolve: {
     alias: {

@@ -1,7 +1,8 @@
 import { createAsyncThunk, createSlice, PayloadAction } from '@reduxjs/toolkit';
 import axios from 'axios';
 
-interface Buyer {
+export interface Buyer {
+  id: number;
   firstName: string;
   lastName: string;
   email: string;
@@ -17,6 +18,8 @@ interface Buyer {
   isVerified: boolean;
   status: string;
   twoFactorCode: string | null;
+  updatedAt: string;
+  password: string;
 }
 
 const buyerUrl = `${import.meta.env.VITE_BASE_URL}/user/getAllUsers`;
@@ -44,7 +47,7 @@ export interface BuyerState {
   error: string | null;
 }
 
-const initialState: BuyerState = {
+export const initialState: BuyerState = {
   buyers: [],
   status: 'idle',
   error: null,

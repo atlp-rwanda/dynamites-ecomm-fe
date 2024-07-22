@@ -18,6 +18,8 @@ import { Orders } from '@/components/Orders/Orders';
 import AddProducts from '@/components/dashBoard/addProducts';
 import ProductDetails from '@/pages/ProductDetails';
 import ProtectedRoute from '@/components/ProtectedRoute';
+import Cart from '@/components/Cart/Cart';
+import Seller from '@/pages/Seller';
 
 function AppRoutes() {
   return (
@@ -34,6 +36,8 @@ function AppRoutes() {
           }
         />
         <Route path="product-details/:id" element={<ProductDetails />} />
+        <Route path="wishlist" element={<Wishlist />} />
+        <Route path="/cart" element={<Cart />} />
       </Route>
       <Route path="/signup" element={<SignUp />} />
       <Route path="/signIn" element={<SignIn />} />
@@ -51,6 +55,7 @@ function AppRoutes() {
       >
         <Route index element={<Admin />} />
         <Route path="/dashboard/orders" element={<Orders />} />
+        <Route path="/dashboard/seller" element={<Seller />} />
         <Route
           index
           path="/dashboard/product"

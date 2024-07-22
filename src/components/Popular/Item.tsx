@@ -6,9 +6,16 @@ interface MostPopularItemProps {
 
 function SingleItem({ product }: MostPopularItemProps) {
   return (
-    <div className=" flex flex-row hover:scale-105  hover:translate-y-0.5 hover:translate-x-0.5">
-      <div className=" max-h-20 max-w-20 ">
-        <img src={product.image} alt={product.name} className=" rounded" />
+    <a
+      href={`product-details/${product.id}`}
+      className=" flex flex-row hover:scale-105  hover:translate-y-0.5 hover:translate-x-0.5"
+    >
+      <div className=" flex flex-row items-center justify-center h-20 w-20 ">
+        <img
+          src={product.image}
+          alt={product.name}
+          className=" max-h-20 max-w-20 rounded"
+        />
       </div>
       <div className=" flex flex-col justify-between py-2 pl-1">
         <div>
@@ -23,7 +30,7 @@ function SingleItem({ product }: MostPopularItemProps) {
           </p>
         </div>
       </div>
-    </div>
+    </a>
   );
 }
 

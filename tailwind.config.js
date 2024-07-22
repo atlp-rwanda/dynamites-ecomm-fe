@@ -42,6 +42,8 @@ export default {
         sliderBg: '#F0F9FF',
         wishlistBg: '#F5F1F1',
         textareaBorder: '#A8ADB7',
+        statusBlue: '#15ABFF',
+        statusRed: '#E82E2E',
       },
       fontFamily: {
         Lexend: ['Lexend'],
