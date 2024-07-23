@@ -15,6 +15,7 @@ import { fetchCategories } from '@/features/Products/categorySlice';
 import {
   searchProducts,
   fetchRecommendedProducts,
+  fetchWishlistProducts,
 } from '@/features/Products/ProductSlice';
 import ProductSkeleton from '@/components/home/ProductSkeleton';
 import { useAppDispatch, useAppSelector } from '@/app/hooks';
@@ -67,6 +68,8 @@ function Shop() {
   const { allProducts, recommendedProducts, isLoading, total } = useAppSelector(
     (state) => state.products
   );
+
+  const { token } = useAppSelector((state) => state.signIn);
   const allCategories: Category[] = useAppSelector(
     (state) => state.categories.categories
   );
@@ -188,7 +191,8 @@ function Shop() {
     dispatch(searchProducts({}));
     dispatch(fetchCategories());
     dispatch(fetchRecommendedProducts());
-  }, [dispatch]);
+    dispatch(fetchWishlistProducts(token));
+  }, [dispatch, token]);
   return (
     <div className="flex w-full flex-col gap-4 p-4">
       {toggleFilterMenu && (

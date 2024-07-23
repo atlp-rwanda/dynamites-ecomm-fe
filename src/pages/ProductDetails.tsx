@@ -1,7 +1,7 @@
 import axios, { AxiosError } from 'axios';
 import { useEffect, useState } from 'react';
 import { Link, useNavigate, useParams } from 'react-router-dom';
-import { FaStar } from 'react-icons/fa';
+import { FaHeart, FaRegHeart, FaStar } from 'react-icons/fa';
 import ClipLoader from 'react-spinners/ClipLoader';
 import { IoClose } from 'react-icons/io5';
 import { useAppDispatch, useAppSelector } from '@/app/hooks';
@@ -9,6 +9,7 @@ import Button from '@/components/form/Button';
 import {
   addToWishlist,
   fetchProductDetails,
+  removeFromWishlist,
 } from '@/features/Products/ProductSlice';
 import { Product } from '@/types/Product';
 import { showErrorToast, showSuccessToast } from '@/utils/ToastConfig';
@@ -34,11 +35,17 @@ function SimilarProductCard({ product }: { product: Product }) {
         )}
         % Off
       </button>
-      <img
-        src={product.image}
-        alt="prodImg"
-        className="w-full h-[65%] object-cover"
-      />
+      <button
+        type="button"
+        className="w-full h-[65%]"
+        onClick={() => navigate(`/product-details/${product.id}`)}
+      >
+        <img
+          src={product.image}
+          alt="prodImg"
+          className="w-full h-full object-cover"
+        />
+      </button>
       <div className="flex-1 flex flex-col justify-between pt-2 pb-4 px-2">
         <button
           type="button"
@@ -153,6 +160,14 @@ function ProductDetails() {
   const [reviewLoading, setReviewLoading] = useState(false);
   const [toggleLoginOverlay, setToggleLoginOverlay] = useState(false);
   const [isVisible, setIsVisible] = useState({ state: true, name: 'details' });
+  const [activeImg, setActiveImg] = useState('');
+  const wishlistProducts = useAppSelector(
+    (state) => state.products.wishlistProducts
+  );
+
+  useEffect(() => {
+    setActiveImg(product?.image || '');
+  }, [product]);
 
   useEffect(() => {
     if (id) {
@@ -168,6 +183,10 @@ function ProductDetails() {
     return bestSellerProds.some(
       (bestSellerProd) => bestSellerProd.id === prod.id
     );
+  };
+
+  const isInWishlist = (prod: Product, wishlistProds: Product[]) => {
+    return wishlistProds?.some((wishlistProd) => wishlistProd.id === prod.id);
   };
 
   const submitReview = async () => {
@@ -261,23 +280,25 @@ function ProductDetails() {
           <div className="flex flex-col xs:w-full lg:w-3/5 h-[30rem] justify-between">
             <div className="w-full h-[73%] rounded-md overflow-hidden hover:border-[2px] border-primary">
               <img
-                src={product.image}
+                src={activeImg}
                 alt="prodImg"
                 className="w-full h-full object-cover"
               />
             </div>
             <div className="flex items-center gap-4 w-full h-[23%] rounded-md overflow-hidden">
               {product.gallery.map((image) => (
-                <div
+                <button
+                  type="button"
                   className="w-1/4 h-full rounded-md overflow-hidden hover:border-[2px] border-primary"
                   key={crypto.randomUUID()}
+                  onClick={() => setActiveImg(image)}
                 >
                   <img
                     src={image}
                     alt="galleryImg"
                     className="w-full h-full object-cover"
                   />
-                </div>
+                </button>
               ))}
             </div>
           </div>
@@ -422,19 +443,25 @@ function ProductDetails() {
               <Button title="Checkout" styles="w-40" />
             </div>
             <div className="flex items-center gap-4 w-full">
-              <svg
-                onClick={() =>
-                  dispatch(addToWishlist({ token, id: product.id }))
-                }
-                xmlns="http://www.w3.org/2000/svg"
-                className="h-8 w-8 text-gray-600 cursor-pointer bg-gray-100 p-1"
-                viewBox="0 0 24 24"
-              >
-                <path
-                  fill="currentColor"
-                  d="m12 19.654l-.758-.685q-2.448-2.236-4.05-3.828q-1.601-1.593-2.528-2.81t-1.296-2.2T3 8.15q0-1.908 1.296-3.204T7.5 3.65q1.32 0 2.475.675T12 6.289Q12.87 5 14.025 4.325T16.5 3.65q1.908 0 3.204 1.296T21 8.15q0 .996-.368 1.98q-.369.986-1.296 2.202t-2.519 2.809q-1.592 1.592-4.06 3.828zm0-1.354q2.4-2.17 3.95-3.716t2.45-2.685t1.25-2.015Q20 9.006 20 8.15q0-1.5-1-2.5t-2.5-1q-1.194 0-2.204.682T12.49 7.385h-.978q-.817-1.39-1.817-2.063q-1-.672-2.194-.672q-1.48 0-2.49 1T4 8.15q0 .856.35 1.734t1.25 2.015t2.45 2.675T12 18.3m0-6.825"
+              {isInWishlist(product, wishlistProducts) ? (
+                <FaHeart
+                  color="#6D31ED"
+                  size={20}
+                  className="cursor-pointer"
+                  onClick={() =>
+                    dispatch(removeFromWishlist({ id: product.id, token }))
+                  }
                 />
-              </svg>
+              ) : (
+                <FaRegHeart
+                  color="#9CA3AF"
+                  size={20}
+                  className="cursor-pointer"
+                  onClick={() =>
+                    dispatch(addToWishlist({ token, id: product.id }))
+                  }
+                />
+              )}
               <h2>Add to wishlist</h2>
             </div>
             <div className="flex items-center">

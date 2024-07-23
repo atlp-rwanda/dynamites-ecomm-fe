@@ -1,6 +1,10 @@
-import { useNavigate } from 'react-router';
+import { useNavigate } from 'react-router-dom';
+import { FaRegHeart, FaHeart } from 'react-icons/fa';
 import { useAppDispatch, useAppSelector } from '@/app/hooks';
-import { addToWishlist } from '@/features/Products/ProductSlice';
+import {
+  addToWishlist,
+  removeFromWishlist,
+} from '@/features/Products/ProductSlice';
 import { Product } from '@/types/Product';
 import { addCartItem } from '@/features/Cart/cartSlice';
 
@@ -12,17 +16,29 @@ function ProductCard({ product }: ProductCardProps) {
   const navigate = useNavigate();
   const dispatch = useAppDispatch();
   const { token } = useAppSelector((state) => state.signIn);
+  const { wishlistProducts } = useAppSelector((state) => state.products);
+
+  const isInWishlist = (prod: Product, wishlistProds: Product[]) => {
+    return wishlistProds?.some((wishlistProd) => wishlistProd.id === prod.id);
+  };
+
   return (
     <div className="shadow-lg rounded-lg relative">
-      <img
-        src={
-          product.image.startsWith('https') || product.image.startsWith('/')
-            ? product.image
-            : 'https://imageplaceholder.net/600x500'
-        }
-        alt={product.name}
-        className="w-full h-48 object-cover rounded-tl-md rounded-tr-md"
-      />
+      <button
+        type="button"
+        className="bg-transparent"
+        onClick={() => navigate(`/product-details/${product.id}`)}
+      >
+        <img
+          src={
+            product.image.startsWith('https') || product.image.startsWith('/')
+              ? product.image
+              : 'https://imageplaceholder.net/600x500'
+          }
+          alt={product.name}
+          className="w-full h-48 object-cover rounded-tl-md rounded-tr-md"
+        />
+      </button>
       <span className="absolute top-4 right-4 text-white bg-red-600 py-1 px-4 font-thin rounded-xl text-sm">
         {`${Math.round((product.regularPrice - product.salesPrice) / product.regularPrice / 0.01)}% Off`}
       </span>
@@ -42,17 +58,23 @@ function ProductCard({ product }: ProductCardProps) {
             {product.name.substring(0, 17)}
             {product.name.length > 17 && '...'}
           </button>
-          <svg
-            onClick={() => dispatch(addToWishlist({ token, id: product.id }))}
-            xmlns="http://www.w3.org/2000/svg"
-            className="h-8 w-8 text-gray-600 cursor-pointer bg-gray-100 p-1"
-            viewBox="0 0 24 24"
-          >
-            <path
-              fill="currentColor"
-              d="m12 19.654l-.758-.685q-2.448-2.236-4.05-3.828q-1.601-1.593-2.528-2.81t-1.296-2.2T3 8.15q0-1.908 1.296-3.204T7.5 3.65q1.32 0 2.475.675T12 6.289Q12.87 5 14.025 4.325T16.5 3.65q1.908 0 3.204 1.296T21 8.15q0 .996-.368 1.98q-.369.986-1.296 2.202t-2.519 2.809q-1.592 1.592-4.06 3.828zm0-1.354q2.4-2.17 3.95-3.716t2.45-2.685t1.25-2.015Q20 9.006 20 8.15q0-1.5-1-2.5t-2.5-1q-1.194 0-2.204.682T12.49 7.385h-.978q-.817-1.39-1.817-2.063q-1-.672-2.194-.672q-1.48 0-2.49 1T4 8.15q0 .856.35 1.734t1.25 2.015t2.45 2.675T12 18.3m0-6.825"
+          {isInWishlist(product, wishlistProducts) ? (
+            <FaHeart
+              color="#6D31ED"
+              size={20}
+              className="cursor-pointer"
+              onClick={() =>
+                dispatch(removeFromWishlist({ id: product.id, token }))
+              }
             />
-          </svg>
+          ) : (
+            <FaRegHeart
+              color="#9CA3AF"
+              size={20}
+              className="cursor-pointer"
+              onClick={() => dispatch(addToWishlist({ token, id: product.id }))}
+            />
+          )}
         </div>
         <p className="text-gray-400 tracking-wide font-light text-sm">
           {product.shortDesc.substring(0, 27)}

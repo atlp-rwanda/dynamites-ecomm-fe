@@ -13,6 +13,7 @@ import Admin from '@/pages/Admin';
 import DesplayProductPage from '@/pages/DesplayProductPage';
 import EditProductPage from '@/pages/EditPage';
 import Shop from '@/pages/Shop';
+import ContactPage from '@/pages/contact';
 import Wishlist from '@/pages/Wishlist';
 import { Orders } from '@/components/Orders/Orders';
 import AddProducts from '@/components/dashBoard/addProducts';
@@ -27,6 +28,7 @@ function AppRoutes() {
       <Route element={<HomeLayout />}>
         <Route index path="/" element={<Home />} />
         <Route path="shop" element={<Shop />} />
+        <Route path="/contact" element={<ContactPage />} />
         <Route
           path="wishlist"
           element={

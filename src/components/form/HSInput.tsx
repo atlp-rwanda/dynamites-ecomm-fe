@@ -10,11 +10,10 @@ interface MyInputProps {
   onChangeTextArea?: (event: React.ChangeEvent<HTMLTextAreaElement>) => void;
   onKeyDown?: (event: React.KeyboardEvent<HTMLInputElement>) => void;
   placeholder: string;
-  type?: string;
+  type?: 'input' | 'textarea';
   text?: string;
   icon?: JSX.Element;
   maxLength?: number;
-  rows?: number;
 }
 
 function HSInput({
@@ -33,7 +32,6 @@ function HSInput({
   text,
   icon,
   maxLength,
-  rows,
 }: MyInputProps) {
   return (
     <div className="flex flex-col gap-2 w-full group">
@@ -64,14 +62,12 @@ function HSInput({
           name={name}
           onBlur={onBlurTextArea}
           cols={30}
-          rows={rows}
+          rows={6}
           placeholder={placeholder}
           onChange={onChangeTextArea}
           value={values}
-          className="text-black text-xs md:text-sm duration-150 w-full outline-none rounded-md border-[1px]  group-hover:border-grayDark px-5 py-3"
-        >
-          {values}
-        </textarea>
+          className="text-black text-xs md:text-sm duration-150 w-full outline-none rounded-md border-[1px] group-hover:border-grayDark px-5 py-3"
+        />
       )}
     </div>
   );
