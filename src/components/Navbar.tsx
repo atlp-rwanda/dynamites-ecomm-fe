@@ -25,6 +25,12 @@ function Navbar() {
     dispatch(fetchCartItems());
   }, [dispatch]);
 
+  useEffect(() => {
+    // Close dropdowns when the location changes
+    setToggleMenu(false);
+    setToggleProfileMenu(false);
+  }, [location]);
+
   return (
     <div className="relative flex items-center justify-between w-full h-16 shadow-sm">
       <RxHamburgerMenu
@@ -111,11 +117,13 @@ function Navbar() {
           <Link to="/">Home</Link>
           <Link to="/shop">Shop</Link>
           <Link to="/about">About</Link>
-          <Link to="contact">Contact</Link>
+          <Link to="/contact">Contact</Link>
           <div className="flex flex-col w-full gap-2 border-b-[1.5px] border-lightGrey py-2">
             <div className="flex gap-2 w-full items-center">
-              <img src="/edit.png" width="20" height="20" alt="edit" />
-              <h2>Edit profile</h2>
+              <Link to="/profile" className="flex gap-2 w-full items-center">
+                <img src="/edit.png" width="20" height="20" alt="edit" />
+                <h2>Edit profile</h2>
+              </Link>
             </div>
             <div className="flex gap-2 w-full items-center">
               <img src="/settings.png" width="20" height="20" alt="settings" />
@@ -156,8 +164,10 @@ function Navbar() {
         <div className="bg-white absolute z-20 top-16 right-0 flex flex-col items-center w-52 shadow-sm py-2 text-grey rounded-b-md border-l border-b border-lightGrey">
           <div className="flex flex-col w-full gap-2 border-b-[1.5px] border-lightGrey py-2">
             <div className="flex gap-2 w-full items-center px-2">
-              <img src="/edit.png" width="20" height="20" alt="edit" />
-              <h2>Edit profile</h2>
+              <Link to="/profile" className="flex gap-2 w-full items-center">
+                <img src="/edit.png" width="20" height="20" alt="edit" />
+                <h2>Edit profile</h2>
+              </Link>
             </div>
             <div className="flex gap-2 w-full items-center px-2">
               <img src="/settings.png" width="20" height="20" alt="settings" />

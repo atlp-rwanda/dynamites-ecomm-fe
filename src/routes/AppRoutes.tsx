@@ -28,6 +28,7 @@ import Coupons from '@/pages/Coupons';
 import EditCoupon from '@/pages/EditCoupon';
 import TableUserRole from '@/components/dashBoard/UserRole';
 import Customer from '@/pages/customer';
+import ProfilePage from '@/pages/profile';
 
 function AppRoutes() {
   return (
@@ -37,6 +38,14 @@ function AppRoutes() {
         <Route path="shop" element={<Shop />} />
         <Route path="/contact" element={<ContactPage />} />
         <Route path="about" element={<Aboutus />} />
+        <Route
+          path="/profile"
+          element={
+            <ProtectedRoute roles={['Buyer']}>
+              <ProfilePage />
+            </ProtectedRoute>
+          }
+        />
         <Route
           path="wishlist"
           element={

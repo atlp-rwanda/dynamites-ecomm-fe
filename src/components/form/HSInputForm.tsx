@@ -7,6 +7,7 @@ interface MyInputProps {
   value?: string;
   style?: string;
   type?: string;
+  label?: string;
   onChange?: (event: React.ChangeEvent<HTMLInputElement>) => void;
   placeholder: string;
 }
@@ -17,6 +18,7 @@ function HSInput({
   onBlur,
   value,
   style,
+  label,
   type,
   onChange,
   placeholder,
@@ -26,6 +28,7 @@ function HSInput({
       id={id}
       name={name}
       onBlur={onBlur}
+      label={label}
       placeholder={placeholder}
       onChange={onChange}
       value={value}
