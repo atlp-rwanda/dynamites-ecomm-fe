@@ -80,6 +80,7 @@ describe('ProductsList Component', () => {
       },
       products: {
         products: mockProducts,
+        wishlistProducts: [],
       },
     });
   });

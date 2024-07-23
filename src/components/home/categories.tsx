@@ -26,6 +26,7 @@ function CategoriesSection() {
   const focused: number = useAppSelector((state: RootState) =>
     getFocused(state)
   );
+
   const chosen = categories.find((category) => category.id === focused);
   const title = chosen?.name;
 

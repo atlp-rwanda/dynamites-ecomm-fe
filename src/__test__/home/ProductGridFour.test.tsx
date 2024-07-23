@@ -8,6 +8,7 @@ import ProductGridFour from '@/components/home/ProductGridFour';
 import { Product } from '@/types/Product';
 import User from '@/types/User';
 import signInReducer from '@/features/Auth/SignInSlice';
+import productsReducer from '@/features/Products/ProductSlice';
 
 // Mock Product Data
 const mockProducts: Product[] = [
@@ -159,6 +160,7 @@ const renderWithProviders = (
     store = configureStore({
       reducer: {
         signIn: signInReducer,
+        products: productsReducer,
       },
     }),
   } = {}
