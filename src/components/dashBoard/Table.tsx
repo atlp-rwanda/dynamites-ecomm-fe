@@ -1,4 +1,3 @@
-/* eslint-disable jsx-a11y/control-has-associated-label */
 import { useState, useEffect } from 'react';
 import { FaRegTrashAlt } from 'react-icons/fa';
 import { MdOutlineEdit } from 'react-icons/md';
