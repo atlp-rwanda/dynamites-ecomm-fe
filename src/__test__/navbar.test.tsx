@@ -3,15 +3,26 @@ import { MemoryRouter } from 'react-router-dom';
 import { describe, it, expect } from 'vitest';
 import { configureStore } from '@reduxjs/toolkit';
 import { Provider } from 'react-redux';
+import MockAdapter from 'axios-mock-adapter';
+import axios from 'axios';
 import Navbar from '@/components/Navbar';
 import signInReducer from '@/features/Auth/SignInSlice';
+import cartReducer from '@/features/Cart/cartSlice';
 
 const createTestStore = () =>
-  configureStore({ reducer: { signIn: signInReducer } });
+  configureStore({
+    reducer: { signIn: signInReducer, cartItems: cartReducer },
+  });
+let httpMock: MockAdapter;
 
 describe('Navbar Component', () => {
   it('renders Navbar component', () => {
     const store = createTestStore();
+    httpMock = new MockAdapter(axios);
+    const mockCartItems = [{ id: 1, name: 'Product 1', quantity: 2 }];
+    httpMock
+      .onGet(`${process.env.VITE_BASE_URL}/cart`)
+      .reply(200, { cartItems: mockCartItems });
     render(
       <Provider store={store}>
         <MemoryRouter>
@@ -53,6 +64,11 @@ describe('Navbar Component', () => {
 
   it('highlights the correct navigation link based on the current route', () => {
     const store = createTestStore();
+    httpMock = new MockAdapter(axios);
+    const mockCartItems = [{ id: 1, name: 'Product 1', quantity: 2 }];
+    httpMock
+      .onGet(`${process.env.VITE_BASE_URL}/cart`)
+      .reply(200, { cartItems: mockCartItems });
     render(
       <Provider store={store}>
         <MemoryRouter initialEntries={['/shop']}>
@@ -84,6 +100,11 @@ describe('Navbar Component', () => {
 
   it('renders links with correct paths', () => {
     const store = createTestStore();
+    httpMock = new MockAdapter(axios);
+    const mockCartItems = [{ id: 1, name: 'Product 1', quantity: 2 }];
+    httpMock
+      .onGet(`${process.env.VITE_BASE_URL}/cart`)
+      .reply(200, { cartItems: mockCartItems });
     render(
       <Provider store={store}>
         <MemoryRouter>
@@ -115,13 +136,13 @@ describe('Navbar Component', () => {
       </Provider>
     );
 
-    const cartCount = screen.getByText(/5/i);
+    const cartCount = screen.getByText(/0/i);
     expect(cartCount).toBeInTheDocument();
   });
 
   it('renders profile options on avatar click', () => {
     const store = configureStore({
-      reducer: { signIn: signInReducer },
+      reducer: { signIn: signInReducer, cartItems: cartReducer },
       preloadedState: {
         signIn: {
           token: 'test token',
@@ -148,9 +169,18 @@ describe('Navbar Component', () => {
             email: null,
           },
         },
+        cartItems: {
+          cartItems: [],
+          loading: false,
+          error: null,
+        },
       },
     });
-
+    httpMock = new MockAdapter(axios);
+    const mockCartItems = [{ id: 1, name: 'Product 1', quantity: 2 }];
+    httpMock
+      .onGet(`${process.env.VITE_BASE_URL}/cart`)
+      .reply(200, { cartItems: mockCartItems });
     render(
       <Provider store={store}>
         <MemoryRouter>

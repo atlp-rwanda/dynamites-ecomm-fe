@@ -25,6 +25,6 @@
     "noUnusedParameters": true,
     "noFallthroughCasesInSwitch": true
   },
-  "include": [".eslintrc.cjs", "src", "dist/Cart", "dist/Checkout"],
+  "include": [".eslintrc.cjs", "src", "dist/Cart", "src/components/Checkout"],
   "references": [{ "path": "./tsconfig.node.json" }]
 }

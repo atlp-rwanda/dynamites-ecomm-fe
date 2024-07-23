@@ -6,7 +6,7 @@ interface ModalProps {
 }
 
 function OrderDetailsModal({ close, order }: ModalProps) {
-  const billigDetails = JSON.parse(order.deliveryInfo);
+  const billigDetails = order.deliveryInfo;
   return (
     <div className="p-8 bg-white rounded-lg shadow-lg max-w-3xl mx-auto">
       <div className="flex justify-between items-start mb-4">
@@ -31,7 +31,7 @@ function OrderDetailsModal({ close, order }: ModalProps) {
           <p>eric manzi</p>
           <p>{billigDetails.address}</p>
           <p>
-            {billigDetails.city}, {billigDetails.country}
+            {billigDetails.city}, {order.country}
           </p>
         </div>
         <div>
@@ -39,7 +39,7 @@ function OrderDetailsModal({ close, order }: ModalProps) {
           <p>eric manzi</p>
           <p>{billigDetails.address}</p>
           <p>
-            {billigDetails.city}, {billigDetails.country}
+            {billigDetails.city}, {order.country}
           </p>
         </div>
         <div>

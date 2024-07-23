@@ -17,21 +17,25 @@ const initialState: OrdersState = {
 
 const baseUrl = import.meta.env.VITE_BASE_URL;
 
-interface Payload {
-  orders: Order[];
-}
-
 export const fetchOrders = createAsyncThunk('orders/fetchOrders', async () => {
   const tokenFromStorage = localStorage.getItem('token') || '';
-  const response = await axios.get<Payload>(
-    `${baseUrl}/checkout/getall-order`,
-    {
-      headers: {
-        Authorization: `Bearer ${tokenFromStorage}`,
+  const response = await axios.get(`${baseUrl}/checkout/getall-order`, {
+    headers: {
+      Authorization: `Bearer ${tokenFromStorage}`,
+    },
+  });
+  const res = response.data.orders;
+  const orders = res.map((order: any) => {
+    return {
+      ...order,
+      deliveryInfo: {
+        address: JSON.parse(order.deliveryInfo).address,
+        city: JSON.parse(order.deliveryInfo).city,
+        zip: JSON.parse(order.deliveryInfo).zip,
       },
-    }
-  );
-  return response.data.orders;
+    };
+  });
+  return orders;
 });
 
 const ordersSlice = createSlice({
