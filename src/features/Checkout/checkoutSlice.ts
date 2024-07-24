@@ -3,6 +3,7 @@ import axios from 'axios';
 import { RootState } from '../../app/store';
 import { Checkout } from '@/interfaces/checkout';
 import Order from '@/interfaces/order';
+import { showErrorToast, showSuccessToast } from '@/utils/ToastConfig';
 
 export interface CheckoutState {
   checkout: Order;
@@ -36,6 +37,12 @@ const initialOrder: Order = {
   ],
 };
 
+interface MomoPaymentParams {
+  momoNumber: string;
+  orderId: number;
+}
+
+
 const initialState: CheckoutState = {
   checkout: initialOrder,
   loading: false,
@@ -62,6 +69,40 @@ export const placeOrder = createAsyncThunk(
   }
 );
 
+export const makeMomoPayment = createAsyncThunk(
+  'payment/momoPayment',
+  async ({ momoNumber, orderId }: MomoPaymentParams, { rejectWithValue }) => {
+    try {
+      const tokenFromStorage = localStorage.getItem('token') || '';
+      const response = await axios.post(
+        `${import.meta.env.VITE_BASE_URL}/buyer/momoPay`,
+
+        {
+          momoNumber,
+          orderId,
+        },
+        {
+          headers: {
+            Authorization: `Bearer ${tokenFromStorage}`,
+          },
+        }
+      );
+      showSuccessToast(response.data.message);
+      return response.data;
+    } catch (error) {
+      if (axios.isAxiosError(error)) {
+        // const errorMessage = error.response?.data?.message || 'Payment failed';
+        // showErrorToast(errorMessage);
+        return rejectWithValue(error.response?.data || 'Payment failed');
+      }
+      console.error('Unexpected error:', error);
+      showErrorToast('Payment failed');
+      return rejectWithValue('Payment failed');
+    }
+  }
+);
+
+
 export const getOrders = createAsyncThunk('order/get', async () => {
   const tokenFromStorage = localStorage.getItem('token') || '';
   const response = await axios.get(`${baseUrl}/checkout/getall-order`, {
@@ -70,7 +111,7 @@ export const getOrders = createAsyncThunk('order/get', async () => {
     },
   });
   return {
-    ...response.data[0],
+    ...response.data,
     deliveryInfo: JSON.parse(response.data[0].deliveryInfo),
   };
 });
@@ -91,6 +132,7 @@ export const makePayment = createAsyncThunk(
         },
       }
     );
+
     return response.data;
   }
 );

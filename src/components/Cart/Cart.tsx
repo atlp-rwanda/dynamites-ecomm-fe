@@ -15,6 +15,7 @@ export default function Cart() {
   const products: Product[] = useAppSelector((state: RootState) =>
     selectProducts(state)
   );
+
   const cartItems = useAppSelector((state: RootState) =>
     selectCartItems(state)
   );

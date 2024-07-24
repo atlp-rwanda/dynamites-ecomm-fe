@@ -1,9 +1,11 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, SetStateAction } from 'react';
 import { useNavigate } from 'react-router-dom';
 import CardInput, { Card } from './CardInput';
 import { RootState } from '@/app/store';
 import { fetchCartItems } from '@/features/Cart/cartSlice';
 import { Checkout as CheckoutType } from '@/interfaces/checkout';
+import BeatLoader from 'react-spinners/BeatLoader';
+
 import {
   selectCheckout,
   placeOrder,
@@ -46,6 +48,7 @@ function Checkout() {
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
   const user = useAppSelector((state) => state.signIn.user);
+
   function handleAdding() {
     setAdding(!adding);
   }
@@ -54,6 +57,7 @@ function Checkout() {
   );
   const order = checkoutState.checkout;
   const { loading, error, paying } = checkoutState;
+
   function handleSave(newCard: Card) {
     setCards((prev) => [...prev, newCard]);
 
@@ -71,7 +75,9 @@ function Checkout() {
     dispatch(placeOrder(checkout));
   }
 
+
   function handlePayment() {
+    console.log(order.id)
     dispatch(makePayment(order.id));
   }
 
@@ -84,7 +90,7 @@ function Checkout() {
       dispatch(fetchCartItems());
       navigate('/');
     } else if (paying && error) {
-      showErrorToast(error || 'failed');
+      showErrorToast('failed');
     }
   }, [error, loading, paying, navigate, dispatch]);
 
@@ -369,7 +375,7 @@ function Checkout() {
           <div className="mb-2">
             <div className="flex justify-between py-2 text-xl">
               <span className="text-gray-600">Total</span>
-              <span>${order.totalAmount}</span>
+              <span>${checkoutState.checkout.totalAmount}</span>
             </div>
           </div>
 
@@ -383,18 +389,25 @@ function Checkout() {
           <div className="font-bold">
             <div className="flex justify-between py-2 text-xl">
               <span className="text-gray-600">Total Cost</span>
-              <span>${order.totalAmount}</span>
+              <span>${checkoutState.checkout.totalAmount}</span>
             </div>
           </div>
         </div>
 
         <button
-          className="w-full bg-primary text-white py-4 text-2xl font-medium rounded-md"
-          type="button"
-          onClick={handlePayment}
-        >
-          Pay Here
-        </button>
+  className={`w-full bg-primary text-white py-4 text-2xl font-medium rounded-md ${chosen ? '' : 'opacity-50 cursor-not-allowed'} ${paying ? 'opacity-75 cursor-not-allowed' : ''}`}
+  type="button"
+  onClick={handlePayment}
+  disabled={!chosen || paying} 
+>
+
+  {paying ? (
+    <BeatLoader data-testid="Loading" color="#ffffff" size={8} />
+  ) : (
+    'Pay Here'
+  )}
+</button>
+
       </div>
     </div>
   );

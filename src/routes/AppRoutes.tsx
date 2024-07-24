@@ -23,6 +23,7 @@ import Cart from '@/components/Cart/Cart';
 import Seller from '@/pages/Seller';
 import CheckoutPage from '@/pages/Checkout';
 import Aboutus from '@/components/home/Aboutus';
+import OrderCompletion from '@/pages/OrderCompletion';
 
 function AppRoutes() {
   return (
@@ -44,6 +45,7 @@ function AppRoutes() {
         <Route path="wishlist" element={<Wishlist />} />
         <Route path="/cart" element={<Cart />} />
         <Route path="/checkout" element={<CheckoutPage />} />
+        <Route path="/order-completion" element={<OrderCompletion />} />
       </Route>
       <Route path="/signup" element={<SignUp />} />
       <Route path="/signIn" element={<SignIn />} />
