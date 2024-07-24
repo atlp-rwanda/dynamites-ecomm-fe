@@ -21,6 +21,7 @@ import ProductDetails from '@/pages/ProductDetails';
 import ProtectedRoute from '@/components/ProtectedRoute';
 import Cart from '@/components/Cart/Cart';
 import Seller from '@/pages/Seller';
+import Customer from '@/pages/customer';
 import CheckoutPage from '@/pages/Checkout';
 import Aboutus from '@/components/home/Aboutus';
 import AddCoupon from '@/pages/AddCoupon';
@@ -65,6 +66,7 @@ function AppRoutes() {
         <Route index element={<Admin />} />
         <Route path="/dashboard/orders" element={<Orders />} />
         <Route path="/dashboard/seller" element={<Seller />} />
+        <Route path="/dashboard/customer" element={<Customer />} />
         <Route
           index
           path="/dashboard/product"
