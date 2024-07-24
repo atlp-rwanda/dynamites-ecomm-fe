@@ -125,6 +125,7 @@ export function Orders() {
           <OrderDetailsModal
             close={() => setSelected(-1)}
             order={orders.find((order) => order.id === selected) as Order}
+            cancel={(id: number) => dispatch(cancelOrder(id))}
           />
         </div>
       )}

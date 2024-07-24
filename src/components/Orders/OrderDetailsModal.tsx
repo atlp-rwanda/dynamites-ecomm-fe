@@ -1,19 +1,30 @@
+import { useState } from 'react';
 import Order from '@/interfaces/order';
+import { updateOrderStatus } from '@/features/Orders/ordersSlice';
+import { useAppDispatch } from '@/app/hooks';
 
+interface ModalPropsb {
+  order: Order;
+  close: () => void;
+  cancel: (id: number) => void;
+  edit: () => void;
+  status: string;
+}
 interface ModalProps {
   order: Order;
   close: () => void;
+  cancel: (id: number) => void;
 }
 
-function OrderDetailsModal({ close, order }: ModalProps) {
+function Modal({ close, order, cancel, edit, status }: ModalPropsb) {
   const billigDetails = order.deliveryInfo;
   return (
-    <div className="p-8 bg-white rounded-lg shadow-lg max-w-3xl mx-auto">
+    <div className="p-8 bg-white rounded-lg shadow-lg max-w-3xl mx-auto relative">
       <div className="flex justify-between items-start mb-4">
         <h2 className="text-xl font-bold">Order #234</h2>
         <div className="flex items-center">
           <span className="bg-green-100 text-green-700 px-2 py-1 rounded-md">
-            {order.status}
+            {status}
           </span>
           <button
             onClick={() => close()}
@@ -62,32 +73,18 @@ function OrderDetailsModal({ close, order }: ModalProps) {
           <thead>
             <tr className="bg-gray-100">
               <th className="px-4 py-2 text-left">No</th>
-              <th className="px-4 py-2 text-left">PRODUCT</th>
               <th className="px-4 py-2 text-left">Quantity</th>
               <th className="px-4 py-2 text-left">PRICE</th>
             </tr>
           </thead>
           <tbody>
-            <tr>
-              <td className="border px-4 py-2">1</td>
-              <td className="border px-4 py-2">Hisense 43 inch 4K Smart TV</td>
-              <td className="border px-4 py-2">2</td>
-              <td className="border px-4 py-2">450,000</td>
-            </tr>
-            <tr>
-              <td className="border px-4 py-2">2</td>
-              <td className="border px-4 py-2">
-                LG TOP Load Washers Silver 8 KGS Vietnam
-              </td>
-              <td className="border px-4 py-2">12</td>
-              <td className="border px-4 py-2">210,000</td>
-            </tr>
-            <tr>
-              <td className="border px-4 py-2">3</td>
-              <td className="border px-4 py-2">Crystal Sunflower Oil /5l</td>
-              <td className="border px-4 py-2">23</td>
-              <td className="border px-4 py-2">42,000</td>
-            </tr>
+            {order.orderDetails.map((item) => (
+              <tr key={item.id}>
+                <td className="border px-4 py-2">{item.id}</td>
+                <td className="border px-4 py-2">{item.quantity}</td>
+                <td className="border px-4 py-2">{item.price}</td>
+              </tr>
+            ))}
           </tbody>
         </table>
       </div>
@@ -96,12 +93,14 @@ function OrderDetailsModal({ close, order }: ModalProps) {
         <button
           type="button"
           className="px-4 py-1 bg-primary text-sm text-white rounded-md"
+          onClick={edit}
         >
           Edit
         </button>
         <button
           type="button"
           className="px-4 py-1 bg-red-500 text-sm text-white rounded-md"
+          onClick={() => cancel(order.id)}
         >
           Delete
         </button>
@@ -110,4 +109,95 @@ function OrderDetailsModal({ close, order }: ModalProps) {
   );
 }
 
-export default OrderDetailsModal;
+function Edit({
+  edit,
+  order,
+  status,
+}: {
+  edit: () => void;
+  order: Order;
+  status: (nstat: string) => void;
+}) {
+  const validStatuses = [
+    'Pending',
+    'Failed',
+    'Canceled',
+    'Paid',
+    'Shipping',
+    'Delivered',
+    'Returned',
+    'Completed',
+  ];
+  const dispatch = useAppDispatch();
+  return (
+    <div className="fixed inset-0 flex items-center justify-center bg-gray-500 bg-opacity-50">
+      <div className="bg-white p-6 rounded shadow-md w-1/3">
+        <h2 className="text-lg font-bold mb-4 text-primary">
+          Edit Order Status
+        </h2>
+        <label htmlFor="status" className="block mb-2 text-gray-700">
+          Status:
+        </label>
+        <select
+          id="status"
+          className="block w-full p-2 border border-gray-300 rounded mb-4 text-gray-700 outline-none"
+        >
+          {validStatuses.map((stat) => (
+            <option key={stat} value={stat}>
+              {stat}
+            </option>
+          ))}
+        </select>
+        <div className="flex justify-end space-x-4">
+          <button
+            type="submit"
+            className="px-4 py-1 bg-primary text-sm text-white rounded-md"
+            onClick={() => {
+              edit();
+              status(document.querySelector('select')?.value || 'pending');
+              dispatch(
+                updateOrderStatus({
+                  id: order.id,
+                  status: document.querySelector('select')?.value || 'pending',
+                })
+              );
+            }}
+          >
+            Save
+          </button>
+          <button
+            type="button"
+            onClick={edit}
+            className="px-4 py-1 bg-red-500 text-sm text-white rounded-md"
+          >
+            Cancel
+          </button>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+export default function OrderDetailsModal({
+  close,
+  order,
+  cancel,
+}: ModalProps) {
+  const [edit, setEdit] = useState(false);
+  const [status, setStatus] = useState(order.status);
+  return edit ? (
+    <Edit
+      edit={() => setEdit(false)}
+      order={order}
+      status={(nstat) => setStatus(nstat)}
+    />
+  ) : (
+    <Modal
+      close={close}
+      order={order}
+      cancel={cancel}
+      edit={() => setEdit(true)}
+      status={status}
+    />
+  );
+}

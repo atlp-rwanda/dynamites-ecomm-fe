@@ -139,7 +139,9 @@ const cartSlice = createSlice({
         const update = state.cartItems[index] as Cart;
         update.quantity = action.payload.quantity;
         state.loading = false;
-        state.cartItems = state.cartItems.splice(index, 1, update);
+        const { cartItems } = state;
+        cartItems.splice(index, 1, update);
+        state.cartItems = cartItems.slice();
       })
       .addCase(updateCartItemQuantity.rejected, (state, action) => {
         state.loading = false;

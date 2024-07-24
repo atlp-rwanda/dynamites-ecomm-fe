@@ -80,6 +80,26 @@ const ordersSlice = createSlice({
         });
       }
     },
+    updateOrderStatus: (
+      state,
+      action: PayloadAction<{ id: number; status: string }>
+    ) => {
+      const { id, status } = action.payload;
+      const orderToUpdate = state.orders.find((order) => order.id === id);
+
+      if (orderToUpdate) {
+        const tokenFromStorage = localStorage.getItem('token') || '';
+        axios.put(
+          `${baseUrl}/order/${id}`,
+          { status },
+          {
+            headers: {
+              Authorization: `Bearer ${tokenFromStorage}`,
+            },
+          }
+        );
+      }
+    },
   },
   extraReducers: (builder) => {
     builder
@@ -98,7 +118,7 @@ const ordersSlice = createSlice({
   },
 });
 
-export const { cancelOrder } = ordersSlice.actions;
+export const { cancelOrder, updateOrderStatus } = ordersSlice.actions;
 
 export const selectOrders = (state: RootState) => state.orders;
 export default ordersSlice.reducer;
