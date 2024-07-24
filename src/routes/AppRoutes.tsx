@@ -22,6 +22,7 @@ import ProtectedRoute from '@/components/ProtectedRoute';
 import Cart from '@/components/Cart/Cart';
 import Seller from '@/pages/Seller';
 import CheckoutPage from '@/pages/Checkout';
+import Aboutus from '@/components/home/Aboutus';
 
 function AppRoutes() {
   return (
@@ -30,6 +31,7 @@ function AppRoutes() {
         <Route index path="/" element={<Home />} />
         <Route path="shop" element={<Shop />} />
         <Route path="/contact" element={<ContactPage />} />
+        <Route path="about" element={<Aboutus />} />
         <Route
           path="wishlist"
           element={
