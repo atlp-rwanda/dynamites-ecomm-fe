@@ -66,7 +66,7 @@ function AppRoutes() {
         <Route index element={<Admin />} />
         <Route path="/dashboard/orders" element={<Orders />} />
         <Route path="/dashboard/seller" element={<Seller />} />
-        <Route path="/dashboard/customer" element={<Customer />} />
+        <Route path="/dashboard/customers" element={<Customer />} />
         <Route
           index
           path="/dashboard/product"

@@ -1,9 +1,7 @@
-/* eslint-disable jsx-a11y/control-has-associated-label */
 import { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
-import ConfirmationCard from '@/components/dashBoard/ConfirmationCard';
 import { FaRegTrashAlt } from 'react-icons/fa';
 import {
   ChevronLeft,
@@ -13,6 +11,7 @@ import {
   Search,
 } from 'lucide-react';
 import PuffLoader from 'react-spinners/PuffLoader';
+import ConfirmationCard from '@/components/dashBoard/ConfirmationCard';
 import { RootState, AppDispatch } from '@/app/store';
 import { fetchBuyers } from '@/app/Dashboard/buyerSlice';
 import Button from '@/components/form/Button';
@@ -50,10 +49,10 @@ function Customer() {
 
   useEffect(() => {
     dispatch(fetchBuyers());
-  }, [fetchBuyers]);
+  }, [dispatch]);
 
   useEffect(() => {
-    setFilteredcustomer(buyers.filter((v) => v.userType.name == 'Buyer'));
+    setFilteredcustomer(buyers.filter((v) => v.userType.name === 'Buyer'));
   }, [buyers, reRenderTrigger]);
 
   const customers = filteredcustomers;
@@ -82,9 +81,8 @@ function Customer() {
     setModalVisible(false);
     setupdating(true);
     try {
-      console.log(clickedcustomer?.firstName, clickedcustomer?.id);
       await axios.delete(
-        `${import.meta.env.VITE_BASE_URL}/user/dlete/${clickedcustomer?.id}`
+        `${import.meta.env.VITE_BASE_URL}/user/delete/${clickedcustomer?.id}`
       );
       navigate(`/dashboard/customer`);
       dispatch(fetchBuyers());
@@ -201,7 +199,7 @@ function Customer() {
   };
 
   return (
-    <div className="mt-8 text-md text-dashgreytext">
+    <div className="mt-8 ml-4 text-md text-dashgreytext">
       {mode === 'delete' && (
         <div className="">
           <ConfirmationCard
@@ -262,7 +260,7 @@ function Customer() {
         </div>
       )}
 
-      <div>
+      <div className="ml-3">
         <div className="md:flex md:gap-5">
           <div className="text-2xl font-medium">Customers</div>
         </div>
@@ -355,7 +353,7 @@ function Customer() {
                     {v.status}
                   </span>
                 </div>
-                <div className="flex gap-4 items-center justify-start column-action">
+                <div className="flex gap-4 items-center justify-start column-action mr-5">
                   <button type="submit" onClick={() => HandleActive(v)}>
                     <RefreshCcw className="w-5 hover:text-primary" />
                   </button>
@@ -367,7 +365,7 @@ function Customer() {
                     className="h-[36px] w-[36px] flex items-center justify-center"
                     onClick={() => HandleDelete(v)}
                   >
-                    <FaRegTrashAlt className=" text-redBg  h-[20px] w-[20px] hover:text-primary ml-2" />
+                    <FaRegTrashAlt className=" text-redBg  h-[20px] w-[20px] hover:text-primary" />
                   </button>
                 </div>
               </div>

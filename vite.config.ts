@@ -31,6 +31,7 @@ export default defineConfig({
         'src/pages/AddCoupon.tsx',
         'src/pages/Coupons.tsx',
         'src/pages/EditCoupon.tsx',
+        'src/pages/customer.tsx',
       ],
     },
   },
