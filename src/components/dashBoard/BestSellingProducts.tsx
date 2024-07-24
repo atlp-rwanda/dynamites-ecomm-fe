@@ -19,13 +19,13 @@ function ProductTable() {
       });
   }, [token]);
   return (
-    <div className="max-w-6xl py-6 mx-auto px-4 sm:px-6 lg:px-8">
+    <div className="w-full md:w-[60%] pt-4 px-4 bg-white rounded-lg">
       <h1 className="text-lg font-bold mb-4">Best selling Products</h1>
       <div className="overflow-x-auto">
-        <table className="min-w-full bg-white border rounded-lg border-gray-300">
+        <table className="min-w-full bg-white border rounded-lg border-gray-200">
           <thead>
-            <tr className="bg-gray-200">
-              <th className="px-4 py-2 border-b">ID</th>
+            <tr className="bg-gray-200 text-xs">
+              <th className="px-4 py-2 border-b">No</th>
               <th className="px-4 py-2 border-b">IMAGE</th>
               <th className="px-4 py-2 border-b">PRODUCT NAME</th>
               <th className="px-4 py-2 border-b">CATEGORY</th>
@@ -35,7 +35,7 @@ function ProductTable() {
           </thead>
           <tbody>
             {bestselling.map((product, idx) => (
-              <tr key={product.id} className="text-gray-600">
+              <tr key={product.id} className="text-gray-600 text-sm">
                 <td className="px-4 py-2 border-b text-center">{idx + 1}</td>
                 <td className="px-4 py-2 border-b text-center">
                   <img

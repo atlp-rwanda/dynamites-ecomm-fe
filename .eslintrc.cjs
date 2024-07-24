@@ -27,7 +27,10 @@ module.exports = {
     'react/self-closing-comp': 0,
     'react/jsx-props-no-spreading': 0,
     '@typescript-eslint/no-explicit-any': 0,
+    'jsx-a11y/label-has-associated-control': 0,
+    'jsx-a11y/control-has-associated-label': 0,
     'react/no-array-index-key': 0,
+    'no-nested-ternary': 0,
     'no-param-reassign': [
       'error',
       { props: true, ignorePropertyModificationsFor: ['state'] },
