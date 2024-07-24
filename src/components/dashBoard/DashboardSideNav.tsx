@@ -22,9 +22,9 @@ const sideBarItems = [
     icon: <ShoppingCart className="icon" />,
   },
   {
-    path: '/customers',
     name: 'Customers',
     icon: <Users className="icon" />,
+    path: '/dashboard/customer',
   },
   {
     name: 'seller',
