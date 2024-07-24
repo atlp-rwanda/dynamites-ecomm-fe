@@ -2,17 +2,22 @@
 import { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import axios from 'axios';
-import { useNavigate} from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import ConfirmationCard from '@/components/dashBoard/ConfirmationCard';
 import { FaRegTrashAlt } from 'react-icons/fa';
-import {ChevronLeft,ChevronRight,Power,RefreshCcw,Search,} from 'lucide-react';
+import {
+  ChevronLeft,
+  ChevronRight,
+  Power,
+  RefreshCcw,
+  Search,
+} from 'lucide-react';
 import PuffLoader from 'react-spinners/PuffLoader';
 import { RootState, AppDispatch } from '@/app/store';
 import { fetchBuyers } from '@/app/Dashboard/buyerSlice';
 import Button from '@/components/form/Button';
 
 import { showErrorToast, showSuccessToast } from '@/utils/ToastConfig';
-
 
 interface Buyer {
   id: number;
@@ -57,7 +62,6 @@ function Customer() {
   const itemsOnNextPage = currentPage * numberofItemPerPage;
   const itemsOnPreviousPage = itemsOnNextPage - numberofItemPerPage;
   const visiblePage = customers.slice(itemsOnPreviousPage, itemsOnNextPage);
- 
 
   const HandleEdit = (customer: Buyer | null) => {
     setDeactivate(true);
@@ -69,48 +73,44 @@ function Customer() {
     setClickedcustomer(customer);
   };
 
-  const HandleDelete = (customer: Buyer| null) => {
+  const HandleDelete = (customer: Buyer | null) => {
     setClickedcustomer(customer);
-    setModalVisible(true)
+    setModalVisible(true);
     setmode('delete');
   };
   const confirmDelete = async () => {
     setModalVisible(false);
-    setupdating(true)
-    try{
-        console.log(clickedcustomer?.firstName, clickedcustomer?.id)
-        await axios.delete(`${import.meta.env.VITE_BASE_URL}/user/dlete/${clickedcustomer?.id}`)
+    setupdating(true);
+    try {
+      console.log(clickedcustomer?.firstName, clickedcustomer?.id);
+      await axios.delete(
+        `${import.meta.env.VITE_BASE_URL}/user/dlete/${clickedcustomer?.id}`
+      );
+      navigate(`/dashboard/customer`);
+      dispatch(fetchBuyers());
+      setupdating(false);
+      showSuccessToast(`${clickedcustomer?.firstName} was Delete Successfully`);
+    } catch (error) {
+      if (axios.isAxiosError(error)) {
         navigate(`/dashboard/customer`);
-        dispatch(fetchBuyers());
         setupdating(false);
-        showSuccessToast(`${clickedcustomer?.firstName} was Delete Successfully`)
-        
+        showErrorToast(`Deleting ${clickedcustomer?.firstName} failed`);
+        throw new Error(
+          `Error Deleting product with id ${clickedcustomer?.firstName}: ${error.message}`
+        );
+      } else {
+        navigate(`/dashboard/customer`);
+        setupdating(false);
+        showErrorToast(`Deleting ${clickedcustomer?.firstName} failed`);
+        throw new Error(`Unexpected error occurred: ${error}`);
+      }
     }
-    catch(error){
-        if (axios.isAxiosError(error)) {
-            navigate(`/dashboard/customer`);
-            setupdating(false);
-            showErrorToast(`Deleting ${clickedcustomer?.firstName} failed`)
-            throw new Error(
-              `Error Deleting product with id ${clickedcustomer?.firstName}: ${error.message}`
-            );
-          } 
-        else {
-            navigate(`/dashboard/customer`);
-            setupdating(false);
-            showErrorToast(`Deleting ${clickedcustomer?.firstName} failed`)
-            throw new Error(`Unexpected error occurred: ${error}`);
-            
-          }
-    }
-    
-  }
+  };
   const activateVendor = `${import.meta.env.VITE_BASE_URL}/activate/${clickedcustomer?.id}`;
 
   const HandleActivate = (customer: Buyer | null) => {
-     
     if (customer?.status !== 'active') {
-      setupdating(true)
+      setupdating(true);
       setActivate(false);
       axios
         .put(activateVendor, null, {
@@ -120,17 +120,17 @@ function Customer() {
         })
         .then((res) => {
           if (res.status === 200) {
-            setupdating(false)
+            setupdating(false);
             dispatch(fetchBuyers());
             showSuccessToast(`${customer?.firstName} Activated Successfully`);
             setReRenderTrigger((prev) => !prev);
           } else {
-            setupdating(false)
+            setupdating(false);
             showErrorToast('Failed to Activate the customer');
           }
         })
         .catch((error) => {
-          setupdating(false)
+          setupdating(false);
           showErrorToast(error.message);
         });
     } else {
@@ -142,7 +142,7 @@ function Customer() {
 
   const handleSuspend = (customer: Buyer | null) => {
     if (customer?.status !== 'inactive') {
-      setupdating(true)
+      setupdating(true);
       setDeactivate(false);
       axios
         .put(updatecustomerStatus, null, {
@@ -152,24 +152,23 @@ function Customer() {
         })
         .then((res) => {
           if (res.status === 200) {
-            setupdating(false)
+            setupdating(false);
             dispatch(fetchBuyers());
             showSuccessToast(`${customer?.firstName} Suspended Successfully`);
             setReRenderTrigger((prev) => !prev);
           } else {
-            setupdating(false)
+            setupdating(false);
             showErrorToast('Failed to Suspend the vendor');
           }
         })
         .catch((error) => {
-          setupdating(false)
+          setupdating(false);
           showErrorToast(error.message);
         });
     } else {
       showErrorToast('User is Already Inactive');
     }
   };
-
 
   const DateFormat = (udpdatedAt: string) => {
     const date = new Date(udpdatedAt);
@@ -203,16 +202,16 @@ function Customer() {
 
   return (
     <div className="mt-8 text-md text-dashgreytext">
-       {mode === 'delete' && (
-          <div className="">
-            <ConfirmationCard
-              isVisible={isConfirmationModalVisible}
-              onClose={() => setModalVisible(false)}
-              onConfirm={confirmDelete}
-              message="Are you sure you want to Delete this customer ?"
-            />
-          </div>
-        )}
+      {mode === 'delete' && (
+        <div className="">
+          <ConfirmationCard
+            isVisible={isConfirmationModalVisible}
+            onClose={() => setModalVisible(false)}
+            onConfirm={confirmDelete}
+            message="Are you sure you want to Delete this customer ?"
+          />
+        </div>
+      )}
       {deactivate && (
         <div className="fixed w-screen h-screen flex items-center justify-center z-50 bg-black bg-opacity-50 top-0 left-0">
           <div className="w-80 h-48 bg-dashgrey rounded-lg">
@@ -274,8 +273,8 @@ function Customer() {
               Approved ({customers.filter((v) => v.status === 'active').length})
             </p>
             <p className="text-primary">
-              Suspended ({customers.filter((v) => v.status === 'inactive').length}
-              )
+              Suspended (
+              {customers.filter((v) => v.status === 'inactive').length})
             </p>
           </div>
           <div className="relative">
@@ -363,7 +362,11 @@ function Customer() {
                   <button type="submit" onClick={() => HandleEdit(v)}>
                     <Power className="w-5 text-redBg hover:text-primary" />
                   </button>
-                  <button type="submit" className='h-[36px] w-[36px] flex items-center justify-center' onClick={() => HandleDelete(v)}>
+                  <button
+                    type="submit"
+                    className="h-[36px] w-[36px] flex items-center justify-center"
+                    onClick={() => HandleDelete(v)}
+                  >
                     <FaRegTrashAlt className=" text-redBg  h-[20px] w-[20px] hover:text-primary ml-2" />
                   </button>
                 </div>
@@ -447,55 +450,54 @@ function Customer() {
                 >
                   <RefreshCcw className="w-5 hover:text-primary" />
                 </button>
-                <button 
-                type="submit"
-                className='mr-2'
-                >
+                <button type="submit" className="mr-2">
                   <Power
                     className="w-5 text-redBg hover:text-primary"
                     onClick={() => HandleEdit(v)}
                   />
                 </button>
-                <button type="submit" 
-                className='' 
-                onClick={() => HandleDelete(v)}
+                <button
+                  type="submit"
+                  className=""
+                  onClick={() => HandleDelete(v)}
                 >
-                    <FaRegTrashAlt className="w-5 h-5 text-redBg  hover:text-primary " />
+                  <FaRegTrashAlt className="w-5 h-5 text-redBg  hover:text-primary " />
                 </button>
               </div>
             </div>
           ))}
       </div>
 
-        <div className={`fixed inset-0 flex justify-center items-center z-50 bg-black bg-opacity-50 ${updating ? '' : 'hidden'}`}>
-            <div className="flex gap-2 flex-wrap justify-center p-4 md:p-12">
-            <button
-                disabled
-                type="button"
-                className="py-2.5 px-5 me-2 text-sm font-medium text-gray-900 bg-white rounded-lg border border-gray-200 hover:bg-gray-100 hover:text-blue-700 focus:z-10 focus:ring-4 focus:outline-none focus:ring-blue-700 focus:text-blue-700 dark:bg-gray-800 dark:text-gray-400 dark:border-gray-600 dark:hover:text-white dark:hover:bg-gray-700 inline-flex items-center"
+      <div
+        className={`fixed inset-0 flex justify-center items-center z-50 bg-black bg-opacity-50 ${updating ? '' : 'hidden'}`}
+      >
+        <div className="flex gap-2 flex-wrap justify-center p-4 md:p-12">
+          <button
+            disabled
+            type="button"
+            className="py-2.5 px-5 me-2 text-sm font-medium text-gray-900 bg-white rounded-lg border border-gray-200 hover:bg-gray-100 hover:text-blue-700 focus:z-10 focus:ring-4 focus:outline-none focus:ring-blue-700 focus:text-blue-700 dark:bg-gray-800 dark:text-gray-400 dark:border-gray-600 dark:hover:text-white dark:hover:bg-gray-700 inline-flex items-center"
+          >
+            <svg
+              aria-hidden="true"
+              role="status"
+              className="inline w-4 h-4 me-3 text-gray-200 animate-spin dark:text-gray-600"
+              viewBox="0 0 100 101"
+              fill="none"
+              xmlns="http://www.w3.org/2000/svg"
             >
-                <svg
-                aria-hidden="true"
-                role="status"
-                className="inline w-4 h-4 me-3 text-gray-200 animate-spin dark:text-gray-600"
-                viewBox="0 0 100 101"
-                fill="none"
-                xmlns="http://www.w3.org/2000/svg"
-                >
-                <path
-                    d="M100 50.5908C100 78.2051 77.6142 100.591 50 100.591C22.3858 100.591 0 78.2051 0 50.5908C0 22.9766 22.3858 0.59082 50 0.59082C77.6142 0.59082 100 22.9766 100 50.5908ZM9.08144 50.5908C9.08144 73.1895 27.4013 91.5094 50 91.5094C72.5987 91.5094 90.9186 73.1895 90.9186 50.5908C90.9186 27.9921 72.5987 9.67226 50 9.67226C27.4013 9.67226 9.08144 27.9921 9.08144 50.5908Z"
-                    fill="currentColor"
-                />
-                <path
-                    d="M93.9676 39.0409C96.393 38.4038 97.8624 35.9116 97.0079 33.5539C95.2932 28.8227 92.871 24.3692 89.8167 20.348C85.8452 15.1192 80.8826 10.7238 75.2124 7.41289C69.5422 4.10194 63.2754 1.94025 56.7698 1.05124C51.7666 0.367541 46.6976 0.446843 41.7345 1.27873C39.2613 1.69328 37.813 4.19778 38.4501 6.62326C39.0873 9.04874 41.5694 10.4717 44.0505 10.1071C47.8511 9.54855 51.7191 9.52689 55.5402 10.0491C60.8642 10.7766 65.9928 12.5457 70.6331 15.2552C75.2735 17.9648 79.3347 21.5619 82.5849 25.841C84.9175 28.9121 86.7997 32.2913 88.1811 35.8758C89.083 38.2158 91.5421 39.6781 93.9676 39.0409Z"
-                    fill="#1C64F2"
-                />
-                </svg>
-                Processing....
-            </button>
-            </div>
+              <path
+                d="M100 50.5908C100 78.2051 77.6142 100.591 50 100.591C22.3858 100.591 0 78.2051 0 50.5908C0 22.9766 22.3858 0.59082 50 0.59082C77.6142 0.59082 100 22.9766 100 50.5908ZM9.08144 50.5908C9.08144 73.1895 27.4013 91.5094 50 91.5094C72.5987 91.5094 90.9186 73.1895 90.9186 50.5908C90.9186 27.9921 72.5987 9.67226 50 9.67226C27.4013 9.67226 9.08144 27.9921 9.08144 50.5908Z"
+                fill="currentColor"
+              />
+              <path
+                d="M93.9676 39.0409C96.393 38.4038 97.8624 35.9116 97.0079 33.5539C95.2932 28.8227 92.871 24.3692 89.8167 20.348C85.8452 15.1192 80.8826 10.7238 75.2124 7.41289C69.5422 4.10194 63.2754 1.94025 56.7698 1.05124C51.7666 0.367541 46.6976 0.446843 41.7345 1.27873C39.2613 1.69328 37.813 4.19778 38.4501 6.62326C39.0873 9.04874 41.5694 10.4717 44.0505 10.1071C47.8511 9.54855 51.7191 9.52689 55.5402 10.0491C60.8642 10.7766 65.9928 12.5457 70.6331 15.2552C75.2735 17.9648 79.3347 21.5619 82.5849 25.841C84.9175 28.9121 86.7997 32.2913 88.1811 35.8758C89.083 38.2158 91.5421 39.6781 93.9676 39.0409Z"
+                fill="#1C64F2"
+              />
+            </svg>
+            Processing....
+          </button>
         </div>
-
+      </div>
     </div>
   );
 }
