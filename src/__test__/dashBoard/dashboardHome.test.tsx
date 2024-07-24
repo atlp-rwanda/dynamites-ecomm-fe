@@ -3,19 +3,59 @@ import { render, screen } from '@testing-library/react';
 import { Provider } from 'react-redux';
 import { MemoryRouter } from 'react-router-dom';
 import { vi } from 'vitest';
+import { configureStore } from '@reduxjs/toolkit';
 import HomeDashboard from '@/components/dashBoard/HomeDash';
-import { fetchBuyers } from '@/app/Dashboard/buyerSlice';
-import { fetchOrders } from '@/app/Dashboard/orderSlice';
+import BuyerReducer, { fetchBuyers } from '@/app/Dashboard/buyerSlice';
+import OrderReducer, { fetchOrders } from '@/app/Dashboard/orderSlice';
 import { fetchProducts } from '@/features/Products/ProductSlice';
-import { store as appStore } from '@/app/store';
+import signInReducer from '@/features/Auth/SignInSlice';
 
 vi.mock('react-chartjs-2', () => ({
   Line: () => <div data-testid="mock-line-chart" />,
 }));
 
+const createTestStore = () =>
+  configureStore({
+    reducer: {
+      signIn: signInReducer,
+      buyer: BuyerReducer,
+      order: OrderReducer,
+    },
+
+    preloadedState: {
+      signIn: {
+        token: 'test token',
+        user: {
+          email: 'test@gmail.com',
+          firstName: 'Test',
+          id: 1,
+          lastName: 'User',
+          picture: 'http://fakeimage.png',
+          userType: {
+            id: 1,
+            name: 'Admin',
+            permissions: ['crud'],
+          },
+        },
+        loading: false,
+        error: null,
+        message: null,
+        role: null,
+        needsVerification: false,
+        needs2FA: false,
+        vendor: {
+          id: null,
+          email: null,
+        },
+      },
+    },
+  });
+
+const store = createTestStore();
+
 const renderWithProviders = (ui: React.ReactElement) => {
   return render(
-    <Provider store={appStore}>
+    <Provider store={store}>
       <MemoryRouter>{ui}</MemoryRouter>
     </Provider>
   );
@@ -23,9 +63,9 @@ const renderWithProviders = (ui: React.ReactElement) => {
 
 describe('HomeDashboard', () => {
   beforeEach(async () => {
-    await appStore.dispatch(fetchProducts());
-    await appStore.dispatch(fetchBuyers());
-    await appStore.dispatch(fetchOrders());
+    await store.dispatch(fetchProducts());
+    await store.dispatch(fetchBuyers());
+    await store.dispatch(fetchOrders());
   });
 
   test('renders the HomeDashboard component', () => {
@@ -45,7 +85,7 @@ describe('HomeDashboard', () => {
     renderWithProviders(<HomeDashboard />);
     expect(
       screen.getByText(
-        `${appStore.getState().buyer.buyers.filter((buyer) => buyer.userType.name === 'Buyer').length}`
+        `${store.getState().buyer.buyers.filter((buyer) => buyer.userType.name === 'Buyer').length}`
       )
     ).toBeInTheDocument();
   });

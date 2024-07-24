@@ -23,6 +23,9 @@ import Cart from '@/components/Cart/Cart';
 import Seller from '@/pages/Seller';
 import CheckoutPage from '@/pages/Checkout';
 import Aboutus from '@/components/home/Aboutus';
+import AddCoupon from '@/pages/AddCoupon';
+import Coupons from '@/pages/Coupons';
+import EditCoupon from '@/pages/EditCoupon';
 
 function AppRoutes() {
   return (
@@ -73,6 +76,9 @@ function AppRoutes() {
           element={<EditProductPage />}
         />
         <Route index path="/dashboard/addProduct/" element={<AddProducts />} />
+        <Route index path="/dashboard/coupons" element={<Coupons />} />
+        <Route index path="/dashboard/addCoupons/" element={<AddCoupon />} />
+        <Route path="/dashboard/editCoupon/:id" element={<EditCoupon />} />
       </Route>
       <Route path="*" element={<ErrorPage />} />
       <Route path="/forgot-password" element={<PasswordResetRequestForm />} />

@@ -29,7 +29,7 @@ function TopCategories() {
   }, [token]);
 
   return (
-    <div className="flex flex-col rounded-lg lg:w-[35%] xs:w-full h-64 p-4 bg-white">
+    <div className="flex flex-col rounded-lg lg:w-[50%] xs:w-full h-64 p-4 bg-white">
       <h2 className="font-semibold mb-4">Top Categories</h2>
       <div className="flex items-center justify-between py-2 w-full text-sm bg-greyWhite text-grey font-semibold">
         <h3 className="w-20">Categories</h3>
