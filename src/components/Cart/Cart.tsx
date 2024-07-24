@@ -82,11 +82,18 @@ export default function Cart() {
               />
             ))}
         <div className="flex justify-end gap-20 py-6 items-center sticky bottom-0 bg-white">
-          <div className="flex gap-2 items-center">
-            <h2 className="text-2xl font-bold text-gray-900">Total:</h2>
-            <span className="text-xl font-medium text-primary">${total}</span>
-          </div>
-          <HSButton title="CHECKOUT" path="/checkout" />
+          {cartItems.length > 0 && (
+            <div className="flex gap-2 items-center">
+              <h2 className="text-2xl font-bold text-gray-900">Total:</h2>
+              <span className="text-xl font-medium text-primary">${total}</span>
+            </div>
+          )}
+          {cartItems.length === 0 && (
+            <h2 className="text-2xl font-bold text-gray-900">Cart Empty</h2>
+          )}
+          {cartItems.length > 0 && (
+            <HSButton title="CHECKOUT" path="/checkout" />
+          )}
         </div>
       </div>
       <div className="flex flex-col gap-12">

@@ -34,7 +34,19 @@ export const fetchCartItems = createAsyncThunk(
         Authorization: `Bearer ${tokenFromStorage}`,
       },
     });
-    return response.data.cartItems;
+    const res = response.data.cartItems;
+    res.reduce((acc: Cart[], curr: Cart) => {
+      const existingItem = acc.find(
+        (item) => item.product.id === curr.product.id
+      );
+      if (existingItem) {
+        existingItem.quantity += curr.quantity;
+      } else {
+        acc.push(curr);
+      }
+      return acc;
+    }, []);
+    return res;
   }
 );
 

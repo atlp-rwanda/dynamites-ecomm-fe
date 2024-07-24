@@ -2,13 +2,14 @@ import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import CardInput, { Card } from './CardInput';
 import { RootState } from '@/app/store';
-import { fetchCartItems } from '@/features/Cart/cartSlice';
+import { fetchCartItems, selectCartItems } from '@/features/Cart/cartSlice';
 import { Checkout as CheckoutType } from '@/interfaces/checkout';
 import {
   selectCheckout,
   placeOrder,
   makePayment,
   updateStatus,
+  resetState,
 } from '@/features/Checkout/checkoutSlice';
 import { useAppDispatch, useAppSelector } from '@/app/hooks';
 import {
@@ -46,6 +47,12 @@ function Checkout() {
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
   const user = useAppSelector((state) => state.signIn.user);
+  const cartItems = useAppSelector((state: RootState) =>
+    selectCartItems(state)
+  );
+  const total = cartItems.reduce((acc, curr) => {
+    return acc + curr.product.salesPrice * curr.quantity;
+  }, 0);
   function handleAdding() {
     setAdding(!adding);
   }
@@ -56,14 +63,17 @@ function Checkout() {
   const { loading, error, paying } = checkoutState;
   function handleSave(newCard: Card) {
     setCards((prev) => [...prev, newCard]);
+  }
 
+  function applyCoupon(e: React.ChangeEvent<HTMLInputElement>) {
+    setCoupon(e.target.value);
     const checkout: CheckoutType = {
       deliveryInfo: {
         address,
         city,
         zip: '12345',
       },
-      couponCode: coupon,
+      couponCode: e.target.value,
       email: user?.email || '',
       firstName: user?.firstName || '',
       lastName: user?.lastName || '',
@@ -72,7 +82,22 @@ function Checkout() {
   }
 
   function handlePayment() {
-    dispatch(makePayment(order.id));
+    if (order.id === -1) {
+      const checkout: CheckoutType = {
+        deliveryInfo: {
+          address,
+          city,
+          zip: '12345',
+        },
+        couponCode: '',
+        email: user?.email || '',
+        firstName: user?.firstName || '',
+        lastName: user?.lastName || '',
+      };
+      dispatch(placeOrder(checkout)).then((res) =>
+        dispatch(makePayment(res.payload.id))
+      );
+    } else dispatch(makePayment(order.id));
   }
 
   useEffect(() => {
@@ -82,6 +107,7 @@ function Checkout() {
       showSuccessToast('Succesfully Paid');
       dispatch(updateStatus(false));
       dispatch(fetchCartItems());
+      dispatch(resetState());
       navigate('/');
     } else if (paying && error) {
       showErrorToast(error || 'failed');
@@ -313,7 +339,7 @@ function Checkout() {
             <input
               type="text"
               className="border border-gray-300 p-2 rounded-lg flex-grow mr-2 outline-none"
-              onChange={(e) => setCoupon(e.target.value)}
+              onChange={applyCoupon}
               value={coupon}
             />
             <button
@@ -369,7 +395,7 @@ function Checkout() {
           <div className="mb-2">
             <div className="flex justify-between py-2 text-xl">
               <span className="text-gray-600">Total</span>
-              <span>${order.totalAmount}</span>
+              <span>${order.totalAmount || total}</span>
             </div>
           </div>
 
@@ -383,7 +409,7 @@ function Checkout() {
           <div className="font-bold">
             <div className="flex justify-between py-2 text-xl">
               <span className="text-gray-600">Total Cost</span>
-              <span>${order.totalAmount}</span>
+              <span>${order.totalAmount || total}</span>
             </div>
           </div>
         </div>

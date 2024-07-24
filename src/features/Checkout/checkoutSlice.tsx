@@ -12,8 +12,8 @@ export interface CheckoutState {
 }
 
 const initialOrder: Order = {
-  id: 31,
-  totalAmount: 160,
+  id: -1,
+  totalAmount: 0,
   status: 'Pending',
   couponCode: '',
   deliveryInfo: {
@@ -123,6 +123,9 @@ const checkoutSlice = createSlice({
     updateLastName: (state, action: PayloadAction<string>) => {
       state.checkout.lastName = action.payload;
     },
+    resetState: () => {
+      return initialState;
+    },
   },
   extraReducers: (builder) => {
     builder
@@ -172,6 +175,7 @@ export const {
   updateFirstName,
   updateLastName,
   updateStatus,
+  resetState,
 } = checkoutSlice.actions;
 
 export const selectCheckout = (state: RootState) => state.checkout;
