@@ -53,7 +53,7 @@ function SalesMap() {
             (label as any).html(
               `<div style="background-color: white; border: 1px solid white; outline: 10px solid white; border-radius: 6px; min-height: 70px; width: 150px; color: black; padding-left: 10px;">
           <p><b>${(label as any).html()}</b></p>
-          <p>Sales: <b>${Data ? Data[code] : 0}</b></p>
+          <p>Sales: <b>${code in Data ? Data[code] : 0}</b></p>
         </div>`
             );
           }}

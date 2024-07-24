@@ -147,7 +147,7 @@ function Coupons() {
           <IoIosSearch size={24} />
           <input
             id="searchInput"
-            placeholder="Search order..."
+            placeholder="Search coupons..."
             type="text"
             value={searchTerm}
             onChange={(e) => setSearchTerm(e.target.value)}
