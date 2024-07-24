@@ -23,7 +23,7 @@ export function Orders() {
   );
 
   const [currentPage, setCurrentPage] = useState(1);
-  const [ordersPerPage] = useState(10);
+  const [ordersPerPage] = useState(5);
   const [sortColumn, setSortColumn] = useState<string | null>(null);
   const [sortOrder, setSortOrder] = useState<'asc' | 'desc'>('asc');
   const [filterStatus, setFilterStatus] = useState<string>('All');
@@ -60,7 +60,8 @@ export function Orders() {
     if (sortColumn) {
       const aValue = a[sortColumn as keyof typeof a];
       const bValue = b[sortColumn as keyof typeof b];
-      if (aValue === null || bValue === null) {
+
+      if (!aValue || !bValue) {
         return 0;
       }
       if (aValue < bValue) return sortOrder === 'asc' ? -1 : 1;
@@ -75,7 +76,6 @@ export function Orders() {
     const results = sortedOrders.filter(
       (order) =>
         order.id.toString().includes(query) ||
-        order.deliveryInfo.toLowerCase().includes(query) ||
         order.trackingNumber.toLowerCase().includes(query) ||
         order.paymentInfo?.toLowerCase().includes(query) ||
         order.updatedAt.toLowerCase().includes(query)

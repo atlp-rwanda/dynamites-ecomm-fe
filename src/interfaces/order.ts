@@ -1,8 +1,19 @@
+interface DeliveryInfo {
+  address: string;
+  city: string;
+  zip: string;
+}
+
 export interface Order {
   id: number;
   totalAmount: number;
+  country: string;
   status: string;
-  deliveryInfo: string;
+  couponCode?: string;
+  email?: string;
+  firstName?: string;
+  lastName?: string;
+  deliveryInfo: DeliveryInfo;
   paymentInfo: string | null;
   trackingNumber: string;
   createdAt: string;

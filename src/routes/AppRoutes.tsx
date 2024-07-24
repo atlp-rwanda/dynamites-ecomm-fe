@@ -15,12 +15,14 @@ import EditProductPage from '@/pages/EditPage';
 import Shop from '@/pages/Shop';
 import ContactPage from '@/pages/contact';
 import Wishlist from '@/pages/Wishlist';
-import { Orders } from '@/components/Orders/Orders';
+import Orders from '@/pages/Orders';
 import AddProducts from '@/components/dashBoard/addProducts';
 import ProductDetails from '@/pages/ProductDetails';
 import ProtectedRoute from '@/components/ProtectedRoute';
 import Cart from '@/components/Cart/Cart';
 import Seller from '@/pages/Seller';
+import CheckoutPage from '@/pages/Checkout';
+import Aboutus from '@/components/home/Aboutus';
 
 function AppRoutes() {
   return (
@@ -29,6 +31,7 @@ function AppRoutes() {
         <Route index path="/" element={<Home />} />
         <Route path="shop" element={<Shop />} />
         <Route path="/contact" element={<ContactPage />} />
+        <Route path="about" element={<Aboutus />} />
         <Route
           path="wishlist"
           element={
@@ -40,6 +43,7 @@ function AppRoutes() {
         <Route path="product-details/:id" element={<ProductDetails />} />
         <Route path="wishlist" element={<Wishlist />} />
         <Route path="/cart" element={<Cart />} />
+        <Route path="/checkout" element={<CheckoutPage />} />
       </Route>
       <Route path="/signup" element={<SignUp />} />
       <Route path="/signIn" element={<SignIn />} />

@@ -17,6 +17,7 @@ import {
 import buyerSlice from '@/app/Dashboard/buyerSlice';
 import orderSlice from './Dashboard/orderSlice';
 import cartReducer from '@/features/Cart/cartSlice';
+import checkoutSlice from '@/features/Checkout/checkoutSlice';
 
 import ordersSliceReducer from '@/features/Orders/ordersSlice';
 import contactReducer from '@/features/contact/contactSlice';
@@ -41,6 +42,7 @@ export const store = configureStore({
     cartItems: cartReducer,
     allProducts: allProductSlice,
     contact: contactReducer,
+    checkout: checkoutSlice,
   },
 });
 
