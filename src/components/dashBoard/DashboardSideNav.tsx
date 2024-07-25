@@ -9,6 +9,7 @@ import {
   ChevronDown,
   ChevronRight,
   Store,
+  User,
 } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import { useAppSelector } from '@/app/hooks';
@@ -95,6 +96,18 @@ const sideBarItems = [
       },
     ],
     role: ['Admin', 'Vendor'],
+  },
+  {
+    name: 'user Role',
+    icon: <User className="icon" />,
+    subItems: [
+      {
+        name: 'Add & All Roles',
+        path: '/dashboard/userRole',
+        role: ['Admin'],
+      },
+    ],
+    role: ['Admin'],
   },
 ];
 
