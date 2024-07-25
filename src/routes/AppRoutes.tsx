@@ -27,6 +27,7 @@ import AddCoupon from '@/pages/AddCoupon';
 import Coupons from '@/pages/Coupons';
 import EditCoupon from '@/pages/EditCoupon';
 import TableUserRole from '@/components/dashBoard/UserRole';
+import Customer from '@/pages/customer';
 
 function AppRoutes() {
   return (
@@ -66,6 +67,7 @@ function AppRoutes() {
         <Route index element={<Admin />} />
         <Route path="/dashboard/orders" element={<Orders />} />
         <Route path="/dashboard/seller" element={<Seller />} />
+        <Route path="/dashboard/customers" element={<Customer />} />
         <Route
           index
           path="/dashboard/product"
