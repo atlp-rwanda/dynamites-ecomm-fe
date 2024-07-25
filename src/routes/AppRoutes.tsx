@@ -26,6 +26,7 @@ import Aboutus from '@/components/home/Aboutus';
 import AddCoupon from '@/pages/AddCoupon';
 import Coupons from '@/pages/Coupons';
 import EditCoupon from '@/pages/EditCoupon';
+import TableUserRole from '@/components/dashBoard/UserRole';
 
 function AppRoutes() {
   return (
@@ -79,6 +80,7 @@ function AppRoutes() {
         <Route index path="/dashboard/coupons" element={<Coupons />} />
         <Route index path="/dashboard/addCoupons/" element={<AddCoupon />} />
         <Route path="/dashboard/editCoupon/:id" element={<EditCoupon />} />
+        <Route index path="/dashboard/userRole/" element={<TableUserRole />} />
       </Route>
       <Route path="*" element={<ErrorPage />} />
       <Route path="/forgot-password" element={<PasswordResetRequestForm />} />
