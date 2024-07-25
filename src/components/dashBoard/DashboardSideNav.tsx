@@ -38,6 +38,13 @@ const sideBarItems = [
     path: '/dashboard/customers',
     name: 'Customers',
     icon: <Users className="icon" />,
+    subItems: [
+      {
+        name: 'All customers',
+        path: '/dashboard/customers',
+        role: ['Admin'],
+      },
+    ],
     role: ['Admin'],
   },
   {
