@@ -1,15 +1,18 @@
 import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
+import BeatLoader from 'react-spinners/BeatLoader';
 import CardInput, { Card } from './CardInput';
 import { RootState } from '@/app/store';
 import { fetchCartItems, selectCartItems } from '@/features/Cart/cartSlice';
 import { Checkout as CheckoutType } from '@/interfaces/checkout';
+
 import {
   selectCheckout,
   placeOrder,
   makePayment,
   updateStatus,
   resetState,
+  makeMomoPayment,
 } from '@/features/Checkout/checkoutSlice';
 import { useAppDispatch, useAppSelector } from '@/app/hooks';
 import {
@@ -43,6 +46,7 @@ function Checkout() {
   const [address, setAddress] = useState('');
   const [city, setCity] = useState('');
   const [coupon, setCoupon] = useState('');
+  const [momoNumber, setMomoNumber] = useState('');
 
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
@@ -61,6 +65,7 @@ function Checkout() {
   );
   const order = checkoutState.checkout;
   const { loading, error, paying } = checkoutState;
+
   function handleSave(newCard: Card) {
     setCards((prev) => [...prev, newCard]);
   }
@@ -94,10 +99,19 @@ function Checkout() {
         firstName: user?.firstName || '',
         lastName: user?.lastName || '',
       };
-      dispatch(placeOrder(checkout)).then((res) =>
-        dispatch(makePayment(res.payload.id))
-      );
-    } else dispatch(makePayment(order.id));
+      dispatch(placeOrder(checkout)).then((res) => {
+        const orderId = res.payload.id;
+        if (chosen === 'momo') {
+          dispatch(makeMomoPayment({ momoNumber, orderId }));
+        } else if (chosen === 'card') {
+          dispatch(makePayment(orderId));
+        }
+      });
+    } else if (chosen === 'momo') {
+      dispatch(makeMomoPayment({ momoNumber, orderId: order.id }));
+    } else if (chosen === 'card') {
+      dispatch(makePayment(order.id));
+    }
   }
 
   useEffect(() => {
@@ -110,7 +124,7 @@ function Checkout() {
       dispatch(resetState());
       navigate('/');
     } else if (paying && error) {
-      showErrorToast(error || 'failed');
+      showErrorToast('failed');
     }
   }, [error, loading, paying, navigate, dispatch]);
 
@@ -173,24 +187,21 @@ function Checkout() {
         {chosen === 'momo' && (
           <div className="py-6 px-4 border border-gray-300 rounded-md mb-6">
             <div className="mb">
-              <h3 className="w-full text-xl text-gray-500 ounded-md text-left">
+              <h3 className="w-full text-xl text-gray-500 rounded-md text-left">
                 My Momo Number
               </h3>
-
               <div className="rounded-md py-4 flex flex-col gap-6">
                 <div className="rounded-md p-4 border border-gray-300">
                   <label
-                    htmlFor="card"
+                    htmlFor="momoNumber"
                     className="flex items-center w-full bg-gray-100 rounded"
                   >
-                    <img
-                      src="momo.svg"
-                      alt="Mastercard"
-                      className="w-12 mr-4"
-                    />
+                    <img src="momo.svg" alt="Momo" className="w-12 mr-4" />
                     <input
                       className="text-gray-500 h-full w-full outline-none bg-gray-100"
                       placeholder="078* *** *34"
+                      value={momoNumber}
+                      onChange={(e) => setMomoNumber(e.target.value)}
                     />
                   </label>
                 </div>
@@ -415,11 +426,16 @@ function Checkout() {
         </div>
 
         <button
-          className="w-full bg-primary text-white py-4 text-2xl font-medium rounded-md"
+          className={`w-full bg-primary text-white py-4 text-2xl font-medium rounded-md ${chosen ? '' : 'opacity-50 cursor-not-allowed'} ${paying ? 'opacity-75 cursor-not-allowed' : ''}`}
           type="button"
           onClick={handlePayment}
+          disabled={!chosen || paying}
         >
-          Pay Here
+          {paying ? (
+            <BeatLoader data-testid="Loading" color="#ffffff" size={8} />
+          ) : (
+            'Pay Here'
+          )}
         </button>
       </div>
     </div>

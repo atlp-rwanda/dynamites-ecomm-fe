@@ -2,6 +2,7 @@ import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import axios from 'axios';
 import Cart from '@/interfaces/cart';
 import { RootState } from '../../app/store';
+import { showErrorToast } from '@/utils/ToastConfig';
 
 interface CartState {
   cartItems: Cart[];
@@ -82,18 +83,26 @@ export const removeCartItem = createAsyncThunk(
 
 export const addCartItem = createAsyncThunk(
   'cart/addCartItem',
-  async ({ productId, quantity }: { productId: number; quantity: number }) => {
-    const tokenFromStorage = localStorage.getItem('token') || '';
-    const response = await axios.post<AddPayload>(
-      `${baseUrl}/cart`,
-      { productId, quantity },
-      {
-        headers: {
-          Authorization: `Bearer ${tokenFromStorage}`,
-        },
-      }
-    );
-    return response.data.cartItem;
+  async (
+    { productId, quantity }: { productId: number; quantity: number },
+    { rejectWithValue }
+  ) => {
+    try {
+      const tokenFromStorage = localStorage.getItem('token') || '';
+      const response = await axios.post<AddPayload>(
+        `${baseUrl}/cart`,
+        { productId, quantity },
+        {
+          headers: {
+            Authorization: `Bearer ${tokenFromStorage}`,
+          },
+        }
+      );
+      return response.data.cartItem;
+    } catch (error) {
+      showErrorToast('Failed to add cart item');
+      return rejectWithValue((error as any).response.data);
+    }
   }
 );
 

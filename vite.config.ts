@@ -33,6 +33,8 @@ export default defineConfig({
         'src/pages/EditCoupon.tsx',
         'src/pages/customer.tsx',
         'src/components/Cart/Cart.tsx',
+        'src/components/Checkout/Checkout.tsx',
+        'src/features/Checkout/checkoutSlice.ts',
         'src/components/bannerAds/bannerSection.tsx',
         'src/components/Checkout/Checkout.tsx',
         'src/components/dashBoard/EditProduct.tsx',

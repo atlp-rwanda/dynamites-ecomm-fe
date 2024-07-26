@@ -15,6 +15,7 @@ export default function Cart() {
   const products: Product[] = useAppSelector((state: RootState) =>
     selectProducts(state)
   );
+
   const cartItems = useAppSelector((state: RootState) =>
     selectCartItems(state)
   );
@@ -64,6 +65,7 @@ export default function Cart() {
             <CartItem
               id={item.id}
               quantity={item.quantity}
+              image={item.product.image}
               price={item.product.salesPrice}
               name={item.product.name}
               key={item.id}
@@ -75,6 +77,7 @@ export default function Cart() {
             .map((item) => (
               <CartItem
                 id={item.id}
+                image={item.product.image}
                 quantity={item.quantity}
                 price={item.product.salesPrice}
                 name={item.product.name}
