@@ -47,9 +47,22 @@ function AppRoutes() {
           }
         />
         <Route path="product-details/:id" element={<ProductDetails />} />
-        <Route path="wishlist" element={<Wishlist />} />
-        <Route path="/cart" element={<Cart />} />
-        <Route path="/checkout" element={<CheckoutPage />} />
+        <Route
+          path="cart"
+          element={
+            <ProtectedRoute roles={['Buyer']}>
+              <Cart />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="checkout"
+          element={
+            <ProtectedRoute roles={['Buyer']}>
+              <CheckoutPage />
+            </ProtectedRoute>
+          }
+        />
       </Route>
       <Route path="/signup" element={<SignUp />} />
       <Route path="/signIn" element={<SignIn />} />
