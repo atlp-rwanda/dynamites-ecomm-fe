@@ -1,19 +1,12 @@
 import { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import axios from 'axios';
-import {
-  ChevronLeft,
-  ChevronRight,
-  Power,
-  RefreshCcw,
-  Search,
-} from 'lucide-react';
+import { ChevronLeft, ChevronRight, Power, Search } from 'lucide-react';
 import PuffLoader from 'react-spinners/PuffLoader';
 import { RootState, AppDispatch } from '@/app/store';
 import { fetchProducts } from '@/app/Dashboard/AllProductSlices';
 import { fetchBuyers } from '@/app/Dashboard/buyerSlice';
 import Button from '@/components/form/Button';
-
 import { showErrorToast, showSuccessToast } from '@/utils/ToastConfig';
 
 interface Vendor {
@@ -36,7 +29,6 @@ function Seller() {
   const [searchTerm, setSearch] = useState('');
   const [filteredVendors, setFilteredVendors] = useState<Vendor[]>([]);
   const [reRenderTrigger, setReRenderTrigger] = useState(false);
-
   const [clickedVendor, setClickedVendor] = useState<Vendor | null>(null);
   const [deactivate, setDeactivate] = useState(false);
   const [activate, setActivate] = useState(false);
@@ -81,6 +73,7 @@ function Seller() {
           if (res.status === 200) {
             showSuccessToast(`${vendor?.firstName} Activated Successfully`);
             setReRenderTrigger((prev) => !prev);
+            dispatch(fetchBuyers());
           } else {
             showErrorToast('Failed to Activate the vendor');
           }
@@ -107,6 +100,7 @@ function Seller() {
           if (res.status === 200) {
             showSuccessToast(`${vendor?.firstName} Suspended Successfully`);
             setReRenderTrigger((prev) => !prev);
+            dispatch(fetchBuyers());
           } else {
             showErrorToast('Failed to Suspend the vendor');
           }
@@ -158,7 +152,7 @@ function Seller() {
   return (
     <div className="mt-8 text-md text-dashgreytext">
       {deactivate && (
-        <div className="fixed w-screen h-screen flex items-center justify-center z-50 bg-black bg-opacity-50 top-0 left-0">
+        <div className="fixed w-screen md:h-screen flex items-center justify-center z-50 bg-black bg-opacity-50 top-0 left-0">
           <div className="w-80 h-48 bg-dashgrey rounded-lg">
             <div className="my-10 ml-5">
               Are you sure you want to suspend?
@@ -208,7 +202,7 @@ function Seller() {
       )}
 
       <div>
-        <div className="md:flex md:gap-5">
+        <div className="md:flex md:gap-5 md:p-5">
           <div className="text-2xl font-medium">Sellers</div>
           <button
             type="button"
@@ -218,7 +212,7 @@ function Seller() {
             Add Seller
           </button>
         </div>
-        <div className="md:flex justify-between">
+        <div className="md:flex justify-between md:p-5">
           <div className="flex gap-5 py-2">
             <p>All ({vendors.length})</p>
             <p className="text-primary">
@@ -243,174 +237,121 @@ function Seller() {
       </div>
       <div className="mt-10">
         {status === 'loading' && (
-          <div className="md:flex items-center justify-center">
-            <PuffLoader
-              color="#6D31ED"
-              cssOverride={{
-                display: 'flex',
-                alignItems: 'center',
-                justifyContent: 'center',
-                height: '100vh',
-              }}
-            />
+          <div className="md:flex items-center justify-center h-[60vh]">
+            <PuffLoader size={100} color="#1A8CD8" />
           </div>
         )}
-      </div>
-      <div className="hidden md:block">
-        <div className="bg-white pt-5 w-full rounded-xl">
-          <div className="bg-dashgrey rounded-md flex justify-between mx-1 py-1 px-4 pr-2">
-            <div className="font-semibold text-grey column-img">Image</div>
-            <div className="font-semibold text-grey column-firstName">
-              First Name
-            </div>
-            <div className="font-semibold text-grey column-lastName">
-              Last Name
-            </div>
-            <div className="font-semibold text-grey column-email">Email</div>
-            <div className="font-semibold text-grey column-items mr-5">
-              Items Count
-            </div>
-            <div className="font-semibold text-grey column-date">Date</div>
-            <div className="font-semibold text-grey column-status">Status</div>
-            <div className="font-semibold text-grey column-action">Action</div>
-          </div>
-          {vendors.length > 0 ? (
-            visiblePage.map((v, id) => (
-              <div
-                key={id}
-                className="border-b flex items-center justify-between gap-10 py-3"
+        {status === 'succeeded' && (
+          <div className="overflow-x-auto md:p-5">
+            <table className="table-auto w-full rounded-lg">
+              <thead className="bg-white border-[1px] border-t-0 border-dashborder">
+                <tr>
+                  <th className="py-5 pl-5 text-left">Name</th>
+                  <th className="text-left">Email</th>
+                  <th className="text-left">Items</th>
+                  <th className="text-left">Date</th>
+                  <th className="text-left">Status</th>
+                  <th className="text-left">Action</th>
+                </tr>
+              </thead>
+              <tbody>
+                {visiblePage.map((vendor, i) => (
+                  <tr
+                    className={`border border-b-0 border-dashborder ${
+                      i % 2 !== 0 ? 'bg-white' : 'bg-[#F7F7F7]'
+                    }`}
+                    key={vendor.id}
+                  >
+                    <td className="py-3 pl-5 flex items-center gap-3 whitespace-nowrap">
+                      <img
+                        src={vendor.picture}
+                        alt="seller avatar"
+                        className="w-8 h-8 rounded-full object-cover"
+                      />
+                      <div className="flex flex-col">
+                        <span>{`${vendor.firstName} ${vendor.lastName}`}</span>
+                      </div>
+                    </td>
+                    <td>{vendor.email}</td>
+                    <td>{ItemCount(vendor.firstName)}</td>
+                    <td>{DateFormat(vendor.updatedAt)}</td>
+                    <td>
+                      <span
+                        className={`${
+                          vendor.status === 'inactive'
+                            ? 'bg-[#FFEBEB] text-[#D61B1F]'
+                            : 'bg-[#E3F9F1] text-[#38CB89]'
+                        } px-2 py-1 rounded-md text-[10px]`}
+                      >
+                        {vendor.status}
+                      </span>
+                    </td>
+                    <td className="relative">
+                      <div className="flex gap-2 items-center">
+                        {vendor.status === 'inactive' && (
+                          <button
+                            type="button"
+                            className="px-[5px] py-[5px] rounded-md flex justify-center items-center gap-2 text-sm
+                            hover:shadow-lg hover:scale-105 transition-all duration-300 ease-in-out"
+                            onClick={() => HandleActive(vendor)}
+                          >
+                            <Power className="w-5 text-[#00FF00]" />
+                          </button>
+                        )}
+                        {vendor.status === 'active' && (
+                          <button
+                            type="button"
+                            className="px-[5px] py-[5px] rounded-md flex justify-center items-center gap-2 text-sm
+                            hover:shadow-lg hover:scale-105 transition-all duration-300 ease-in-out"
+                            onClick={() => HandleEdit(vendor)}
+                          >
+                            <Power className="w-5 text-red-600" />
+                          </button>
+                        )}
+                      </div>
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+            <div className="flex p-3 justify-end items-center mt-2 mr-2 text-xl text-[#9095A1]">
+              <button
+                type="submit"
+                className="pr-2 cursor-pointer"
+                onClick={() => HandlePrev()}
               >
-                <div className="text-grey font-normal column-img">
-                  <img
-                    src={v.picture}
-                    alt=""
-                    className="w-16 h-14 rounded-full ml-2"
-                  />
-                </div>
-                <div className="text-grey font-normal column-firstName">
-                  {v.firstName}
-                </div>
-                <div className="text-grey font-normal column-lastName">
-                  {v.lastName}
-                </div>
-                <div className="text-grey font-normal column-email">
-                  {v.email}
-                </div>
-                <div className="text-grey font-normal column-items ">
-                  {ItemCount(v.firstName)}
-                </div>
-                <div className="text-grey font-normal column-date">
-                  {DateFormat(v.updatedAt)}
-                </div>
-                <div className="text-grey font-normal column-status leading-none">
-                  <span
-                    className={
-                      v.status === 'active'
-                        ? 'bg-statusBlue rounded-lg px-2 text-white py-1'
-                        : 'bg-[#E06207] rounded-lg px-2 text-white py-1'
-                    }
+                <ChevronLeft />
+              </button>
+              {pages &&
+                pages.map((page) => (
+                  <button
+                    key={page}
+                    type="submit"
+                    className={`cursor-pointer w-10 h-10  hover:translate ${
+                      currentPage === page
+                        ? 'border border-primary rounded-full'
+                        : ''
+                    }`}
+                    onClick={() => setCurrentPage(page)}
                   >
-                    {v.status}
-                  </span>
-                </div>
-                <div className="flex gap-4 items-center column-action">
-                  <button type="submit" onClick={() => HandleActive(v)}>
-                    <RefreshCcw className="w-5" />
+                    {`${page} `}
                   </button>
-                  <button type="submit" onClick={() => HandleEdit(v)}>
-                    <Power className="w-5 text-redBg" />
-                  </button>
-                </div>
-              </div>
-            ))
-          ) : (
-            <div className="ml-8 mt-10">No Vendor Found</div>
-          )}
-          <div className="flex p-3 justify-end items-center mt-2 mr-2 text-xl text-[#9095A1]">
-            <button
-              type="submit"
-              className="pr-2 cursor-pointer"
-              onClick={() => HandlePrev()}
-            >
-              <ChevronLeft />
-            </button>
-            {pages &&
-              pages.map((page) => (
-                <button
-                  key={page}
-                  type="submit"
-                  className={`cursor-pointer w-10 h-10  hover:translate ${
-                    currentPage === page
-                      ? 'border border-primary rounded-full'
-                      : ''
-                  }`}
-                  onClick={() => setCurrentPage(page)}
-                >
-                  {`${page} `}
-                </button>
-              ))}
-            <button
-              type="submit"
-              className="pl-2 cursor-pointer"
-              onClick={() => HandleNext()}
-            >
-              <ChevronRight />
-            </button>
-          </div>
-        </div>
-      </div>
-
-      <div className="md:hidden">
-        {vendors &&
-          visiblePage.map((v, id) => (
-            <div key={id} className="border p-4 rounded-lg mb-4 bg-white">
-              <div className="flex items- mb-2 gap-4 ">
-                <img
-                  src={v.picture}
-                  alt=""
-                  className="w-10 h-10 rounded-full"
-                />
-                <div className="ml-4 ">
-                  <p className="font-semibold text-grey">
-                    {v.firstName} {v.lastName}
-                  </p>
-                  <p className="text-grey">{v.email}</p>
-                </div>
-              </div>
-              <div className="pt-16 ml-2 leading-7">
-                <p className="text-grey">First Name: {v.firstName}</p>
-                <p className="text-grey">Items: {ItemCount(v.lastName)}</p>
-                <p className="text-grey">Date: {DateFormat(v.updatedAt)}</p>
-                <p className="text-grey">
-                  Status:
-                  <span
-                    className={
-                      v.status === 'active'
-                        ? 'bg-statusBlue px-2 py-0.5 ml-1 rounded-md'
-                        : 'bg-[#E06207] px-2 py-0.5 ml-1 rounded-md'
-                    }
-                  >
-                    {v.status}
-                  </span>
-                </p>
-              </div>
-              <div className="flex justify-end items-end ">
-                <button
-                  type="submit"
-                  onClick={() => HandleActive(v)}
-                  className="mr-2"
-                >
-                  <RefreshCcw className="w-5" />
-                </button>
-                <button type="submit">
-                  <Power
-                    className="w-5 text-redBg"
-                    onClick={() => HandleEdit(v)}
-                  />
-                </button>
-              </div>
+                ))}
+              <button
+                type="submit"
+                className="pl-2 cursor-pointer"
+                onClick={() => HandleNext()}
+              >
+                <ChevronRight />
+              </button>
             </div>
-          ))}
+          </div>
+        )}
+        {status === 'failed' && (
+          <div className="md:flex items-center justify-center h-[60vh]">
+            <div className="text-red-500">Failed to fetch sellers</div>
+          </div>
+        )}
       </div>
     </div>
   );
