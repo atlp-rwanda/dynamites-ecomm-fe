@@ -689,6 +689,7 @@ function ProductDetails() {
           <div className="flex items-center gap-2">
             {Array.from({ length: 5 }, (_, i) => (
               <FaStar
+                title="inputStar"
                 size="25"
                 color={
                   review.rating && i + 1 <= review.rating
@@ -706,6 +707,7 @@ function ProductDetails() {
             Your review<span className="text-red-700"> *</span>
           </h2>
           <textarea
+            title="inputContent"
             className="xs:w-full lg:w-4/5 h-40 rounded-md border-[1.5px] outline-none border-textareaBorder"
             onChange={(e) =>
               setReview({

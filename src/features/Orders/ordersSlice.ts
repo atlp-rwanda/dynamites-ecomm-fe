@@ -1,7 +1,7 @@
 import { createSlice, createAsyncThunk, PayloadAction } from '@reduxjs/toolkit';
 import axios from 'axios';
 import Order from '@/interfaces/order';
-import { RootState } from '../../app/store';
+import { RootState, store } from '../../app/store';
 
 interface OrdersState {
   orders: Order[];
@@ -35,6 +35,31 @@ export const fetchOrders = createAsyncThunk('orders/fetchOrders', async () => {
       },
     };
   });
+
+  const { signIn } = store.getState();
+
+  if (signIn.user?.userType.name === 'Admin') {
+    return orders;
+  }
+  if (signIn.user?.userType.name === 'Vendor') {
+    const filteredOrders: Order[] = [];
+    /* eslint-disable no-restricted-syntax */
+    for (const order of orders) {
+      const newDetails = [];
+      /* eslint-disable no-restricted-syntax */
+      for (const orderDetail of order.orderDetails) {
+        if (orderDetail.product.vendor.id === signIn.user.id) {
+          newDetails.push(orderDetail);
+        }
+      }
+
+      if (newDetails.length > 0) {
+        filteredOrders.push({ ...order, orderDetails: newDetails });
+      }
+    }
+
+    return filteredOrders;
+  }
   return orders;
 });
 

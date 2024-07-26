@@ -1,12 +1,15 @@
 import { configureStore } from '@reduxjs/toolkit';
 import axios from 'axios';
 import MockAdapter from 'axios-mock-adapter';
+import { Provider } from 'react-redux';
+import { render, screen } from '@testing-library/react';
 import cartReducer, {
   fetchCartItems,
   addCartItem,
   updateCartItemQuantity,
   removeCartItem,
 } from '@/features/Cart/cartSlice';
+import CartItem from '@/components/Cart/CartItem';
 
 describe('cartSlice', () => {
   let store = configureStore({ reducer: { cartItems: cartReducer } });
@@ -22,7 +25,9 @@ describe('cartSlice', () => {
   });
 
   it('should fetch cart items successfully', async () => {
-    const mockCartItems = [{ id: 1, name: 'Product 1', quantity: 2 }];
+    const mockCartItems = [
+      { id: 1, name: 'Product 1', quantity: 2, image: 'product_image.png' },
+    ];
     httpMock
       .onGet(`${process.env.VITE_BASE_URL}/cart`)
       .reply(200, { cartItems: mockCartItems });
@@ -77,5 +82,29 @@ describe('cartSlice', () => {
     ).toBeUndefined();
     expect(state.loading).toBe(false);
     expect(state.error).toBeNull();
+  });
+});
+
+describe('Cart component', () => {
+  const store = configureStore({
+    reducer: {},
+  });
+
+  it('renders cart item', async () => {
+    render(
+      <Provider store={store}>
+        <CartItem
+          id={1}
+          price={100}
+          name="Test Product"
+          image="product_IMAGE.png"
+          quantity={3}
+        />
+      </Provider>
+    );
+
+    expect(screen.getByText('$300')).toBeInTheDocument();
+    expect(screen.getByText('Test Product')).toBeInTheDocument();
+    expect(screen.getByText('3')).toBeInTheDocument();
   });
 });

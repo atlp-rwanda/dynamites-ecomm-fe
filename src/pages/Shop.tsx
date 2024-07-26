@@ -601,6 +601,7 @@ function Shop() {
           </div>
           <div className="xs:flex lg:hidden pl-2 py-2 mt-4 items-center justify-start gap-2 rounded-lg w-full bg-grayLight">
             <CiFilter
+              title="filter"
               size={20}
               onClick={() => setToggleFilterMenu(true)}
               className="cursor-pointer"

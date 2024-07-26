@@ -108,6 +108,19 @@ describe('Shop Component', () => {
       expect(screen.queryByText(/Product 2/i)).not.toBeInTheDocument();
     });
   });
+
+  it('displays the filter section on mobile devices', async () => {
+    renderWithProviders(<Shop />);
+    const filterBtn = screen.getByTitle('filter');
+    fireEvent.click(filterBtn);
+
+    await waitFor(() => {
+      expect(screen.getAllByText('Filters')[1]).toBeInTheDocument();
+      expect(screen.getAllByText('Clear All')[1]).toBeInTheDocument();
+      expect(screen.getAllByText('Categories')[1]).toBeInTheDocument();
+      expect(screen.getAllByText('Rating')[1]).toBeInTheDocument();
+    });
+  });
 });
 
 describe('ProductSlice', () => {

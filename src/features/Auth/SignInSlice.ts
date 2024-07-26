@@ -16,7 +16,7 @@ interface User {
   };
 }
 
-interface SignInState {
+export interface SignInState {
   token: string | null;
   user: User | null;
   loading: boolean;

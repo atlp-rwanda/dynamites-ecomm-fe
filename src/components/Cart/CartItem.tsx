@@ -1,4 +1,3 @@
-import { useState } from 'react';
 import {
   updateCartItemQuantity,
   removeCartItem,
@@ -15,7 +14,6 @@ interface CartProps {
 
 function CartItem({ id, price, name, quantity, image }: CartProps) {
   const dispatch = useAppDispatch();
-  const [size, setSize] = useState<'M' | 'S' | 'L'>('M');
 
   const handleQuantityChange = (amount: number) => {
     if (quantity + amount < 1) {
@@ -25,10 +23,6 @@ function CartItem({ id, price, name, quantity, image }: CartProps) {
         updateCartItemQuantity({ itemId: id, quantity: amount + quantity })
       );
     }
-  };
-
-  const handleSize = (newSize: 'M' | 'S' | 'L') => {
-    setSize(newSize);
   };
 
   return (
@@ -41,7 +35,6 @@ function CartItem({ id, price, name, quantity, image }: CartProps) {
       <div className="flex flex-col flex-grow w-full justify-between px-8">
         <span className="font-bold text-2xl">{name}</span>
         <div className="flex justify-between">
-      
           <div className="flex items-start gap-4 py-2 flex-col text-gary-600 text-sm">
             <span className="text-gray-600 text-center">Quantity</span>
             <div className="flex items-center space-x-2">
