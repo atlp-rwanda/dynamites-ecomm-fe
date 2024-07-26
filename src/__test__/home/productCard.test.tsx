@@ -101,7 +101,7 @@ describe('ProductCard Component', () => {
     expect(halfStar.length).toBe(1);
 
     const emptyStar = screen.getAllByTestId('emptyStar');
-    expect(emptyStar.length).toBe(Math.floor(4 - mockProduct.averageRating));
+    expect(emptyStar.length).toBe(Math.floor(5 - mockProduct.averageRating));
 
     const addToCartIcon = screen.getByTestId('addToCart');
     expect(addToCartIcon).toBeInTheDocument();

@@ -6,6 +6,8 @@ import ClipLoader from 'react-spinners/ClipLoader';
 import { IoClose } from 'react-icons/io5';
 import { useAppDispatch, useAppSelector } from '@/app/hooks';
 import Button from '@/components/form/Button';
+import { addCartItem, removeCartItem } from '@/features/Cart/cartSlice';
+import Cart from '@/interfaces/cart';
 import {
   addToWishlist,
   fetchProductDetails,
@@ -161,6 +163,7 @@ function ProductDetails() {
   const [toggleLoginOverlay, setToggleLoginOverlay] = useState(false);
   const [isVisible, setIsVisible] = useState({ state: true, name: 'details' });
   const [activeImg, setActiveImg] = useState('');
+  const [cartId, setCartId] = useState<number | null>(null);
   const wishlistProducts = useAppSelector(
     (state) => state.products.wishlistProducts
   );
@@ -233,6 +236,25 @@ function ProductDetails() {
       showErrorToast((errorObj.response.data as { message: string }).message);
     }
   };
+  function handleAddtoCart(e: React.MouseEvent<HTMLButtonElement>) {
+    const element = e.target as HTMLElement;
+    const [, message, action] =
+      element.textContent === 'Remove from Cart'
+        ? [
+            (element.textContent = 'Add to Cart'),
+            'Product Removed From Cart',
+            dispatch(removeCartItem(cartId as number)),
+          ]
+        : [
+            (element.textContent = 'Remove from Cart'),
+            'Product added to cart',
+            dispatch(addCartItem({ productId: product!.id, quantity: 1 })),
+          ];
+    action.then((res) => {
+      setCartId((res.payload as Cart).id || null);
+      showSuccessToast(message);
+    });
+  }
 
   return (
     <div className="relative flex flex-col items-center w-full xs:min-h-[35rem] lg:min-h-80 p-8">
@@ -343,45 +365,47 @@ function ProductDetails() {
                     );
                   })}
                   <div>
-                    <svg
-                      xmlns="http://www.w3.org/2000/svg"
-                      className="h-6 w-6"
-                      viewBox="0 0 36 36"
-                      data-testid="halfStar"
-                    >
-                      <defs>
-                        <linearGradient
-                          id="grad1"
-                          x1="0%"
-                          y1="0%"
-                          x2="100%"
-                          y2="0%"
-                        >
-                          <stop
-                            offset={`${(product.averageRating - Math.floor(product.averageRating)) * 100}%`}
-                            style={{
-                              stopColor: 'rgb(250 204 21)',
-                              stopOpacity: 1,
-                            }}
-                          />
-                          <stop
-                            offset={`${(product.averageRating - Math.floor(product.averageRating)) * 100}%`}
-                            style={{
-                              stopColor: 'rgb(156 163 175)',
-                              stopOpacity: 1,
-                            }}
-                          />
-                        </linearGradient>
-                      </defs>
-                      <path
-                        fill="url(#grad1)"
-                        d="M27.287 34.627c-.404 0-.806-.124-1.152-.371L18 28.422l-8.135 5.834a1.97 1.97 0 0 1-2.312-.008a1.971 1.971 0 0 1-.721-2.194l3.034-9.792l-8.062-5.681a1.98 1.98 0 0 1-.708-2.203a1.978 1.978 0 0 1 1.866-1.363L12.947 13l3.179-9.549a1.976 1.976 0 0 1 3.749 0L23 13l10.036.015a1.975 1.975 0 0 1 1.159 3.566l-8.062 5.681l3.034 9.792a1.97 1.97 0 0 1-.72 2.194a1.957 1.957 0 0 1-1.16.379"
-                      />
-                    </svg>
+                    {product.averageRating % 1 !== 0 && (
+                      <svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        className="h-6 w-6"
+                        viewBox="0 0 36 36"
+                        data-testid="halfStar"
+                      >
+                        <defs>
+                          <linearGradient
+                            id="grad1"
+                            x1="0%"
+                            y1="0%"
+                            x2="100%"
+                            y2="0%"
+                          >
+                            <stop
+                              offset={`${(product.averageRating - Math.floor(product.averageRating)) * 100}%`}
+                              style={{
+                                stopColor: 'rgb(250 204 21)',
+                                stopOpacity: 1,
+                              }}
+                            />
+                            <stop
+                              offset={`${(product.averageRating - Math.floor(product.averageRating)) * 100}%`}
+                              style={{
+                                stopColor: 'rgb(156 163 175)',
+                                stopOpacity: 1,
+                              }}
+                            />
+                          </linearGradient>
+                        </defs>
+                        <path
+                          fill="url(#grad1)"
+                          d="M27.287 34.627c-.404 0-.806-.124-1.152-.371L18 28.422l-8.135 5.834a1.97 1.97 0 0 1-2.312-.008a1.971 1.971 0 0 1-.721-2.194l3.034-9.792l-8.062-5.681a1.98 1.98 0 0 1-.708-2.203a1.978 1.978 0 0 1 1.866-1.363L12.947 13l3.179-9.549a1.976 1.976 0 0 1 3.749 0L23 13l10.036.015a1.975 1.975 0 0 1 1.159 3.566l-8.062 5.681l3.034 9.792a1.97 1.97 0 0 1-.72 2.194a1.957 1.957 0 0 1-1.16.379"
+                        />
+                      </svg>
+                    )}
                   </div>
                 </div>
                 {Array.from({
-                  length: Math.floor(4 - product.averageRating),
+                  length: Math.floor(5 - product.averageRating),
                 }).map((_, index) => {
                   return (
                     <div data-testid="emptyStar" key={index}>
@@ -436,6 +460,7 @@ function ProductDetails() {
             <div className="w-full flex items-center gap-4">
               <button
                 type="button"
+                onClick={handleAddtoCart}
                 className="flex items-center justify-center border border-primary text text-primary rounded-md text-sm h-11 w-40"
               >
                 Add to Cart

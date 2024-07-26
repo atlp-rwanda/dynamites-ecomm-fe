@@ -1,18 +1,22 @@
 import { useNavigate } from 'react-router-dom';
+import { useState } from 'react';
 import { FaRegHeart, FaHeart } from 'react-icons/fa';
 import { useAppDispatch, useAppSelector } from '@/app/hooks';
+import Cart from '@/interfaces/cart';
 import {
   addToWishlist,
   removeFromWishlist,
 } from '@/features/Products/ProductSlice';
 import { Product } from '@/types/Product';
-import { addCartItem } from '@/features/Cart/cartSlice';
+import { addCartItem, removeCartItem } from '@/features/Cart/cartSlice';
+import { showSuccessToast } from '@/utils/ToastConfig';
 
 interface ProductCardProps {
   product: Product;
 }
 
 function ProductCard({ product }: ProductCardProps) {
+  const [cartId, setCartId] = useState<number | null>(null);
   const navigate = useNavigate();
   const dispatch = useAppDispatch();
   const { token } = useAppSelector((state) => state.signIn);
@@ -22,6 +26,26 @@ function ProductCard({ product }: ProductCardProps) {
     return wishlistProds?.some((wishlistProd) => wishlistProd.id === prod.id);
   };
 
+  function handleAddtoCart(e: React.MouseEvent<HTMLButtonElement>) {
+    const element = e.target as HTMLElement;
+    const [sibling, message, action] = element.classList.contains('bg-red-600')
+      ? [
+          element.nextSibling,
+          'Product Removed From Cart',
+          dispatch(removeCartItem(cartId as number)),
+        ]
+      : [
+          element.previousSibling,
+          'Product added to cart',
+          dispatch(addCartItem({ productId: product.id, quantity: 1 })),
+        ];
+    (sibling as HTMLElement)?.style.setProperty('display', 'inline');
+    element.style.setProperty('display', 'none');
+    action.then((res) => {
+      setCartId((res.payload as Cart).id || null);
+      showSuccessToast(message);
+    });
+  }
   return (
     <div className="shadow-lg rounded-lg relative">
       <button
@@ -103,38 +127,46 @@ function ProductCard({ product }: ProductCardProps) {
               }
             )}
             <div>
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                className="h-6 w-6"
-                viewBox="0 0 36 36"
-                data-testid="halfStar"
-              >
-                <defs>
-                  <linearGradient id="grad1" x1="0%" y1="0%" x2="100%" y2="0%">
-                    <stop
-                      offset={`${(product.averageRating - Math.floor(product.averageRating)) * 100}%`}
-                      style={{
-                        stopColor: 'rgb(250 204 21)',
-                        stopOpacity: 1,
-                      }}
-                    />
-                    <stop
-                      offset={`${(product.averageRating - Math.floor(product.averageRating)) * 100}%`}
-                      style={{
-                        stopColor: 'rgb(156 163 175)',
-                        stopOpacity: 1,
-                      }}
-                    />
-                  </linearGradient>
-                </defs>
-                <path
-                  fill="url(#grad1)"
-                  d="M27.287 34.627c-.404 0-.806-.124-1.152-.371L18 28.422l-8.135 5.834a1.97 1.97 0 0 1-2.312-.008a1.971 1.971 0 0 1-.721-2.194l3.034-9.792l-8.062-5.681a1.98 1.98 0 0 1-.708-2.203a1.978 1.978 0 0 1 1.866-1.363L12.947 13l3.179-9.549a1.976 1.976 0 0 1 3.749 0L23 13l10.036.015a1.975 1.975 0 0 1 1.159 3.566l-8.062 5.681l3.034 9.792a1.97 1.97 0 0 1-.72 2.194a1.957 1.957 0 0 1-1.16.379"
-                />
-              </svg>
+              {product.averageRating % 1 !== 0 && (
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  className="h-6 w-6"
+                  viewBox="0 0 36 36"
+                  data-testid="halfStar"
+                >
+                  <defs>
+                    <linearGradient
+                      id="grad1"
+                      x1="0%"
+                      y1="0%"
+                      x2="100%"
+                      y2="0%"
+                    >
+                      <stop
+                        offset={`${(product.averageRating - Math.floor(product.averageRating)) * 100}%`}
+                        style={{
+                          stopColor: 'rgb(250 204 21)',
+                          stopOpacity: 1,
+                        }}
+                      />
+                      <stop
+                        offset={`${(product.averageRating - Math.floor(product.averageRating)) * 100}%`}
+                        style={{
+                          stopColor: 'rgb(156 163 175)',
+                          stopOpacity: 1,
+                        }}
+                      />
+                    </linearGradient>
+                  </defs>
+                  <path
+                    fill="url(#grad1)"
+                    d="M27.287 34.627c-.404 0-.806-.124-1.152-.371L18 28.422l-8.135 5.834a1.97 1.97 0 0 1-2.312-.008a1.971 1.971 0 0 1-.721-2.194l3.034-9.792l-8.062-5.681a1.98 1.98 0 0 1-.708-2.203a1.978 1.978 0 0 1 1.866-1.363L12.947 13l3.179-9.549a1.976 1.976 0 0 1 3.749 0L23 13l10.036.015a1.975 1.975 0 0 1 1.159 3.566l-8.062 5.681l3.034 9.792a1.97 1.97 0 0 1-.72 2.194a1.957 1.957 0 0 1-1.16.379"
+                  />
+                </svg>
+              )}
             </div>
           </div>
-          {Array.from({ length: Math.floor(4 - product.averageRating) }).map(
+          {Array.from({ length: Math.floor(5 - product.averageRating) }).map(
             (_, index) => {
               return (
                 <div data-testid="emptyStar" key={index}>
@@ -162,13 +194,25 @@ function ProductCard({ product }: ProductCardProps) {
               ${product.regularPrice}
             </span>
           </div>
-          <button
-            type="button"
-            onClick={() =>
-              dispatch(addCartItem({ productId: product.id, quantity: 1 }))
-            }
-          >
+          <button type="button" onClick={handleAddtoCart}>
             {' '}
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              viewBox="0 0 24 24"
+              className="bg-red-600 text-white h-10 w-10 rounded p-2 cursor-pointer"
+              style={{ display: 'none', backgroundColor: 'red' }}
+              id="removeFromCart"
+            >
+              <path
+                fill="none"
+                stroke="currentColor"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth={1.5}
+                d="M20 12H4"
+                color="currentColor"
+              ></path>
+            </svg>
             <svg
               xmlns="http://www.w3.org/2000/svg"
               className="text-white h-10 w-10 rounded p-2 cursor-pointer"
