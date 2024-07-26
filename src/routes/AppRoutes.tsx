@@ -28,6 +28,7 @@ import Coupons from '@/pages/Coupons';
 import EditCoupon from '@/pages/EditCoupon';
 import TableUserRole from '@/components/dashBoard/UserRole';
 import Customer from '@/pages/customer';
+import Category from '@/components/dashBoard/Category';
 
 function AppRoutes() {
   return (
@@ -68,6 +69,7 @@ function AppRoutes() {
         <Route path="/dashboard/orders" element={<Orders />} />
         <Route path="/dashboard/seller" element={<Seller />} />
         <Route path="/dashboard/customers" element={<Customer />} />
+        <Route path="/dashboard/category" element={<Category />} />
         <Route
           index
           path="/dashboard/product"

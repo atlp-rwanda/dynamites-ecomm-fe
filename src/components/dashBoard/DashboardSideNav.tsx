@@ -49,20 +49,9 @@ const sideBarItems = [
   },
   {
     name: 'seller',
-    icon: <Store className="icon" />,
-    subItems: [
-      {
-        name: 'All Seller',
-        path: '/dashboard/seller',
-        role: ['Admin'],
-      },
-      {
-        name: 'Add New',
-        path: '/dashboard/addSeller',
-        role: ['Admin'],
-      },
-    ],
+    path: '/dashboard/seller',
     role: ['Admin'],
+    icon: <Store className="icon" />,
   },
   {
     name: 'Products',
@@ -79,7 +68,7 @@ const sideBarItems = [
         role: ['Vendor'],
       },
       {
-        path: '/products/categories',
+        path: '/dashboard/category',
         name: 'Categories',
         role: ['Admin'],
       },

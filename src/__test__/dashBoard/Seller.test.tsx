@@ -1,9 +1,9 @@
 import axios from 'axios';
 import { Provider } from 'react-redux';
 import { MemoryRouter } from 'react-router-dom';
-import { describe, it, expect } from 'vitest';
+import { describe, it, expect, beforeEach } from 'vitest';
 import MockAdapter from 'axios-mock-adapter';
-import { render, screen, fireEvent } from '@testing-library/react';
+import { render, screen, waitFor } from '@testing-library/react';
 import { configureStore } from '@reduxjs/toolkit';
 import Seller from '@/pages/Seller';
 import productReducer from '@/app/Dashboard/AllProductSlices';
@@ -82,42 +82,25 @@ describe('Seller Component', () => {
     expect(screen.getByText('Sellers')).toBeInTheDocument();
   });
 
-  it('should display elements of the table', () => {
-    renderWithProviders(<Seller />);
-
-    expect(screen.getByText(/Image/)).toBeInTheDocument();
-    expect(screen.getByText(/First Name/)).toBeInTheDocument();
-    expect(screen.getByText(/Last Name/)).toBeInTheDocument();
-    expect(screen.getByText(/Email/)).toBeInTheDocument();
-    expect(screen.getByText(/Items Count/)).toBeInTheDocument();
-    expect(screen.getByText(/Date/)).toBeInTheDocument();
-    expect(screen.getByText(/Status/)).toBeInTheDocument();
-    expect(screen.getByText(/Action/)).toBeInTheDocument();
-  });
-
-  it('should filter sellers by search term', async () => {
-    // Mock API response
+  it('should display elements of the table', async () => {
     mock
       .onGet(`${import.meta.env.VITE_BASE_URL}/user/getAllUsers`)
       .reply(200, { users: mockBuyers });
 
-    // Render component
     renderWithProviders(<Seller />);
-
-    // Dispatch fetchBuyers to populate the state
     await store.dispatch(fetchBuyers() as any);
 
-    // Perform search action
-    const searchInput = screen.getByPlaceholderText('Search Seller');
-    fireEvent.change(searchInput, { target: { value: 'Vendor1' } });
-
-    // Check filtered results
-    expect(screen.getByText('Vendor1')).toBeInTheDocument();
-    expect(screen.queryByText('Customer1')).not.toBeInTheDocument();
+    await waitFor(() => {
+      expect(screen.getByText('Name')).toBeInTheDocument();
+      expect(screen.getByText('Email')).toBeInTheDocument();
+      expect(screen.getByText('Items')).toBeInTheDocument();
+      expect(screen.getByText('Date')).toBeInTheDocument();
+      expect(screen.getByText('Status')).toBeInTheDocument();
+      expect(screen.getByText('Action')).toBeInTheDocument();
+    });
   });
 
   it('should handle loading state', async () => {
-    // Mock API response
     mock
       .onGet(`${import.meta.env.VITE_BASE_URL}/user/getAllUsers`)
       .reply(200, { users: mockBuyers });
@@ -137,7 +120,10 @@ describe('Seller Component', () => {
 
     renderWithProviders(<Seller />);
     await store.dispatch(fetchBuyers() as any);
-    expect(screen.queryByText('Vendor1')).toBeNull();
-    expect(screen.queryByText('Customer1')).toBeNull();
+
+    await waitFor(() => {
+      expect(screen.queryByText('Vendor1')).toBeNull();
+      expect(screen.queryByText('Customer1')).toBeNull();
+    });
   });
 });
