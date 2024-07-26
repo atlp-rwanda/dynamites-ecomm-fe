@@ -28,8 +28,8 @@ describe('checkoutSlice', () => {
   it('should handle initial state', () => {
     expect(store.getState().checkout).toEqual({
       checkout: {
-        id: 31,
-        totalAmount: 160,
+        id: -1,
+        totalAmount: 0,
         status: 'Pending',
         couponCode: '',
         deliveryInfo: {
@@ -91,7 +91,7 @@ describe('checkoutSlice', () => {
           city: 'Anytown',
           zip: '12345',
         },
-        id: 31,
+        id: -1,
         orderDetails: [
           {
             id: 41,
@@ -102,7 +102,7 @@ describe('checkoutSlice', () => {
         paid: true,
         paymentInfo: null,
         status: 'Pending',
-        totalAmount: 160,
+        totalAmount: 0,
         trackingNumber: 'Tr280585',
         updatedAt: '2024-07-22T11:01:20.291Z',
       },

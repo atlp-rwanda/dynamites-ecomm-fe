@@ -13,8 +13,8 @@ export interface CheckoutState {
 }
 
 const initialOrder: Order = {
-  id: 31,
-  totalAmount: 160,
+  id: -1,
+  totalAmount: 0,
   status: 'Pending',
   couponCode: '',
   deliveryInfo: {
@@ -41,7 +41,6 @@ interface MomoPaymentParams {
   momoNumber: string;
   orderId: number;
 }
-
 
 const initialState: CheckoutState = {
   checkout: initialOrder,
@@ -87,21 +86,20 @@ export const makeMomoPayment = createAsyncThunk(
           },
         }
       );
-      showSuccessToast(response.data.message);
+      showSuccessToast('Transaction successful');
+
       return response.data;
     } catch (error) {
       if (axios.isAxiosError(error)) {
-        // const errorMessage = error.response?.data?.message || 'Payment failed';
-        // showErrorToast(errorMessage);
+        const errorMessage = error.response?.data?.message || 'Payment failed';
+        showErrorToast(errorMessage);
         return rejectWithValue(error.response?.data || 'Payment failed');
       }
-      console.error('Unexpected error:', error);
       showErrorToast('Payment failed');
       return rejectWithValue('Payment failed');
     }
   }
 );
-
 
 export const getOrders = createAsyncThunk('order/get', async () => {
   const tokenFromStorage = localStorage.getItem('token') || '';
@@ -165,6 +163,9 @@ const checkoutSlice = createSlice({
     updateLastName: (state, action: PayloadAction<string>) => {
       state.checkout.lastName = action.payload;
     },
+    resetState: () => {
+      return initialState;
+    },
   },
   extraReducers: (builder) => {
     builder
@@ -214,6 +215,7 @@ export const {
   updateFirstName,
   updateLastName,
   updateStatus,
+  resetState,
 } = checkoutSlice.actions;
 
 export const selectCheckout = (state: RootState) => state.checkout;

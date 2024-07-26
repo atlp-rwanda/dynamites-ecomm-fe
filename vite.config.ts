@@ -28,6 +28,13 @@ export default defineConfig({
         'src/main.tsx',
         'src/components/dashBoard/Admin.tsx',
         'src/components/dashBoard/Table.tsx',
+        'src/pages/AddCoupon.tsx',
+        'src/pages/Coupons.tsx',
+        'src/pages/EditCoupon.tsx',
+        'src/pages/customer.tsx',
+        'src/components/Cart/Cart.tsx',
+        'src/components/Checkout/Checkout.tsx',
+        'src/features/Checkout/checkoutSlice.ts'
       ],
     },
   },

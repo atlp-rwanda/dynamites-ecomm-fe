@@ -90,7 +90,7 @@ function TwoFactorAuthForm() {
   useEffect(() => {
     if (token && user?.userType.name === 'Vendor') {
       showSuccessToast('Vendor Logged In Sucessfully');
-      navigate('/vendor');
+      navigate('/dashboard');
     }
   }, [token, user, navigate]);
 

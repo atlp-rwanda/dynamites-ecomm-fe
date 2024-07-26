@@ -23,7 +23,11 @@ import Cart from '@/components/Cart/Cart';
 import Seller from '@/pages/Seller';
 import CheckoutPage from '@/pages/Checkout';
 import Aboutus from '@/components/home/Aboutus';
-import OrderCompletion from '@/pages/OrderCompletion';
+import AddCoupon from '@/pages/AddCoupon';
+import Coupons from '@/pages/Coupons';
+import EditCoupon from '@/pages/EditCoupon';
+import TableUserRole from '@/components/dashBoard/UserRole';
+import Customer from '@/pages/customer';
 
 function AppRoutes() {
   return (
@@ -45,7 +49,6 @@ function AppRoutes() {
         <Route path="wishlist" element={<Wishlist />} />
         <Route path="/cart" element={<Cart />} />
         <Route path="/checkout" element={<CheckoutPage />} />
-        <Route path="/order-completion" element={<OrderCompletion />} />
       </Route>
       <Route path="/signup" element={<SignUp />} />
       <Route path="/signIn" element={<SignIn />} />
@@ -64,6 +67,7 @@ function AppRoutes() {
         <Route index element={<Admin />} />
         <Route path="/dashboard/orders" element={<Orders />} />
         <Route path="/dashboard/seller" element={<Seller />} />
+        <Route path="/dashboard/customers" element={<Customer />} />
         <Route
           index
           path="/dashboard/product"
@@ -75,6 +79,10 @@ function AppRoutes() {
           element={<EditProductPage />}
         />
         <Route index path="/dashboard/addProduct/" element={<AddProducts />} />
+        <Route index path="/dashboard/coupons" element={<Coupons />} />
+        <Route index path="/dashboard/addCoupons/" element={<AddCoupon />} />
+        <Route path="/dashboard/editCoupon/:id" element={<EditCoupon />} />
+        <Route index path="/dashboard/userRole/" element={<TableUserRole />} />
       </Route>
       <Route path="*" element={<ErrorPage />} />
       <Route path="/forgot-password" element={<PasswordResetRequestForm />} />

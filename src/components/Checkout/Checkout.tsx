@@ -1,16 +1,18 @@
-import { useState, useEffect, SetStateAction } from 'react';
+import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
+import BeatLoader from 'react-spinners/BeatLoader';
 import CardInput, { Card } from './CardInput';
 import { RootState } from '@/app/store';
-import { fetchCartItems } from '@/features/Cart/cartSlice';
+import { fetchCartItems, selectCartItems } from '@/features/Cart/cartSlice';
 import { Checkout as CheckoutType } from '@/interfaces/checkout';
-import BeatLoader from 'react-spinners/BeatLoader';
 
 import {
   selectCheckout,
   placeOrder,
   makePayment,
   updateStatus,
+  resetState,
+  makeMomoPayment,
 } from '@/features/Checkout/checkoutSlice';
 import { useAppDispatch, useAppSelector } from '@/app/hooks';
 import {
@@ -44,11 +46,17 @@ function Checkout() {
   const [address, setAddress] = useState('');
   const [city, setCity] = useState('');
   const [coupon, setCoupon] = useState('');
+  const [momoNumber, setMomoNumber] = useState('');
 
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
   const user = useAppSelector((state) => state.signIn.user);
-
+  const cartItems = useAppSelector((state: RootState) =>
+    selectCartItems(state)
+  );
+  const total = cartItems.reduce((acc, curr) => {
+    return acc + curr.product.salesPrice * curr.quantity;
+  }, 0);
   function handleAdding() {
     setAdding(!adding);
   }
@@ -60,14 +68,17 @@ function Checkout() {
 
   function handleSave(newCard: Card) {
     setCards((prev) => [...prev, newCard]);
+  }
 
+  function applyCoupon(e: React.ChangeEvent<HTMLInputElement>) {
+    setCoupon(e.target.value);
     const checkout: CheckoutType = {
       deliveryInfo: {
         address,
         city,
         zip: '12345',
       },
-      couponCode: coupon,
+      couponCode: e.target.value,
       email: user?.email || '',
       firstName: user?.firstName || '',
       lastName: user?.lastName || '',
@@ -75,10 +86,32 @@ function Checkout() {
     dispatch(placeOrder(checkout));
   }
 
-
   function handlePayment() {
-    console.log(order.id)
-    dispatch(makePayment(order.id));
+    if (order.id === -1) {
+      const checkout: CheckoutType = {
+        deliveryInfo: {
+          address,
+          city,
+          zip: '12345',
+        },
+        couponCode: '',
+        email: user?.email || '',
+        firstName: user?.firstName || '',
+        lastName: user?.lastName || '',
+      };
+      dispatch(placeOrder(checkout)).then((res) => {
+        const orderId = res.payload.id;
+        if (chosen === 'momo') {
+          dispatch(makeMomoPayment({ momoNumber, orderId }));
+        } else if (chosen === 'card') {
+          dispatch(makePayment(orderId));
+        }
+      });
+    } else if (chosen === 'momo') {
+      dispatch(makeMomoPayment({ momoNumber, orderId: order.id }));
+    } else if (chosen === 'card') {
+      dispatch(makePayment(order.id));
+    }
   }
 
   useEffect(() => {
@@ -88,6 +121,7 @@ function Checkout() {
       showSuccessToast('Succesfully Paid');
       dispatch(updateStatus(false));
       dispatch(fetchCartItems());
+      dispatch(resetState());
       navigate('/');
     } else if (paying && error) {
       showErrorToast('failed');
@@ -153,24 +187,21 @@ function Checkout() {
         {chosen === 'momo' && (
           <div className="py-6 px-4 border border-gray-300 rounded-md mb-6">
             <div className="mb">
-              <h3 className="w-full text-xl text-gray-500 ounded-md text-left">
+              <h3 className="w-full text-xl text-gray-500 rounded-md text-left">
                 My Momo Number
               </h3>
-
               <div className="rounded-md py-4 flex flex-col gap-6">
                 <div className="rounded-md p-4 border border-gray-300">
                   <label
-                    htmlFor="card"
+                    htmlFor="momoNumber"
                     className="flex items-center w-full bg-gray-100 rounded"
                   >
-                    <img
-                      src="momo.svg"
-                      alt="Mastercard"
-                      className="w-12 mr-4"
-                    />
+                    <img src="momo.svg" alt="Momo" className="w-12 mr-4" />
                     <input
                       className="text-gray-500 h-full w-full outline-none bg-gray-100"
                       placeholder="078* *** *34"
+                      value={momoNumber}
+                      onChange={(e) => setMomoNumber(e.target.value)}
                     />
                   </label>
                 </div>
@@ -319,7 +350,7 @@ function Checkout() {
             <input
               type="text"
               className="border border-gray-300 p-2 rounded-lg flex-grow mr-2 outline-none"
-              onChange={(e) => setCoupon(e.target.value)}
+              onChange={applyCoupon}
               value={coupon}
             />
             <button
@@ -375,7 +406,7 @@ function Checkout() {
           <div className="mb-2">
             <div className="flex justify-between py-2 text-xl">
               <span className="text-gray-600">Total</span>
-              <span>${checkoutState.checkout.totalAmount}</span>
+              <span>${order.totalAmount || total}</span>
             </div>
           </div>
 
@@ -389,25 +420,23 @@ function Checkout() {
           <div className="font-bold">
             <div className="flex justify-between py-2 text-xl">
               <span className="text-gray-600">Total Cost</span>
-              <span>${checkoutState.checkout.totalAmount}</span>
+              <span>${order.totalAmount || total}</span>
             </div>
           </div>
         </div>
 
         <button
-  className={`w-full bg-primary text-white py-4 text-2xl font-medium rounded-md ${chosen ? '' : 'opacity-50 cursor-not-allowed'} ${paying ? 'opacity-75 cursor-not-allowed' : ''}`}
-  type="button"
-  onClick={handlePayment}
-  disabled={!chosen || paying} 
->
-
-  {paying ? (
-    <BeatLoader data-testid="Loading" color="#ffffff" size={8} />
-  ) : (
-    'Pay Here'
-  )}
-</button>
-
+          className={`w-full bg-primary text-white py-4 text-2xl font-medium rounded-md ${chosen ? '' : 'opacity-50 cursor-not-allowed'} ${paying ? 'opacity-75 cursor-not-allowed' : ''}`}
+          type="button"
+          onClick={handlePayment}
+          disabled={!chosen || paying}
+        >
+          {paying ? (
+            <BeatLoader data-testid="Loading" color="#ffffff" size={8} />
+          ) : (
+            'Pay Here'
+          )}
+        </button>
       </div>
     </div>
   );

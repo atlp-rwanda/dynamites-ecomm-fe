@@ -21,6 +21,8 @@ import checkoutSlice from '@/features/Checkout/checkoutSlice';
 
 import ordersSliceReducer from '@/features/Orders/ordersSlice';
 import contactReducer from '@/features/contact/contactSlice';
+import userRoleSlice from '@/features/userRole/userRoleSlice';
+import couponsSliceReducer from '@/features/Coupons/CouponsFeature';
 
 export const store = configureStore({
   reducer: {
@@ -43,6 +45,8 @@ export const store = configureStore({
     allProducts: allProductSlice,
     contact: contactReducer,
     checkout: checkoutSlice,
+    coupons: couponsSliceReducer,
+    userRoles: userRoleSlice,
   },
 });
 

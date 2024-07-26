@@ -129,7 +129,12 @@ function CategoriesSection() {
               </div>
             </div>
             <ProductsList
-              focused={focused === -1 ? 'all' : categories[focused].name}
+              focused={
+                focused === -1
+                  ? 'all'
+                  : categories.find((category) => category.id === focused)
+                      ?.name || categories[0].name
+              }
             />
           </main>
         </div>
