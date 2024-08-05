@@ -470,7 +470,7 @@ function Customer() {
         </div>
       </div>
 
-      <div className="md:hidden">
+      <div className="tablete:hidden">
         {customers &&
           visiblePage.map((v, id) => (
             <div key={id} className="border p-4 rounded-lg mb-4 bg-white">
@@ -502,8 +502,22 @@ function Customer() {
                     {v.status}
                   </span>
                 </p>
+                <p className="text-grey">
+                  Role:
+                  <span className='bg-statusBlue px-2 py-0.5 ml-1 rounded-md'>
+                    Buyer
+                  </span>
+                </p>
+                
               </div>
               <div className="flex justify-end items-end ">
+                <button
+                  type="submit"
+                  onClick={() => handleRole(v)}
+                  className="mr-2"
+                >
+                  <MdOutlineEdit className=" text-textBlack cursor-pointer  h-[18px] w-[18px]"/>
+                </button>
                 <button
                   type="submit"
                   onClick={() => HandleActive(v)}

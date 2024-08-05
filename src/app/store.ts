@@ -10,6 +10,7 @@ import subscribeReducer from '@/app/Footer/Subscribe';
 import addProductSlice from '@/features/Dashboard/addProductSlice';
 import dashboardProductsSlice from '@/features/Dashboard/dashboardProductsSlice';
 import allProductSlice from '@/app/Dashboard/AllProductSlices';
+import notificationSlice from '@/features/Notification/NotificationSlice'
 import {
   passwordRequestReducer,
   passwordResetReducer,
@@ -47,6 +48,7 @@ export const store = configureStore({
     checkout: checkoutSlice,
     coupons: couponsSliceReducer,
     userRoles: userRoleSlice,
+    notification: notificationSlice,
   },
 });
 
