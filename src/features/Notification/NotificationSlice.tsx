@@ -7,13 +7,14 @@ interface ProductsState {
   status: 'idle' | 'loading' | 'succeeded' | 'failed';
 }
 
-
 export const fetchNotification = createAsyncThunk<NotificationBox[]>(
   'Notification',
   async (_, thunkAPI) => {
     try {
-      const response = await axios.get(`https://dynamites-ecomm-be.onrender.com/api/v1/notification/vendor`);
-      const {notification} = response.data;
+      const response = await axios.get(
+        `https://dynamites-ecomm-be.onrender.com/api/v1/notification/vendor`
+      );
+      const { notification } = response.data;
       return notification;
     } catch (error) {
       return thunkAPI.rejectWithValue(error);

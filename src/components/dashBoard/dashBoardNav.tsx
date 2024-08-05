@@ -33,7 +33,10 @@ function DashNavbar() {
       </div>
       <div className="flex items-center gap-1 sm:gap-8 mr-4 ">
         <div className="relative">
-          <button onClick={() => navigate('/dashboard/notifications')} className=" p-2 rounded-full hover:border hover:border-primary">
+          <button
+            onClick={() => navigate('/dashboard/notifications')}
+            className=" p-2 rounded-full hover:border hover:border-primary"
+          >
             <FaBell size="20" color="#424856" title="notifications" />
             <div className="absolute top-0 right-0 w-4 h-4 rounded-full bg-red-700 text-white flex items-center justify-center text-xs">
               1

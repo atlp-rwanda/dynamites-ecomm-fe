@@ -1,11 +1,11 @@
-import Notification from '@/components/Notification/Notification'
+import Notification from '@/components/Notification/Notification';
 
 function NotificationPage() {
   return (
     <div>
-        <Notification/>
+      <Notification />
     </div>
-  )
+  );
 }
 
-export default NotificationPage
+export default NotificationPage;
